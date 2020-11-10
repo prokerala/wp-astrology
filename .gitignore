@@ -1,0 +1,34 @@
+# IDE
+*.swp
+*~.nib
+.project
+.idea/
+.settings/
+.vscode
+nbproject/
+
+# OS Specific
+[Tt]humbs.db
+[Dd]esktop.ini
+*.DS_store
+.DS_store?
+
+# Miscellaneous
+tmp/
+*.tmp
+*.bak
+*.log
+
+# Composer
+/vendor/
+/vendor-bin/
+/dependencies/
+/src/vendor
+/src/composer.json
+
+# Node
+node_modules/
+/assets/dist/
+
+# CS
+.phpcs.cache

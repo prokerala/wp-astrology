@@ -1,0 +1,86 @@
+{
+  "name": "prokerala/wp-astrology",
+  "description": "Plugin description",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Prokerala",
+      "email": "api@prokerala.com"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "7.2"
+    },
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/prokerala/astrology-api-demo",
+      "no-api": true
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "composer/installers": "~1.0",
+    "kriswallsmith/buzz": "1.1.0",
+    "slim/psr7": "^1.2",
+    "prokerala/astrology-sdk": "^0.5",
+    "symfony/cache": "^4.4"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master",
+    "automattic/vipwpcs": "^2",
+    "wp-coding-standards/wpcs": "^2.3.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "phpcompatibility/php-compatibility": "^9.3.5",
+    "bamarni/composer-bin-plugin": "^1.4.1",
+    "php-stubs/wordpress-stubs": "^5.5.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Prokerala\\WP\\Astrology\\": "src"
+    }
+  },
+  "extra": {
+    "phpcodesniffer-search-depth": 1,
+    "hooks": {
+      "pre-push": [
+        "composer lint"
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "phpcs .",
+    "lint-fix": "phpcbf .",
+    "post-install-cmd": [
+      "@prefix-dependencies"
+    ],
+    "post-update-cmd": [
+      "@prefix-dependencies"
+    ],
+    "install-php-scoper": [
+      "composer bin php-scoper config minimum-stability dev",
+      "composer bin php-scoper config prefer-stable true",
+      "composer bin php-scoper require --dev humbug/php-scoper",
+      "php-scoper add-prefix --output-dir=./dependencies --force --quiet"
+    ],
+    "prefix-dependencies": [
+      "@install-php-scoper",
+      "echo '{ \"autoload\": { \"classmap\": [\"\"] } }' > ./dependencies/composer.json",
+      "@composer dump-autoload --working-dir ./dependencies --no-dev --classmap-authoritative",
+      "sed -i'.bak' -e 's/Composer\\\\Autoload/Prokerala_WP_Astrology_Composer\\\\Autoload/' dependencies/vendor/composer/*.php && rm -rf dependencies/vendor/composer/*.php.bak",
+      "echo '{ \"autoload\": { \"classmap\": [\"\"] } }' > ./src/composer.json",
+      "@composer dump-autoload --working-dir ./src --no-dev --classmap-authoritative",
+      "sed -i'.bak' -e 's/Composer\\\\Autoload/Prokerala_WP_Astrology_Composer\\\\Autoload/' src/vendor/composer/*.php && rm -rf src/vendor/composer/*.php.bak",
+      "@composer dump-autoload --no-dev",
+      "cp vendor/composer/autoload_files.php dependencies/vendor/composer",
+      "rm -rf vendor-bin/"
+    ]
+  }
+}
