@@ -101,6 +101,12 @@ class ChoghadiyaController implements ReportControllerInterface {
 			];
 		}
 
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		return $this->render(
+			'result/choghadiya',
+			[
+				'result'  => $data,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

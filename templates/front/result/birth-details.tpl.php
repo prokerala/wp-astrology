@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="pk-astrology-row">
+<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 		<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><td colspan="2" class="pk-astrology-text-center">Nakshatra Details</td></tr>
 		<tr><td>Nakshatra</td><td><?php echo $result['nakshatra']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>

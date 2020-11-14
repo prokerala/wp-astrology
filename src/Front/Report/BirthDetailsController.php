@@ -102,6 +102,12 @@ class BirthDetailsController implements ReportControllerInterface {
 			$data['additional_info'][ $info ] = $additional_info->{$function}();
 		}
 
-		return $this->render( 'result/birth-details', [ 'result' => $data ] );
+		return $this->render(
+			'result/birth-details',
+			[
+				'result'  => $data,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

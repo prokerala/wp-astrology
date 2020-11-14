@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="pk-astrology-form" method="POST">
+<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST">
 
 	<div class="pk-astrology-row">
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">

@@ -86,7 +86,7 @@ class KundliController implements ReportControllerInterface {
 		$result_type = isset( $_POST['result_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['result_type'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$advanced = 'advanced' === $result_type ;
+		$advanced = 'advanced' === $result_type;
 
 		$method = new Kundli( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
@@ -179,6 +179,7 @@ class KundliController implements ReportControllerInterface {
 			[
 				'result'      => $kundli_result,
 				'result_type' => $result_type,
+				'options'     => $this->get_options(),
 			]
 		);
 	}

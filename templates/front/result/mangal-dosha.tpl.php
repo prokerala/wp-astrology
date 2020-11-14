@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div>
+<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
 		<h2 class="pk-astrology-text-center">Mangal Dosha Result</h2>
 		<div class="pk-astrology-alert pk-astrology-text-center <?php echo $result['has_mangal_dosha'] ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success'; ?>" >

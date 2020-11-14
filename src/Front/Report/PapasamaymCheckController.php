@@ -109,7 +109,13 @@ class PapasamaymCheckController implements ReportControllerInterface {
 		$papa_samyam_check_result['girlPapasamyam'] = $this->getPapasamyam( $result->getGirlPapasamyam() );
 		$papa_samyam_check_result['boyPapasamyam']  = $this->getPapasamyam( $result->getBoyPapasamyam() );
 
-		return $this->render( 'result/papasamyam-check', [ 'result' => $papa_samyam_check_result ] );
+		return $this->render(
+			'result/papasamyam-check',
+			[
+				'result'  => $papa_samyam_check_result,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 
 	/**

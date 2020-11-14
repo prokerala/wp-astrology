@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="pk-astrology-row">
+<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<h2 class="pk-astrology-text-center">Auspicious Timing</h2>
 	<table class="pk-astrology-table pk-astrology-table-responsive-sm pk-astrology-text-center">
 		<tr class="pk-astrology-bg-secondary"><th>Auspicious Yogas</th><th>Time</th></tr>

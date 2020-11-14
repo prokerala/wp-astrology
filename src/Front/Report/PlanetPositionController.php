@@ -110,6 +110,12 @@ class PlanetPositionController implements ReportControllerInterface {
 			];
 		}
 
-		return $this->render( 'result/planet-position', [ 'result' => $planet_position_result ] );
+		return $this->render(
+			'result/planet-position',
+			[
+				'result'  => $planet_position_result,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

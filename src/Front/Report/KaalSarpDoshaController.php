@@ -95,6 +95,12 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 		$data['has_kaal_sarp_dosha']  = $result->hasDosha();
 		$data['description']          = $result->getDescription();
 
-		return $this->render( 'result/kaal-sarp-dosha', [ 'result' => $data ] );
+		return $this->render(
+			'result/kaal-sarp-dosha',
+			[
+				'result'  => $data,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

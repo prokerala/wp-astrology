@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div>
+<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
 		<h2 class="pk-astrology-text-center">Panchang Details</h2>
 		<div class="pk-astrology-panchang-details">

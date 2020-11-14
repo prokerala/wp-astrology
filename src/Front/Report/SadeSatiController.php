@@ -117,6 +117,7 @@ class SadeSatiController implements ReportControllerInterface {
 			[
 				'result'      => $sade_sati_result,
 				'result_type' => $result_type,
+				'options'     => $this->get_options(),
 			]
 		);
 	}

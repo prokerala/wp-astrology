@@ -103,6 +103,12 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 			}
 		}
 
-		return $this->render( 'result/inauspicious-period', [ 'result' => $data ] );
+		return $this->render(
+			'result/inauspicious-period',
+			[
+				'result'  => $data,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

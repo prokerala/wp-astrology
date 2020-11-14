@@ -68,7 +68,7 @@ final class Front {
 	 * @return void
 	 */
 	public function register() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] , 0);
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 0 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
 		add_shortcode( 'astrology', [ $this, 'render' ] );

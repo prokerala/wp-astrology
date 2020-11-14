@@ -173,7 +173,7 @@ final class SettingsPage {
 		static $themes = [
 			'default' => 'Use WordPress Theme (Default)',
 			'dark'    => 'Dark',
-			'light'	  => 'Light',
+			'light'   => 'Light',
 		];
 		$theme         = $this->config->get_option( 'theme' );
 		echo '<select id="astrology_plugin_setting_theme" name="astrology_plugin_options[theme]">';

@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-	<div>
+	<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 		<?php if ( ! empty( $result ) ) : ?>
 
 			<?php $nakshatra_details = $result['nakshatra_details']; ?>

@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div>
+<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
 		<div class="pk-astrology-alert pk-astrology-text-center pk-astrology-pad <?php echo ( ( $result['isInSadeSati'] ) ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success' ); ?>">
 			<?php echo $result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
@@ -42,11 +42,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( 'advanced' === $result_type ) : ?>
 			<h3>The Detailed sade sati report is as follows</h3>
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-				<tr class="pk-astrology-bg-secondary">
+				<thead class="pk-astrology-bg-secondary">
+				<tr>
 					<th>Sade Sati Phase</th>
 					<th>Start Time</th>
 					<th>End Time</th>
 				</tr>
+				</thead>
 				<?php $today = strtotime( gmdate( 'Y-m-d' ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				<?php foreach ( $result['transits'] as $transit ) : ?>
 					<tr class="<?php echo ( $today >= strtotime( $transit['start']->format( 'Y-m-d' ) ) && $today <= strtotime( $transit['end']->format( 'Y-m-d' ) ) ) ? 'pk-astrology-table-danger' : ''; ?>">

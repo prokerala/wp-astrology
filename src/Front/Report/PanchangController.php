@@ -121,6 +121,7 @@ class PanchangController implements ReportControllerInterface {
 			[
 				'result'      => $data,
 				'result_type' => $result_type,
+				'options'     => $this->get_options(),
 			]
 		);
 	}

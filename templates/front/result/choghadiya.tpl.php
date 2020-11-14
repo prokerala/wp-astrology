@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="pk-astrology-row">
+<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php foreach ( $result as $type => $choghadiya ) : ?>
 		<div class="pk-astrology-col-12">
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">

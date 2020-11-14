@@ -104,6 +104,12 @@ class PapasamyamController implements ReportControllerInterface {
 			}
 		}
 
-		return $this->render( 'result/papasamyam', [ 'result' => $papasamyam_result ] );
+		return $this->render(
+			'result/papasamyam',
+			[
+				'result'  => $papasamyam_result,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

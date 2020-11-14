@@ -87,7 +87,7 @@ class MangalDoshaController implements ReportControllerInterface {
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$advanced = 'advanced' === $result_type ;
+		$advanced = 'advanced' === $result_type;
 		$method   = new MangalDosha( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $location, $datetime, $advanced );
@@ -110,6 +110,7 @@ class MangalDoshaController implements ReportControllerInterface {
 			[
 				'result'      => $mangal_dosha_result,
 				'result_type' => $result_type,
+				'options'     => $this->get_options(),
 			]
 		);
 	}

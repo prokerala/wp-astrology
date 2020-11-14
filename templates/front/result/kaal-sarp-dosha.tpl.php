@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-	<div>
+	<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 		<?php if ( ! empty( $result ) ) : ?>
 			<div class="pk-astrology-alert pk-astrology-pad pk-astrology-text-center <?php echo $result['has_kaal_sarp_dosha'] ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success'; ?>">
 				<?php echo $result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>

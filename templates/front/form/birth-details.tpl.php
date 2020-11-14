@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="pk-astrology-form" method="POST">
+<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST">
 
 	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
 

@@ -158,6 +158,7 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 			[
 				'result'      => $compatibility_result,
 				'result_type' => $result_type,
+				'options'     => $this->get_options(),
 			]
 		);
 	}

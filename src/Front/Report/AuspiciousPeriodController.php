@@ -104,6 +104,12 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 			}
 		}
 
-		return $this->render( 'result/auspicious-period', [ 'result' => $data ] );
+		return $this->render(
+			'result/auspicious-period',
+			[
+				'result'  => $data,
+				'options' => $this->get_options(),
+			]
+		);
 	}
 }

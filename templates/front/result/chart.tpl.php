@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="pk-astrology-row">
+<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<h3 class="pk-astrology-text-center"><?php echo ucwords( $result['chart_type'] ) . ' Chart';// phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 	<div class="pk-astrology-text-center pk-astrology-col-12 pk-astrology-chart">
 		<?php echo $result['chart']; // phpcs:ignore WordPress.Security.EscapeOutput ?>

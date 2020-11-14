@@ -191,6 +191,7 @@ class PoruthamController implements ReportControllerInterface {
 				'result_type' => $result_type,
 				'girl_dob'    => $girl_dob,
 				'boy_dob'     => $boy_dob,
+				'options'     => $this->get_options(),
 			]
 		);
 	}
