@@ -1,5 +1,219 @@
-$bg: lightgray;
+$bg: #f5efe0;
 
 body {
     background-color: $bg;
+}
+.pk-astrology-form{
+	padding: 2rem;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0px 30px rgba(182, 182, 183, .8);
+}
+.pk-astrology-form-control {
+	background: #fff;
+    border-radius: 0;
+    border-color: #dcd7ca;
+    box-shadow: none;
+    display: block;
+    margin: 0;
+    max-width: 100%;
+    padding: 1.5rem 1.8rem;
+    width: 100%;
+    font-size: 1.6rem;
+}
+.pk-astrology-btn:hover {
+	text-decoration: none;
+}
+.pk-astrology-pad {
+	padding:1 rem;
+}
+.pk-astrology-pad-small{
+	padding:0.8rem;
+}
+.pk-astrology-m-auto {
+	margin:auto;
+}
+.pk-astrology-overflow-auto {
+	overflow: auto;
+}
+.pk-astrology-chart {
+	overflow:auto;
+}
+.pk-astrology-chart svg{
+	width:500px;
+	height:500px;
+	max-width:500px;
+	margin: auto;
+}
+.pk-astrology-panchang-details{
+	border: 1px solid #a0a5aa;
+    padding: 1rem;
+}
+.pk-astrology-block {
+	display:block;
+}
+.pk-astrology-table td {
+	padding: 0.75rem;
+}
+.pk-astrology-table-bordered {
+    border: 1px solid #6c757d;
+}
+.pk-astrology-table-bordered-tr tr {
+    border: 1px solid #6c757d;
+}
+.pk-astrology-table-bordered-td td,
+.pk-astrology-table-bordered-td th{
+    border: 1px solid #6c757d;
+}
+.pk-astrology-text-center {
+	text-align: center;
+}
+.pk-astrology-text-right {
+	text-align: right;
+}
+.pk-astrology-text-small {
+ 	font-size: 0.8em;
+}
+.pk-astrology-bg-secondary {
+    background-color: #6c757d;
+    border:none;
+    color:#fff;
+}
+.pk-astrology-table-bordered-td .pk-astrology-bg-secondary td,
+.pk-astrology-table-bordered-td .pk-astrology-bg-secondary th
+{
+	border:1px solid #d3d3d3;
+}
+.pk-astrology-alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.pk-astrology-table-danger {
+	background-color: #f8d7da;
+}
+.pk-astrology-text-danger {
+	color: #721c24;
+}
+.pk-astrology-table-danger {
+	background-color: #f5c6cb;
+}
+.pk-astrology-alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.pk-astrology-table-success {
+	background-color: #d4edda;
+}
+.pk-astrology-text-success {
+	color: #155724;
+}
+.pk-astrology-alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.pk-astrology-alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.pk-astrology-text-warning {
+	color: #856404;
+}
+.pk-astrology-table-warning {
+	background-color: #fff3cd;
+}
+.pk-astrology-alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.pk-astrology-form-check-inline {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 0;
+    margin-right: 0.75rem;
+}
+.pk-astrology-form-check-inline .pk-astrology-form-check-input {
+    position: static;
+    margin-top: 0;
+    margin-right: 0.3125rem;
+    margin-left: 0;
+}
+.pk-astrology-form-check-label {
+    margin-bottom: 0;
+}
+
+@media (max-width: 576px) {
+	.pk-astrology-table-responsive-sm {
+    	display: block;
+    	width: 100%;
+    	overflow-x: auto;
+    	-webkit-overflow-scrolling: touch;
+	}
+}
+
+.pk-astrology-text-right {
+	text-align:right;
+}
+.pk-astrology-form-group {
+	margin-bottom: 1rem;
+}
+.pk-astrology-form-label {
+	padding-top: 0.8rem;
+	padding-bottom: 0.8rem;
+	margin-bottom: 0;
+}
+.pk-astrology-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* For mobile phones: */
+[class*="pk-astrology-col-"] {
+  width: 100%;
+}
+
+@media only screen and (min-width: 576px) {
+  /* For tablets: */
+  .pk-astrology-col-sm-1 {width: 8.33%; flex: 0 0 8.33%;}
+  .pk-astrology-col-sm-2 {width: 16.66%; flex: 0 0 16.66%;}
+  .pk-astrology-col-sm-3 {width: 25%; flex: 0 0 25%;}
+  .pk-astrology-col-sm-4 {width: 33.33%; flex: 0 0 33.33%;}
+  .pk-astrology-col-sm-5 {width: 41.66%; flex: 0 0 41.66%;}
+  .pk-astrology-col-sm-6 {width: 50%; flex: 0 0 50%;}
+  .pk-astrology-col-sm-7 {width: 58.33%; flex: 0 0 58.33%;}
+  .pk-astrology-col-sm-8 {width: 66.66%; flex: 0 0 66.66%;}
+  .pk-astrology-col-sm-9 {width: 75%; flex: 0 0 75%;}
+  .pk-astrology-col-sm-10 {width: 83.33%; flex: 0 0 83.33%;}
+  .pk-astrology-col-sm-11 {width: 91.66%; flex: 0 0 91.66%;}
+  .pk-astrology-col-sm-12 {width: 100%; flex: 0 0 100%;}
+
+	.pk-astrology-dasha-periods table {
+    	margin: .5%;
+    	max-width: 49%;
+    	font-size: 1.5rem;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .pk-astrology-col-md-1 {width: 8.33%; flex: 0 0 8.33%;}
+  .pk-astrology-col-md-2 {width: 16.66%; flex: 0 0 16.66%;}
+  .pk-astrology-col-md-3 {width: 25%; flex: 0 0 25%;}
+  .pk-astrology-col-md-4 {width: 33.33%; flex: 0 0 33.33%;}
+  .pk-astrology-col-md-5 {width: 41.66%; flex: 0 0 41.66%;}
+  .pk-astrology-col-md-6 {width: 50%; flex: 0 0 50%;}
+  .pk-astrology-col-md-7 {width: 58.33%; flex: 0 0 58.33%;}
+  .pk-astrology-col-md-8 {width: 66.66%; flex: 0 0 66.66%;}
+  .pk-astrology-col-md-9 {width: 75%; flex: 0 0 75%;}
+  .pk-astrology-col-md-10 {width: 83.33%; flex: 0 0 83.33%;}
+  .pk-astrology-col-md-11 {width: 91.66%; flex: 0 0 91.66%;}
+  .pk-astrology-col-md-12 {width: 100%; flex: 0 0 100%;}
+
 }

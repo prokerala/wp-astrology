@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya input form template.
+ * Auspicious Period input form template.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited

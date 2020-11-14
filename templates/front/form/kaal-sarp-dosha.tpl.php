@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya input form template.
+ * KaalSarpDosha input form template.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -44,7 +44,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <form class="pk-astrology-form" method="POST">
 
-	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
+	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
 
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Result</button>

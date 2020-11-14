@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya input form template.
+ * KaalSarpDosha result.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -27,27 +27,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// phpcs:disable VariableAnalysis, WordPress.Security.EscapeOutput.OutputNotEscaped
+// phpcs:disable VariableAnalysis, WordPress.WP.GlobalVariablesOverride.Prohibited
 
 // Exit if accessed directly.
-use Prokerala\WP\Astrology\Templating\Context;
-
-/**
- * Render Context.
- *
- * @var Context $this
- */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="pk-astrology-form" method="POST">
-
-	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
-
-	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
-		<input type="hidden" name="submit" value="1">
+	<div>
+		<?php if ( ! empty( $result ) ) : ?>
+			<div class="pk-astrology-alert pk-astrology-pad pk-astrology-text-center <?php echo $result['has_kaal_sarp_dosha'] ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success'; ?>">
+				<?php echo $result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			</div>
+		<?php endif; ?>
 	</div>
-</form>
+<?php

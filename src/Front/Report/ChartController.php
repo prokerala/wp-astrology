@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya controller.
+ * Chart controller.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -29,21 +29,21 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Choghadiya;
+use Prokerala\Api\Astrology\Service\Chart;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Choghadiya Form Controller.
+ * Chart Form Controller.
  *
  * @since   1.0.0
  */
-class ChoghadiyaController implements ReportControllerInterface {
+class ChartController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
 	/**
-	 * ChoghadiyaController constructor
+	 * ChartController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -52,7 +52,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render choghadiya form.
+	 * Render chart form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
@@ -60,10 +60,34 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form() {
 		return $this->render(
-			'form/choghadiya',
+			'form/chart',
 			[
-				'options'  => $this->get_options(),
-				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'options'     => $this->get_options(),
+				'datetime'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'chart_type'  => 'rasi',
+				'chart_style' => 'south-indian',
+				'chart_types' => [
+					'rasi',
+					'navamsa',
+					'lagna',
+					'trimsamsa',
+					'drekkana',
+					'chaturthamsa',
+					'dasamsa',
+					'ashtamsa',
+					'dwadasamsa',
+					'shodasamsa',
+					'hora',
+					'akshavedamsa',
+					'shashtyamsa',
+					'panchamsa',
+					'khavedamsa',
+					'saptavimsamsa',
+					'shashtamsa',
+					'chaturvimsamsa',
+					'saptamsa',
+					'vimsamsa',
+				],
 			]
 		);
 	}
@@ -81,26 +105,15 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$datetime    = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$chart_type  = isset( $_POST['chart_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['chart_type'] ) ) : '';
+		$chart_style = isset( $_POST['chart_style'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['chart_style'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$method   = new Choghadiya( $client );
+		$method   = new Chart( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime );
-
-		$data = [];
-		foreach ( $result->getMuhurat() as $muhurat ) {
-			$data[ $muhurat->getIsDay() ][] = [
-				'id'    => $muhurat->getId(),
-				'name'  => $muhurat->getName(),
-				'type'  => $muhurat->getType(),
-				'vela'  => $muhurat->getVela(),
-				'isDay' => $muhurat->getIsDay(),
-				'start' => $muhurat->getStart(),
-				'end'   => $muhurat->getEnd(),
-			];
-		}
-
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style );
+		$result['chart_type'] = $chart_type;
+		return $this->render( 'result/chart', [ 'result' => $result ] );
 	}
 }

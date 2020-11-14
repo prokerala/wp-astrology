@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya controller.
+ * PlanetPosition controller.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -29,21 +29,21 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Choghadiya;
+use Prokerala\Api\Astrology\Service\PlanetPosition;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Choghadiya Form Controller.
+ * PlanetPosition Form Controller.
  *
  * @since   1.0.0
  */
-class ChoghadiyaController implements ReportControllerInterface {
+class PlanetPositionController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
 	/**
-	 * ChoghadiyaController constructor
+	 * PlanetPosition constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -52,7 +52,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render choghadiya form.
+	 * Render planet-position form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
@@ -60,7 +60,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form() {
 		return $this->render(
-			'form/choghadiya',
+			'form/planet-position',
 			[
 				'options'  => $this->get_options(),
 				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
@@ -84,23 +84,32 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$method   = new Choghadiya( $client );
+		$method   = new PlanetPosition( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $location, $datetime );
 
-		$data = [];
-		foreach ( $result->getMuhurat() as $muhurat ) {
-			$data[ $muhurat->getIsDay() ][] = [
-				'id'    => $muhurat->getId(),
-				'name'  => $muhurat->getName(),
-				'type'  => $muhurat->getType(),
-				'vela'  => $muhurat->getVela(),
-				'isDay' => $muhurat->getIsDay(),
-				'start' => $muhurat->getStart(),
-				'end'   => $muhurat->getEnd(),
+		$planet_position_result = [];
+
+		foreach ( $result->getPlanetPosition() as $position ) {
+			$deg      = floor( $position->getDegree() );
+			$fraction = $position->getDegree() - $deg;
+
+			$temp                     = $fraction * 3600;
+			$min                      = floor( $temp / 60 );
+			$sec                      = $temp - ( $min * 60 );
+			$planet_position_result[] = [
+				'id'           => $position->getId(),
+				'name'         => $position->getName(),
+				'longitude'    => $position->getLongitude(),
+				'isRetrograde' => $position->isRetrograde(),
+				'position'     => $position->getPosition(),
+				'degree'       => $deg . '&deg; ' . $min . "' ",
+				'rasi'         => $position->getRasi(),
+				'rasiLord'     => $position->getRasi()->getLord()->getVedicName(),
+				'rasiLordEn'   => $position->getRasi()->getLord(),
 			];
 		}
 
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		return $this->render( 'result/planet-position', [ 'result' => $planet_position_result ] );
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya controller.
+ * MangalDosha controller.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -29,21 +29,21 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Choghadiya;
+use Prokerala\Api\Astrology\Service\MangalDosha;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Choghadiya Form Controller.
+ * Chart Form Controller.
  *
  * @since   1.0.0
  */
-class ChoghadiyaController implements ReportControllerInterface {
+class MangalDoshaController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
 	/**
-	 * ChoghadiyaController constructor
+	 * MangalDoshaController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -52,7 +52,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render choghadiya form.
+	 * Render mangal-dosha form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
@@ -60,10 +60,11 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form() {
 		return $this->render(
-			'form/choghadiya',
+			'form/mangal-dosha',
 			[
-				'options'  => $this->get_options(),
-				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'options'     => $this->get_options(),
+				'datetime'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'result_type' => 'basic',
 			]
 		);
 	}
@@ -81,26 +82,35 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$datetime    = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$result_type = isset( $_POST['result_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['result_type'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$method   = new Choghadiya( $client );
-		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime );
 
-		$data = [];
-		foreach ( $result->getMuhurat() as $muhurat ) {
-			$data[ $muhurat->getIsDay() ][] = [
-				'id'    => $muhurat->getId(),
-				'name'  => $muhurat->getName(),
-				'type'  => $muhurat->getType(),
-				'vela'  => $muhurat->getVela(),
-				'isDay' => $muhurat->getIsDay(),
-				'start' => $muhurat->getStart(),
-				'end'   => $muhurat->getEnd(),
-			];
+		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$advanced = 'advanced' === $result_type ;
+		$method   = new MangalDosha( $client );
+		$method->setAyanamsa( $this->get_input_ayanamsa() );
+		$result = $method->process( $location, $datetime, $advanced );
+
+		$mangal_dosha_result = [];
+
+		$mangal_dosha_result['has_mangal_dosha'] = $result->hasDosha();
+		$mangal_dosha_result['description']      = $result->getDescription();
+
+		if ( $advanced ) {
+			$mangal_dosha_result['has_exception']     = $result->hasException();
+			$mangal_dosha_result['mangal_dosha_type'] = $result->getType();
+
+			$mangal_dosha_result['exceptions'] = $result->getExceptions();
+			$mangal_dosha_result['remedies']   = $result->getRemedies();
 		}
 
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		return $this->render(
+			'result/mangal-dosha',
+			[
+				'result'      => $mangal_dosha_result,
+				'result_type' => $result_type,
+			]
+		);
 	}
 }

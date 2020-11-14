@@ -138,11 +138,11 @@ trait ReportControllerTrait {
 	 * @return \DateTimeZone
 	 */
 	private function get_timezone( $prefix = '' ) {
-		if ( ! isset( $_POST['timezone'] ) ) {
+		if ( ! isset( $_POST[ "{$prefix}timezone" ] ) ) {
 			return $this->get_default_timezone();
 		}
 
-		return new \DateTimeZone( sanitize_text_field( wp_unslash( $_POST['timezone'] ) ) );
+		return new \DateTimeZone( sanitize_text_field( wp_unslash( $_POST[ "{$prefix}timezone" ] ) ) );
 	}
 
 	/**

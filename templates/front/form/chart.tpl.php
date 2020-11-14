@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya input form template.
+ * Chart input form template.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -44,8 +44,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <form class="pk-astrology-form" method="POST">
 
-	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
-
+	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Chart Type</label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
+			<select name="chart_type" class="pk-astrology-form-control">
+				<?php foreach ( $chart_types as $chart ) : ?>
+					<option value="<?php echo $chart; ?>" <?php echo $chart === $chart_type ? 'selected' : ''; ?>><?php echo ucwords( $chart ); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	</div>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Chart Style</label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
+			<select name="chart_style" class="pk-astrology-form-control">
+				<option value="south-indian" <?php echo 'south-indian' === $chart_style ? 'selected' : ''; ?>>South Indian</option>
+				<option value="north-indian" <?php echo 'north-indian' === $chart_style ? 'selected' : ''; ?>>North Indian</option>
+				<option value="east-indian" <?php echo 'east-indian' === $chart_style ? 'selected' : ''; ?>>East Indian</option>
+			</select>
+		</div>
+	</div>
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Result</button>
 		<input type="hidden" name="submit" value="1">

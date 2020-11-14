@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya controller.
+ * Papasamyam controller.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -29,21 +29,21 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Choghadiya;
+use Prokerala\Api\Astrology\Service\Papasamyam;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Choghadiya Form Controller.
+ * Papasamyam Form Controller.
  *
  * @since   1.0.0
  */
-class ChoghadiyaController implements ReportControllerInterface {
+class PapasamyamController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
 	/**
-	 * ChoghadiyaController constructor
+	 * PapasamyamController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -52,7 +52,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render choghadiya form.
+	 * Render papasamyam form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
@@ -60,7 +60,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form() {
 		return $this->render(
-			'form/choghadiya',
+			'form/papasamyam',
 			[
 				'options'  => $this->get_options(),
 				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
@@ -84,23 +84,26 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$method   = new Choghadiya( $client );
+		$method   = new Papasamyam( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $location, $datetime );
 
-		$data = [];
-		foreach ( $result->getMuhurat() as $muhurat ) {
-			$data[ $muhurat->getIsDay() ][] = [
-				'id'    => $muhurat->getId(),
-				'name'  => $muhurat->getName(),
-				'type'  => $muhurat->getType(),
-				'vela'  => $muhurat->getVela(),
-				'isDay' => $muhurat->getIsDay(),
-				'start' => $muhurat->getStart(),
-				'end'   => $muhurat->getEnd(),
-			];
+		$papasamyam_result['total_points'] = $result->getTotalPoints();
+		$papa_samyam                       = $result->getPapaSamyam();
+		$papa_planets                      = $papa_samyam->getPapaPlanet();
+		foreach ( $papa_planets as $idx => $papa_planet ) {
+			$papasamyam_result['papaPlanet'][ $idx ]['name'] = $papa_planet->getName();
+			$planet_doshas                                   = $papa_planet->getPlanetDosha();
+			foreach ( $planet_doshas as $planet_dosha ) {
+				$papasamyam_result['papaPlanet'][ $idx ]['planetDosha'][] = [
+					'id'       => $planet_dosha->getId(),
+					'name'     => $planet_dosha->getName(),
+					'position' => $planet_dosha->getPosition(),
+					'hasDosha' => $planet_dosha->hasDosha(),
+				];
+			}
 		}
 
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		return $this->render( 'result/papasamyam', [ 'result' => $papasamyam_result ] );
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya input form.
+ * Choghadiya result.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -34,17 +34,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="row">
+<div class="pk-astrology-row">
 	<?php foreach ( $result as $type => $choghadiya ) : ?>
-		<div class="col-12 col-md-6">
-			<table class="table table-bordered border-white table-hover table-responsive-sm" style="margin-right: 10px">
-				<tr class="bg-secondary text-white">
-					<th colspan="4" class="text-center"><?php echo $type ? 'Day' : 'Night'; ?> Choghadiya</th>
+		<div class="pk-astrology-col-12">
+			<table class="pk-astrology-table pk-astrology-table-bordered-td">
+				<tr class="pk-astrology-bg-secondary">
+					<th colspan="4" class="pk-astrology-text-center"><?php echo $type ? 'Day' : 'Night'; ?> Choghadiya</th>
 				</tr>
 				<tr><th>Name</th><th>Type</th><th>Start</th><th>End</th></tr>
 
 				<?php foreach ( $choghadiya as $data ) : ?>
-					<tr class="<?php echo 'Good' === $data['type'] ? 'table-warning' : ( 'Inauspicious' === $data['type'] ? 'table-danger' : 'table-success' ); ?>">
+					<tr class="<?php echo 'Good' === $data['type'] ? 'pk-astrology-table-warning' : ( 'Inauspicious' === $data['type'] ? 'pk-astrology-table-danger' : 'pk-astrology-table-success' ); ?>">
 						<td><?php echo $data['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?><br><i><?php echo $data['vela'] ? $data['vela'] : ''; // phpcs:ignore WordPress.Security.EscapeOutput ?></i></td>
 						<td><?php echo $data['type']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 						<td><?php echo $data['start']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>

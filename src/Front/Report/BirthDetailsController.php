@@ -1,6 +1,6 @@
 <?php
 /**
- * Choghadiya controller.
+ * Birth Details controller.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -29,21 +29,21 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Choghadiya;
+use Prokerala\Api\Astrology\Service\BirthDetails;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Choghadiya Form Controller.
+ * Birthdetails Form Controller.
  *
  * @since   1.0.0
  */
-class ChoghadiyaController implements ReportControllerInterface {
+class BirthDetailsController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
 	/**
-	 * ChoghadiyaController constructor
+	 * BirthdetailsController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -52,7 +52,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render choghadiya form.
+	 * Render birthdetails form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
@@ -60,7 +60,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form() {
 		return $this->render(
-			'form/choghadiya',
+			'form/birth-details',
 			[
 				'options'  => $this->get_options(),
 				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
@@ -84,23 +84,24 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$method   = new Choghadiya( $client );
+		$method   = new BirthDetails( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $location, $datetime );
 
 		$data = [];
-		foreach ( $result->getMuhurat() as $muhurat ) {
-			$data[ $muhurat->getIsDay() ][] = [
-				'id'    => $muhurat->getId(),
-				'name'  => $muhurat->getName(),
-				'type'  => $muhurat->getType(),
-				'vela'  => $muhurat->getVela(),
-				'isDay' => $muhurat->getIsDay(),
-				'start' => $muhurat->getStart(),
-				'end'   => $muhurat->getEnd(),
-			];
+
+		$additional_info      = $result->getAdditionalInfo();
+		$data['nakshatra']    = $result->getNakshatra();
+		$data['chandra_rasi'] = $result->getChandraRasi();
+		$data['soorya_rasi']  = $result->getSooryaRasi();
+		$data['zodiac']       = $result->getZodiac();
+
+		$nakshatra_info_list = [ 'Deity', 'Ganam', 'Symbol', 'AnimalSign', 'Nadi', 'Color', 'BestDirection', 'Syllables', 'BirthStone', 'Gender', 'Planet', 'EnemyYoni' ];
+		foreach ( $nakshatra_info_list as $info ) {
+			$function                         = 'get' . $info;
+			$data['additional_info'][ $info ] = $additional_info->{$function}();
 		}
 
-		return $this->render( 'result/choghadiya', [ 'result' => $data ] );
+		return $this->render( 'result/birth-details', [ 'result' => $data ] );
 	}
 }

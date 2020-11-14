@@ -2,7 +2,7 @@
 /**
  * Common form inputs for horoscope reports.
  *
- * @package   Prokerala\WP\Astrology
+ * @package   Prokerala\pk-astrology\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
  * @license   https://www.gnu.org/licenses/gpl-2.0.en.html GPLV2
  * @link      https://api.prokerala.com
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <?php if ( empty( $options['ayanamsa'] ) ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
-		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label ">Ayanamsa</label>
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label ">Ayanamsa</label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 			<select name="ayanamsa" class="pk-astrology-form-control">
 				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>>Lahiri</option>
@@ -51,12 +51,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="pk-astrology-form-group pk-astrology-row">
 	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Date: </label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
-		<input type='datetime-local' name="datetime" class="pk-astrology-form-control" required="required" value="<?php echo $datetime->format( 'Y-m-d\Th:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
+		<input type='date' name="datetime" class="pk-astrology-form-control" required="required" value="<?php echo $datetime->format( 'Y-m-d' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
 	</div>
 </div>
 
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Place Of Birth:</label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Location:</label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
 		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required>
 	</div>
