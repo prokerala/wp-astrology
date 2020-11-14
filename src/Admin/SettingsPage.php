@@ -171,8 +171,9 @@ final class SettingsPage {
 	public function render_theme() {
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		static $themes = [
-			'default' => 'Light (Default)',
+			'default' => 'Use WordPress Theme (Default)',
 			'dark'    => 'Dark',
+			'light'	  => 'Light',
 		];
 		$theme         = $this->config->get_option( 'theme' );
 		echo '<select id="astrology_plugin_setting_theme" name="astrology_plugin_options[theme]">';
