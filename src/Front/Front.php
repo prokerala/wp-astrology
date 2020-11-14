@@ -68,7 +68,7 @@ final class Front {
 	 * @return void
 	 */
 	public function register() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] , 0);
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 
 		add_shortcode( 'astrology', [ $this, 'render' ] );
@@ -118,8 +118,8 @@ final class Front {
 	 */
 	private function is_post_request() {
 		return (
-			! isset( $_SERVER['REQUEST_URI'] )
-			|| 'POST' !== wp_unslash( $_SERVER['REQUEST_URI'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			! isset( $_SERVER['REQUEST_METHOD'] )
+			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		);
 	}
 
@@ -147,7 +147,13 @@ final class Front {
 
 			return $controller->process();
 		} catch ( ValidationException $e ) {
-			$errors = $e->getValidationErrors();
+			$errors     = $e->getValidationErrors();
+			$error_code = '<ul>';
+			foreach ( $errors as $error ) {
+				$error_code .= '<li>' . $error->detail . '</li>';
+			}
+			$error_code .= '</ul>';
+			return $error_code;
 		} catch ( QuotaExceededException $e ) {
 			return '<blockquote><p>You have exceeded your quota allocation</p></blockquote>';
 		} catch ( RateLimitExceededException $e ) {
