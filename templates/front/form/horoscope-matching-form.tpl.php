@@ -50,8 +50,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<input type="hidden" name="ayanamsa" value="<?php echo (int) $options['ayanamsa']; ?>">
 <?php endif; ?>
 <div class="pk-astrology-row">
-	<div class="pk-astrology-col-12">
-		<legend class="pk-astrology-form-label">Enter Girl's Birth Details</legend>
+	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
+		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall">Enter Girl's Birth Details</legend>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Date Of Birth:</label>
 			<div class="pk-astrology-col-md-8">
@@ -67,8 +67,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</div>
-	<div class="pk-astrology-col-12">
-		<legend class="pk-astrology-form-label">Enter Boy's Birth Details</legend>
+	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
+		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall">Enter Boy's Birth Details</legend>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-md-4 pk-astrology-col-form-label">Date Of Birth:</label>
 			<div class="pk-astrology-col-md-8">

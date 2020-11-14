@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 	<div class="pk-astrology-row">
 		<h2 class="pk-astrology-text-center">Inauspicious Timing</h2>
-		<table class="pk-astrology-table pk-astrology-text-center pk-astrology-table-bordered-td">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm pk-astrology-text-center">
 			<tr class="pk-astrology-bg-secondary"><th>Inauspicious Yogas</th><th>Time</th></tr>
 			<?php foreach ( $result as $key => $data ) : ?>
 				<tr>

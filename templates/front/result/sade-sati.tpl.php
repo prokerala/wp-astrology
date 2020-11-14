@@ -40,9 +40,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<?php echo $result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</div>
 		<?php if ( 'advanced' === $result_type ) : ?>
-			<h3 class="text-black">The Detailed sade sati report is as follows</h3>
-			<table class="table table-bordered mb-5 table-hover">
-				<tr class="bg-secondary text-white">
+			<h3>The Detailed sade sati report is as follows</h3>
+			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+				<tr class="pk-astrology-bg-secondary">
 					<th>Sade Sati Phase</th>
 					<th>Start Time</th>
 					<th>End Time</th>

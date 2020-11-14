@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="pk-astrology-row">
 	<?php foreach ( $result as $type => $choghadiya ) : ?>
 		<div class="pk-astrology-col-12">
-			<table class="pk-astrology-table pk-astrology-table-bordered-td">
+			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr class="pk-astrology-bg-secondary">
 					<th colspan="4" class="pk-astrology-text-center"><?php echo $type ? 'Day' : 'Night'; ?> Choghadiya</th>
 				</tr>

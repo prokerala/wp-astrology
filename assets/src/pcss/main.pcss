@@ -4,31 +4,67 @@ body {
     background-color: $bg;
 }
 .pk-astrology-form{
-	padding: 2rem;
-    background-color: #fff;
+	padding: 1.5em;
+    background-color: inherit;
     border-radius: 15px;
     box-shadow: 0 0px 30px rgba(182, 182, 183, .8);
+    max-width: 780px;
+    margin: 0.5rem auto;
+}
+.pk-astrology-form legend.pk-astrology-form-label{
+	font-weight: 700;
 }
 .pk-astrology-form-control {
-	background: #fff;
     border-radius: 0;
-    border-color: #dcd7ca;
     box-shadow: none;
     display: block;
     margin: 0;
     max-width: 100%;
-    padding: 1.5rem 1.8rem;
     width: 100%;
-    font-size: 1.6rem;
+}
+.pk-astrology-form-check-inline {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 0;
+    margin-right: 0.75em;
+    vertical-align: top;
+}
+.pk-astrology-form-check-inline .pk-astrology-form-check-input {
+    position: static;
+    margin-top: 0;
+    margin-right: 0.3125em;
+    margin-left: 0;
+}
+.pk-astrology-form-check-label {
+    margin-bottom: 0;
+}
+.pk-astrology-form-group {
+	margin-bottom: 0.5em;
+	padding: 0.5em;
+}
+.pk-astrology-form-label{
+	display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.pk-astrology-btn {
+    background-color: #913718;
+    color: #fff;
+    padding: 1em;
+    font-size: 1em;
+    border-radius: 0;
 }
 .pk-astrology-btn:hover {
 	text-decoration: none;
 }
 .pk-astrology-pad {
-	padding:1 rem;
+	padding:1em;
 }
 .pk-astrology-pad-small{
-	padding:0.8rem;
+	padding:0.8em;
+}
+.pk-astrology-pad-xsmall{
+	padding:0.5em;
 }
 .pk-astrology-m-auto {
 	margin:auto;
@@ -47,23 +83,19 @@ body {
 }
 .pk-astrology-panchang-details{
 	border: 1px solid #a0a5aa;
-    padding: 1rem;
+    padding: 1em;
 }
 .pk-astrology-block {
 	display:block;
 }
-.pk-astrology-table td {
-	padding: 0.75rem;
+.pk-astrology-table {
+	border-collapse:collapse;
+	width:100%;
 }
-.pk-astrology-table-bordered {
-    border: 1px solid #6c757d;
-}
-.pk-astrology-table-bordered-tr tr {
-    border: 1px solid #6c757d;
-}
-.pk-astrology-table-bordered-td td,
-.pk-astrology-table-bordered-td th{
-    border: 1px solid #6c757d;
+.pk-astrology-table td,
+.pk-astrology-table th {
+	padding: 0.75em;
+	border: 1px solid #d3d3d3;
 }
 .pk-astrology-text-center {
 	text-align: center;
@@ -79,10 +111,10 @@ body {
     border:none;
     color:#fff;
 }
-.pk-astrology-table-bordered-td .pk-astrology-bg-secondary td,
-.pk-astrology-table-bordered-td .pk-astrology-bg-secondary th
+.pk-astrology-table .pk-astrology-bg-secondary td,
+.pk-astrology-table .pk-astrology-bg-secondary th
 {
-	border:1px solid #d3d3d3;
+	border-color:#d3d3d3;
 }
 .pk-astrology-alert-danger {
     color: #721c24;
@@ -91,12 +123,10 @@ body {
 }
 .pk-astrology-table-danger {
 	background-color: #f8d7da;
+	color: #721c24;
 }
 .pk-astrology-text-danger {
 	color: #721c24;
-}
-.pk-astrology-table-danger {
-	background-color: #f5c6cb;
 }
 .pk-astrology-alert-success {
     color: #155724;
@@ -128,47 +158,20 @@ body {
 }
 .pk-astrology-alert {
     position: relative;
-    padding: .75rem 1.25rem;
-    margin-bottom: 1rem;
+    padding: .75em 1.25em;
+    margin-bottom: 1em;
+    margin-top: 1em;
     border: 1px solid transparent;
-    border-radius: .25rem;
+    border-radius: .25em;
 }
-.pk-astrology-form-check-inline {
-    display: inline-flex;
-    align-items: center;
-    padding-left: 0;
-    margin-right: 0.75rem;
-}
-.pk-astrology-form-check-inline .pk-astrology-form-check-input {
-    position: static;
-    margin-top: 0;
-    margin-right: 0.3125rem;
-    margin-left: 0;
-}
-.pk-astrology-form-check-label {
-    margin-bottom: 0;
-}
-
 @media (max-width: 576px) {
 	.pk-astrology-table-responsive-sm {
     	display: block;
     	width: 100%;
     	overflow-x: auto;
-    	-webkit-overflow-scrolling: touch;
 	}
 }
 
-.pk-astrology-text-right {
-	text-align:right;
-}
-.pk-astrology-form-group {
-	margin-bottom: 1rem;
-}
-.pk-astrology-form-label {
-	padding-top: 0.8rem;
-	padding-bottom: 0.8rem;
-	margin-bottom: 0;
-}
 .pk-astrology-row {
     display: flex;
     flex-wrap: wrap;
@@ -193,12 +196,6 @@ body {
   .pk-astrology-col-sm-10 {width: 83.33%; flex: 0 0 83.33%;}
   .pk-astrology-col-sm-11 {width: 91.66%; flex: 0 0 91.66%;}
   .pk-astrology-col-sm-12 {width: 100%; flex: 0 0 100%;}
-
-	.pk-astrology-dasha-periods table {
-    	margin: .5%;
-    	max-width: 49%;
-    	font-size: 1.5rem;
-	}
 }
 
 @media only screen and (min-width: 768px) {
@@ -217,3 +214,11 @@ body {
   .pk-astrology-col-md-12 {width: 100%; flex: 0 0 100%;}
 
 }
+
+/* color codes for dark theme */
+
+.pk-astrology-theme-dark .pk-astrology-bg-secondary {
+	background-color: #eee;
+    color: #3c3b3b;
+}
+

@@ -45,11 +45,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 <form class="pk-astrology-form" method="POST">
 
 	<div class="pk-astrology-row">
-		<div class="pk-astrology-col-12 ">
+		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 			<legend class="pk-astrology-form-label">Enter Girl's Details</legend>
-			<div class="pk-astrology-row">
-			<div class="pk-astrology-form-group pk-astrology-row  pk-astrology-col-md-6">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-5 pk-astrology-form-label">Girl Nakshatra</label>
+			<div class="pk-astrology-form-group pk-astrology-row">
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
@@ -58,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</select>
 				</div>
 			</div>
-			<div class="pk-astrology-form-group pk-astrology-row pk-astrology-col-md-6">
+			<div class="pk-astrology-form-group pk-astrology-row">
 				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra_pada" class="pk-astrology-form-control">
@@ -68,13 +67,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</select>
 				</div>
 			</div>
-			</div>
 		</div>
-		<div class="pk-astrology-col-12">
+		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 			<legend class="pk-astrology-form-label">Enter Boy's Details</legend>
-			<div class="pk-astrology-row">
-			<div class="pk-astrology-form-group pk-astrology-row pk-astrology-col-md-6">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-5 pk-astrology-form-label">Boy Nakshatra</label>
+			<div class="pk-astrology-form-group pk-astrology-row">
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Boy Nakshatra</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
@@ -83,8 +80,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 					</select>
 				</div>
 			</div>
-			<div class="pk-astrology-form-group pk-astrology-row pk-astrology-col-md-6">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Boy Nakshatra Pada</label>
+			<div class="pk-astrology-form-group pk-astrology-row">
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -92,7 +89,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<?php endfor; ?>
 					</select>
 				</div>
-			</div>
 			</div>
 		</div>
 	</div>

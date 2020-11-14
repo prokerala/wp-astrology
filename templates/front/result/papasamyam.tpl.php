@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div>
 	<?php if ( ! empty( $result ) ) : ?>
 		<h2 class="pk-astrology-text-center">Papasamyam Details</h2>
-		<table class="pk-astrology-table pk-astrology-table-bordered-td pk-astrology-table-responsive-sm">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead>
 			<tr class="pk-astrology-bg-secondary"><th rowspan="2">Papa Points</th><th colspan="2">From Ascendant</th><th colspan="2">From Moon</th><th colspan="2">From Venus
 				</th></tr>

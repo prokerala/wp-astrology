@@ -48,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 			<legend class="pk-astrology-form-label">Enter Girl's Details</legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Girl Nakshatra</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Girl Nakshatra Pada</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -71,7 +71,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 			<legend class="pk-astrology-form-label">Enter Boy's Details</legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Boy Nakshatra</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Boy Nakshatra</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
@@ -81,7 +81,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Girl Nakshatra Pada</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>

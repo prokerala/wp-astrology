@@ -37,7 +37,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div>
 	<?php if ( ! empty( $result ) ) : ?>
 		<h3>Birth Details</h3>
-		<table class="pk-astrology-table">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<tr class="pk-astrology-bg-secondary">
 				<th>#</th>
 				<th>Details of Girl</th>

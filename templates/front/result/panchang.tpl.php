@@ -61,7 +61,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<?php if ( 'advanced' === $result_type ) : ?>
 				<hr>
-				<table class="pk-astrology-table pk-astrology-table-bordered-td">
+				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 					<tr class="pk-astrology-alert-success pk-astrology-text-center"><td colspan="2">Auspicious Timing</td></tr>
 					<?php foreach ( $result['auspicious_period'] as $muhurat_name => $muhurat_details ) : ?>
 						<tr>

@@ -43,7 +43,7 @@ $alert_class = [
 <div>
 	<?php if ( ! empty( $result ) ) : ?>
 		<h3>Birth Details</h3>
-		<table class="pk-astrology-table">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<tr class="pk-astrology-bg-secondary pk-astrology-text-center">
 				<th>#</th>
 				<th>Details of Girl</th>
@@ -83,7 +83,7 @@ $alert_class = [
 			<?php echo $result['message']['description'];  // phpcs:ignore WordPress.Security.EscapeOutput ?> (<?php echo $result['totalPoints'];  // phpcs:ignore WordPress.Security.EscapeOutput ?> / 10)
 		</div>
 		<h3 class="pk-astrology-text-center">10 Poruthams and Your Compatibility</h3>
-		<table class="pk-astrology-table">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<tr class="pk-astrology-bg-secondary pk-astrology-text-center">
 				<th>#</th>
 				<th>Porutham</th>

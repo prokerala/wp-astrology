@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php if ( ! empty( $result ) ) : ?>
 
 			<?php $nakshatra_details = $result['nakshatra_details']; ?>
-			<table class="pk-astrology-table">
+			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><th colspan=2">Nakshatra Details</th></tr>
 				<?php foreach ( $result['nakshatra_details'] as $key => $kundli ) : ?>
 					<?php $item = str_replace( '_', ' ', $key ); ?>
@@ -91,7 +91,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<h3>Anthardashas in <?php echo $mahadashas['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?> Mahadasha</h3>
 					<div class="pk-astrology-row">
 					<?php foreach ( $mahadashas['antardasha'] as $anthardashas ) : ?>
-						<table class="pk-astrology-table pk-astrology-col-12 pk-astrology-col-md-6">
+						<table class="pk-astrology-table pk-astrology-col-12 pk-astrology-table-responsive-sm">
 							<tr><th>AD</th><th>PD</th><th>Starts</th><th>Ends</th></tr>
 						<?php foreach ( $anthardashas['pratyantardasha'] as $paryantradashas ) : ?>
 						<tr>

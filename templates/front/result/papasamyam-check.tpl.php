@@ -61,7 +61,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<tr><th colspan="7" class="pk-astrology-text-center">Total Papa Points : <?php echo $result['girlPapasamyam']['total_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
 		</table>
 		<h3>Boy Papa Points</h3>
-		<table class="pk-astrology-table pk-astrology-table-bordered-td pk-astrology-table-responsive-sm">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead class="pk-astrology-bg-secondary">
 			<tr><th rowspan="2">Boy Papa Points</th><th colspan="2">From Ascendant</th>
 				<th colspan="2">From Moon</th><th colspan="2">From Venus</th>
