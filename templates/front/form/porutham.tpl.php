@@ -74,4 +74,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>
-<?php echo $options['attribution'] ? '<label class="pk-astrology-text-right"><em>Powered by Prokerala</em></label>' : ''; ?>
+<?php echo $options['attribution'] ? '<div class="pk-astrology-text-right"><em>Powered by <a href="https://www.prokerala.com/">Prokerala.com</a></em></div>' : ''; ?>
