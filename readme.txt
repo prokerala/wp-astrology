@@ -4,7 +4,7 @@ Tags: astrology, prokerala
 Requires at least: 5.5
 Tested up to: 5.5
 Stable tag: 1.0.0
-Requires PHP: 7.1.3
+Requires PHP: 7.2.0
 License: GPLV3
 
 Turn your Wordpress blog into a full astrology site, powered by Prokerala's astrology API.
@@ -16,6 +16,29 @@ Turn your Wordpress blog into a full astrology site, powered by Prokerala's astr
 = Features =
 * Free
 * Easy to setup
+
+== Available Services ==
+
+* Daily Panchang Calculators
+ * Panchang
+ * Auspicious Period
+ * Inauspicious Period
+ * Choghadiya
+* Horoscope Calculators
+ * Birth Details
+ * Charts
+ * Kundli
+ * Mangal Dosha
+ * Kaalsarp Dosha
+ * Papasamyam
+ * Planet Position
+ * Sade-Sati
+* Marriage Matching Calculators
+ * Kundli Matching
+ * Nakshatra Porutham
+ * Thirumana Porutham
+ * Porutham
+ * Papasamyam Check
 
 == Installation ==
 
