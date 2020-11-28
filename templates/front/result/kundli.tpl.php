@@ -93,19 +93,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php foreach ( $mahadashas['antardasha'] as $anthardashas ) : ?>
 						<table class="pk-astrology-table pk-astrology-col-12 pk-astrology-table-responsive-sm">
 							<tr><th>AD</th><th>PD</th><th>Starts</th><th>Ends</th></tr>
-						<?php foreach ( $anthardashas['pratyantardasha'] as $paryantradashas ) : ?>
+						<?php foreach ( $anthardashas['pratyantardasha'] as $pratyantardashas ) : ?>
 						<tr>
 							<td><?php echo $anthardashas['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-							<td><?php echo $paryantradashas['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-							<td><?php echo $paryantradashas['start']->format( 'd-m-Y' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
-							<td><?php echo $paryantradashas['end']->format( 'd-m-Y' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+							<td><?php echo $pratyantardashas['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+							<td><?php echo $pratyantardashas['start']->format( 'd-m-Y' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+							<td><?php echo $pratyantardashas['end']->format( 'd-m-Y' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 						</tr>
 						<?php endforeach; ?>
 						</table>
 					<?php endforeach; ?>
 					</div>
 				<?php endforeach; ?>
-				<p class="pk-astrology-text-small pk-astrology-text-right pk-astrology-text-danger"><span class="pk-astrology-text-danger">**</span> AD stands for Antardasha &  PD stands for Paryantra dasha</p>
+				<p class="pk-astrology-text-small pk-astrology-text-right pk-astrology-text-danger"><span class="pk-astrology-text-danger">**</span> AD stands for Antardasha &  PD stands for Pratyantar dasha</p>
 				</div>
 				<?php
 			endif;

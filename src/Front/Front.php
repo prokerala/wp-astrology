@@ -34,6 +34,7 @@ use Prokerala\Common\Api\Exception\QuotaExceededException;
 use Prokerala\Common\Api\Exception\RateLimitExceededException;
 use Prokerala\Common\Api\Exception\ValidationException;
 use Prokerala\WP\Astrology\Configuration;
+use Prokerala\WP\Astrology\Front\Controller\ReportController;
 use Prokerala\WP\Astrology\Plugin;
 
 /**
@@ -50,6 +51,14 @@ final class Front {
 	 * @var Configuration
 	 */
 	private $config;
+	/**
+	 * Report controller for rendering form / result.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @var ReportController
+	 */
+	private $report_controller;
 
 	/**
 	 * Front constructor.
@@ -57,7 +66,8 @@ final class Front {
 	 * @param Configuration $config Configuration object.
 	 */
 	public function __construct( Configuration $config ) {
-		$this->config = $config;
+		$this->config            = $config;
+		$this->report_controller = new ReportController( $config );
 	}
 
 	/**
@@ -96,31 +106,7 @@ final class Front {
 	 * @return string
 	 */
 	public function render_form( $atts = [] ) {
-		static $args = [
-			'report' => '',
-		];
-
-		$args = shortcode_atts( $args, $atts );
-
-		try {
-			$controller = $this->get_controller( $args['report'] );
-
-			return $controller->render_form();
-		} catch ( \RuntimeException $e ) {
-			return '<blockquote>Invalid report type</blockquote>';
-		}
-	}
-
-	/**
-	 * Check whether current request is via POST.
-	 *
-	 * @return bool
-	 */
-	private function is_post_request() {
-		return (
-			! isset( $_SERVER['REQUEST_METHOD'] )
-			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		);
+		return $this->report_controller->render_form( $atts );
 	}
 
 	/**
@@ -131,38 +117,12 @@ final class Front {
 	 * @param array $atts Short code attributes.
 	 * @return string
 	 */
-	public function render_result( $atts = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
-		static $args = [
-			'report' => '',
-		];
-
-		try {
-			if ( ! $this->is_post_request() ) {
-				return '';
-			}
-
-			$args = shortcode_atts( $args, $atts );
-
-			$controller = $this->get_controller( $args['report'] );
-
-			return $controller->process();
-		} catch ( ValidationException $e ) {
-			$errors     = $e->getValidationErrors();
-			$error_code = '<ul>';
-			foreach ( $errors as $error ) {
-				$error_code .= '<li>' . $error->detail . '</li>';
-			}
-			$error_code .= '</ul>';
-			return $error_code;
-		} catch ( QuotaExceededException $e ) {
-			return '<blockquote><p>You have exceeded your quota allocation</p></blockquote>';
-		} catch ( RateLimitExceededException $e ) {
-			return 'Rate limit exceeded. Throttle your requests.';
-		} catch ( AuthenticationException $e ) {
-			return '<blockquote><p>' . wp_kses( $e->getMessage(), [] ) . '</p></blockquote>';
-		} catch ( \Exception $e ) {
-			return '<blockquote><p>Request failed with error <em>' . wp_kses( $e->getMessage(), [] ) . '</em></p></blockquote>';
+	public function render_result( $atts = [] ) {
+		if ( ! $this->is_post_request() ) {
+			return '';
 		}
+
+		return $this->report_controller->render_result( $atts );
 	}
 
 	/**
@@ -177,13 +137,7 @@ final class Front {
 			return;
 		}
 
-		wp_enqueue_style(
-			'pk-astrology',
-			PK_ASTROLOGY_PLUGIN_URL . 'assets/dist/css/main.css',
-			[],
-			Plugin::VERSION,
-			'all'
-		);
+		$this->report_controller->enqueue_styles();
 	}
 
 	/**
@@ -198,52 +152,19 @@ final class Front {
 			return;
 		}
 
-		$options = $this->config->get_options();
-
-		wp_enqueue_script(
-			'pk-astrology-location-widget',
-			'https://client-api.prokerala.com/static/js/location.min.js',
-			[],
-			Plugin::VERSION,
-			true
-		);
-		wp_enqueue_script(
-			'pk-astrology',
-			PK_ASTROLOGY_PLUGIN_URL . 'assets/dist/js/main.js',
-			[ 'pk-astrology-location-widget' ],
-			Plugin::VERSION,
-			true
-		);
-		wp_add_inline_script(
-			'pk-astrology',
-			'window.CLIENT_ID = ' . wp_json_encode( $options['client_id'] ),
-			'before'
-		);
+		$this->report_controller->enqueue_scripts();
 	}
 
 	/**
-	 * Get controller from report name.
+	 * Check whether current request is via POST.
 	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $report Report type.
-	 * @return ReportControllerInterface
-	 * @throws \RuntimeException Throws on invalid report type.
+	 * @return bool
 	 */
-	private function get_controller( $report ) {
-		static $controller = null;
-
-		if ( is_null( $controller ) ) {
-			$report_controller = ucwords( $report ) . 'Controller';
-			$controller_class  = "Prokerala\\WP\\Astrology\\Front\\Report\\{$report_controller}";
-
-			if ( ! class_exists( $controller_class ) ) {
-				throw new \RuntimeException( 'Invalid report type' );
-			}
-			$controller = new $controller_class( $this->config->get_options() );
-		}
-
-		return $controller;
+	private function is_post_request() {
+		return (
+			! isset( $_SERVER['REQUEST_METHOD'] )
+			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		);
 	}
 
 	/**

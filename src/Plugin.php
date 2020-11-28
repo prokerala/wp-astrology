@@ -93,6 +93,8 @@ final class Plugin {
 		$config     = new Configuration();
 		$controller = is_admin() ? new Admin( $config ) : new Front( $config );
 		$controller->register();
+		$block = new Block( $config );
+		$block->register();
 
 		do_action( 'pk_astrology_init' );
 	}
