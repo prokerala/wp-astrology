@@ -39,7 +39,7 @@ use Prokerala\Api\Astrology\Profile;
  *
  * @since   1.0.0
  */
-class PapasamaymCheckController implements ReportControllerInterface {
+class PapasamyamCheckController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
