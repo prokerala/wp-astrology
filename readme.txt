@@ -5,7 +5,7 @@ Requires at least: 5.5
 Tested up to: 5.5
 Stable tag: 1.0.0
 Requires PHP: 7.2.0
-License: GPLV3
+License: GPLV2+
 
 Turn your Wordpress blog into a full astrology site, powered by Prokerala's astrology API.
 
