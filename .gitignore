@@ -15,6 +15,7 @@ nbproject/
 
 # Miscellaneous
 tmp/
+release/
 *.tmp
 *.bak
 *.log
