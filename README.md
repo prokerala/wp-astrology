@@ -42,3 +42,10 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
 Prokerala.com is an astrology service provider with over 10 years of web presence. Our experienced team of astrologers and programmers have succeeded in creating an absolutely reliable astrology platform which is today trusted by millions of dedicated users including professional astrologers and ardent astrology enthusiasts.
 
 Prokerala Astrology API is in pursuance of our efforts to make astrology services and information accessable for everyone. Our simple API empowers you to get started with your own astrology services. You'll be up and running in a jiffy!
+
+
+### Acknowledgement
+
+The directory layout for this plugin was inspired by [WPPlugin](https://github.com/wppunk/WPPlugin) by [wppunk](https://github.com/wppunk).
+
+The composer dependency management code is based on [Google Site kit](https://github.com/google/site-kit-wp).
