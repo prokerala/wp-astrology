@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="pk-astrology-form-group pk-astrology-row">
 	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Location:</label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
-		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required>
+		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required data-location_input_prefix="loc">
 	</div>
 </div>
 

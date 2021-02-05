@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Place of birth:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='g-location'>
-					<input type='text' id="g-autocomplete" name="girl_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" value="" required="required"/>
+					<input type='text' id="g-autocomplete" name="girl_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" value="" required="required" data-location_input_prefix="girl_loc"/>
 				</div>
 			</div>
 		</div>
@@ -72,14 +72,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-md-4 pk-astrology-col-form-label">Date Of Birth:</label>
 			<div class="pk-astrology-col-md-8">
-				<input type='datetime-local' name="boy_dob" class="pk-astrology-form-control"  required="required" value="<?php echo $boy_dob->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
+				<input type='datetime-local' name="boy_dob" class="pk-astrology-form-control"  required="required" value="<?php echo $boy_dob->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>" />
 			</div>
 		</div>
 		<div id="blocationField" class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Place of birth:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='b-location'>
-					<input type='text' id="b-coordinates" name="boy_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" required="required"/>
+					<input type='text' id="b-coordinates" name="boy_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" required="required" data-location_input_prefix="boy_loc"/>
 				</div>
 			</div>
 		</div>

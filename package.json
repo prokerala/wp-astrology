@@ -97,8 +97,9 @@
     "lint": "yarn run lint:js && yarn run lint:scss",
     "lint:fix": "yarn run lint:js:fix && yarn run lint:scss:fix",
     "release:checkout": "mkdir -p ./release && git checkout-index --prefix ./release/ -af && git --git-dir=.git --work-tree=./release/ clean -f -d -x",
+    "release:build": "composer install && yarn install && yarn run build",
     "release:zip": "rm -f ../plugin.zip && zip -r ../plugin.zip assets/dist dependencies src templates astrology.php LICENSE readme.txt uninstall.php",
-    "release": "yarn run release:checkout && cd release && composer install && yarn install && yarn run build && yarn run release:zip",
+    "release": "yarn run release:checkout && cd release && yarn run release:build && yarn run release:zip",
     "unit": "jest"
   }
 }

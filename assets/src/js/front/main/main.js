@@ -17,8 +17,8 @@ export class Main {
 
 	register( inputs ) {
 		[ ...inputs ].map( function( input ) {
+			const inputPrefix = input.dataset.location_input_prefix ? input.dataset.location_input_prefix : '';
 			new LocationSearch( input, function( data ) {
-				const inputPrefix = input.dataset.location_input_prefix ? input.dataset.location_input_prefix : '';
 				const hiddenDiv = document.getElementById( 'form-hidden-fields' );
 				const coordinates = document.createElement( 'input' );
 				coordinates.name = inputPrefix + 'coordinates';
@@ -30,7 +30,7 @@ export class Main {
 				timezone.value = data.timezone;
 				hiddenDiv.appendChild( coordinates );
 				hiddenDiv.appendChild( timezone );
-			}, {clientId: CLIENT_ID});
+			}, {clientId: CLIENT_ID, persistKey: inputPrefix});
 		});
 	}
 }
