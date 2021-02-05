@@ -31,6 +31,7 @@ namespace Prokerala\WP\Astrology\Front\Controller;
 
 use Prokerala\Api\Astrology\Location;
 use Prokerala\Astrology\Vendor\Buzz\Browser;
+use Prokerala\Astrology\Vendor\Buzz\Client\Curl;
 use Prokerala\Astrology\Vendor\Buzz\Client\FileGetContents;
 use Prokerala\Astrology\Vendor\Slim\Psr7\Factory\RequestFactory;
 use Prokerala\Astrology\Vendor\Slim\Psr7\Factory\ResponseFactory;
@@ -180,7 +181,7 @@ trait ReportControllerTrait {
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();
 
-		$client      = new FileGetContents( $response_factory );
+		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory ) : new FileGetContents( $response_factory );
 		$http_client = new Browser( $client, $request_factory );
 
 		$client_id     = $this->options['client_id'];
