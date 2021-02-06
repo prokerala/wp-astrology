@@ -56,13 +56,14 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 	 *
 	 * @throws \Exception On render failure.
 	 *
+	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form() {
+	public function render_form( $options = [] ) {
 		return $this->render(
 			'form/kaal-sarp-dosha',
 			[
-				'options'  => $this->get_options(),
+				'options'  => $options + $this->get_options(),
 				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
 			]
 		);

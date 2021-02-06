@@ -41,7 +41,8 @@ interface ReportControllerInterface {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return void
+	 * @param array $options Short code attributes.
+	 * @return string
 	 */
-	public function render_form();
+	public function render_form( $options = [] );
 }

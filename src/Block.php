@@ -100,8 +100,11 @@ class Block {
 				'editor_script'   => 'astrology-block',
 				'render_callback' => [ $this, 'render_block' ],
 				'attributes'      => [
-					'report' => [
+					'report'     => [
 						'default' => 'Chart',
+					],
+					'resultType' => [
+						'default' => '',
 					],
 				],
 			]
@@ -122,7 +125,12 @@ class Block {
 			$result = $this->report_controller->render_result( $attributes );
 		}
 
-		return $result . $this->report_controller->render_form( $attributes );
+		return $result . $this->report_controller->render_form(
+			[
+				'report'      => isset( $attributes['report'] ) ? $attributes['report'] : '',
+				'result_type' => isset( $attributes['resultType'] ) ? $attributes['resultType'] : '',
+			]
+		);
 	}
 
 	/**

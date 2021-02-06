@@ -1,6 +1,6 @@
 <?php
 /**
- * SadeSati input form template.
+ * Panchang input form template.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -42,14 +42,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST">
 
-	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'report_type' => $options['report_type'] ] ); ?>
-
-	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
-		<input type="hidden" name="submit" value="1">
+<?php if ( $options['result_type'] ) : ?>
+	<input type="hidden" name="result_type" value="<?php echo $options['result_type']; ?>" >
+<?php else : ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Result Type: </label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+			<div class="pk-astrology-form-check-inline">
+				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type1" value="basic" <?php echo 'basic' === $result_type ? 'checked' : ''; ?>>
+				<label class="pk-astrology-form-check-label" for="result_type1">Basic</label>
+			</div>
+			<div class="pk-astrology-form-check-inline">
+				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type2" value="advanced" <?php echo 'advanced' === $result_type ? 'checked' : ''; ?>>
+				<label class="pk-astrology-form-check-label" for="result_type2">Advanced</label>
+			</div>
+		</div>
 	</div>
-</form>
-<?php echo $options['attribution'] ? '<div class="pk-astrology-text-right"><em>Powered by <a href="https://www.prokerala.com/">Prokerala.com</a></em></div>' : ''; ?>
+<?php endif; ?>

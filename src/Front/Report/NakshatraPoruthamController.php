@@ -91,13 +91,14 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 	 *
 	 * @throws \Exception On render failure.
 	 *
+	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form() {
+	public function render_form( $options = [] ) {
 		return $this->render(
 			'form/nakshatra-porutham',
 			[
-				'options'        => $this->get_options(),
+				'options'        => $options + $this->get_options(),
 				'nakshatra_list' => self::NAKSHATA_LIST,
 				'result_type'    => 'basic',
 			]

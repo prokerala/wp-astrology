@@ -119,7 +119,8 @@ class ReportController {
 	 */
 	public function render_form( $atts = [] ) {
 		static $args = [
-			'report' => '',
+			'report'      => '',
+			'result_type' => '',
 		];
 
 		$args = shortcode_atts( $args, $atts );
@@ -127,9 +128,13 @@ class ReportController {
 		try {
 			$controller = $this->get_controller( $args['report'] );
 
-			return $controller->render_form();
+			return $controller->render_form(
+				[
+					'result_type' => isset( $args['result_type'] ) ? $args['result_type'] : '',
+				]
+			);
 		} catch ( \RuntimeException $e ) {
-			return '<blockquote>Invalid report type</blockquote>';
+			return "<blockquote>{$e->getMessage()}</blockquote>";
 		}
 	}
 
