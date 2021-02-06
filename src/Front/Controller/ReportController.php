@@ -119,8 +119,9 @@ class ReportController {
 	 */
 	public function render_form( $atts = [] ) {
 		static $args = [
-			'report'      => '',
-			'result_type' => '',
+			'report'         => '',
+			'result_type'    => '',
+			'display_charts' => '',
 		];
 
 		$args = shortcode_atts( $args, $atts );
@@ -148,7 +149,8 @@ class ReportController {
 	 */
 	public function render_result( $atts = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		static $args = [
-			'report' => '',
+			'report'         => '',
+			'display_charts' => '',
 		];
 
 		try {
@@ -156,7 +158,7 @@ class ReportController {
 
 			$controller = $this->get_controller( $args['report'] );
 
-			return $controller->process();
+			return $controller->process( $args );
 		} catch ( ValidationException $e ) {
 			$errors     = $e->getValidationErrors();
 			$error_code = '<ul>';

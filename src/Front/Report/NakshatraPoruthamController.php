@@ -110,9 +110,10 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 	 *
 	 * @throws \Exception On render failure.
 	 *
+	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process() {
+	public function process( $options = [] ) {
 		$client = $this->get_api_client();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing

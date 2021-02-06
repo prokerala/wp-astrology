@@ -126,7 +126,7 @@ trait ReportControllerTrait {
 	 *
 	 * @return int
 	 */
-	private function get_input_ayanamsa() {
+	protected function get_input_ayanamsa() {
 		return isset( $_POST['ayanamsa'] ) ? (int) $_POST['ayanamsa'] : '';
 	}
 
@@ -138,7 +138,7 @@ trait ReportControllerTrait {
 	 * @param string $prefix Input field prefix.
 	 * @return \DateTimeZone
 	 */
-	private function get_timezone( $prefix = '' ) {
+	protected function get_timezone( $prefix = '' ) {
 		if ( ! isset( $_POST[ "{$prefix}timezone" ] ) ) {
 			return $this->get_default_timezone();
 		}
@@ -155,7 +155,7 @@ trait ReportControllerTrait {
 	 * @param string             $prefix Input field prefix.
 	 * @return Location
 	 */
-	private function get_location( $tz = null, $prefix = '' ) {
+	protected function get_location( $tz = null, $prefix = '' ) {
 		$coordinates = '0,0';
 		if ( isset( $_POST[ "{$prefix}coordinates" ] ) ) {
 			$coordinates = sanitize_text_field( wp_unslash( $_POST[ "{$prefix}coordinates" ] ) );
@@ -176,7 +176,7 @@ trait ReportControllerTrait {
 	 *
 	 * @return Client
 	 */
-	private function get_api_client() {
+	protected function get_api_client() {
 		$request_factory  = new RequestFactory();
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();

@@ -45,4 +45,15 @@ interface ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] );
+
+
+	/**
+	 * Process and render result.
+	 *
+	 * @since 1.0.1
+	 *
+	 * @param array $options Short code attributes.
+	 * @return string
+	 */
+	public function process( $options = [] );
 }

@@ -29,7 +29,11 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use Prokerala\Api\Astrology\Location;
+use Prokerala\Api\Astrology\Result\Horoscope\AdvancedKundli;
+use Prokerala\Api\Astrology\Service\Chart;
 use Prokerala\Api\Astrology\Service\Kundli;
+use Prokerala\Common\Api\Client;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
@@ -71,23 +75,18 @@ class KundliController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Process result and render result.
+	 * Process result
 	 *
-	 * @throws \Exception On render failure.
+	 * @since 1.0.1
+	 * @param Client             $client API Client.
+	 * @param Location           $location User location.
+	 * @param \DateTimeInterface $datetime Datetime.
+	 * @param bool               $advanced Whether to return detailed report.
+	 * @throws \Exception On API query failure.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function process() {
-		$tz       = $this->get_timezone();
-		$client   = $this->get_api_client();
-		$location = $this->get_location( $tz );
-
-		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime    = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
-		$result_type = isset( $_POST['result_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['result_type'] ) ) : '';
-		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$advanced = 'advanced' === $result_type;
+	protected function get_kundli_details( $client, $location, $datetime, $advanced ) {
 
 		$method = new Kundli( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
@@ -175,12 +174,67 @@ class KundliController implements ReportControllerInterface {
 			$kundli_result['yoga_details'] = $yoga_detail_result;
 		}
 
+		return $kundli_result;
+	}
+
+	/**
+	 * Process result
+	 *
+	 * @since 1.0.1
+	 * @param Client             $client API Client.
+	 * @param Location           $location User location.
+	 * @param \DateTimeInterface $datetime Datetime.
+	 * @param string             $chart_type Chart type.
+	 * @param string             $chart_style Chart style.
+	 * @throws \Exception On API query failure.
+	 *
+	 * @return string
+	 */
+	protected function get_chart( $client, $location, $datetime, $chart_type, $chart_style ) {
+
+		$method = new Chart( $client );
+		$method->setAyanamsa( $this->get_input_ayanamsa() );
+
+		return $method->process( $location, $datetime, $chart_type, $chart_style );
+	}
+
+	/**
+	 * Process result and render result.
+	 *
+	 * @throws \Exception On render failure.
+	 *
+	 * @param array $options Render options.
+	 * @return string
+	 */
+	public function process( $options = [] ) {
+
+		$tz       = $this->get_timezone();
+		$client   = $this->get_api_client();
+		$location = $this->get_location( $tz );
+
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$datetime    = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$result_type = isset( $_POST['result_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['result_type'] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$advanced = 'advanced' === $result_type;
+
+		$kundli_result = $this->get_kundli_details( $client, $location, $datetime, $advanced );
+
+		if ( $options['display_charts'] ) {
+			$chart_style = isset( $options['chart_style'] ) ? $options['chart_style'] : 'north-indian';
+
+			$kundli_result['charts'] = [
+				'lagna'   => $this->get_chart( $client, $location, $datetime, 'lagna', $chart_style ),
+				'navamsa' => $this->get_chart( $client, $location, $datetime, 'navamsa', $chart_style ),
+			];
+		}
+
 		return $this->render(
 			'result/kundli',
 			[
-				'result'      => $kundli_result,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
+				'result'  => $kundli_result,
+				'options' => $this->get_options(),
 			]
 		);
 	}
@@ -188,7 +242,7 @@ class KundliController implements ReportControllerInterface {
 	/**
 	 * Advanced result.
 	 *
-	 * @param array<string,mixed> $result kundlimatching result.
+	 * @param AdvancedKundli $result Kundli result.
 	 * @return array
 	 */
 	public function getAdvancedInfo( $result ) {

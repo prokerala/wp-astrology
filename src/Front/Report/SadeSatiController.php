@@ -75,9 +75,10 @@ class SadeSatiController implements ReportControllerInterface {
 	 *
 	 * @throws \Exception On render failure.
 	 *
+	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process() {
+	public function process( $options = [] ) {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );

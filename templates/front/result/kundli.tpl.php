@@ -37,6 +37,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 		<?php if ( ! empty( $result ) ) : ?>
 
+			<?php if ( isset( $result['charts'] ) ) : ?>
+				<h2>Charts</h2>
+				<div class="pk-astrology-kundli-charts-wrapper">
+					<?php
+					foreach ( [
+						'lagna'   => 'Lagna',
+						'navamsa' => 'Navamsa',
+					] as $key => $value ) :
+						?>
+						<div class="pk-astrology-kundli-chart">
+							<h3><?php echo $value; // phpcs:ignore WordPress.Security.EscapeOutput ?> Chart</h3>
+							<?php echo $result['charts'][ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 			<?php $nakshatra_details = $result['nakshatra_details']; ?>
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><th colspan=2">Nakshatra Details</th></tr>
@@ -64,7 +80,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput
 				?>
 				</p>
-				<?php if ( 'advanced' === $result_type ) : ?>
+				<?php if ( isset( $data['yogaList'] ) ) : ?>
 					<?php foreach ( $data['yogaList'] as $yogas ) : ?>
 						<?php if ( $yogas['hasYoga'] ) : ?>
 						<b><?php echo $yogas['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></b>
@@ -76,7 +92,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<div class="pk-astrology-alert pk-astrology-text-center  <?php echo $result['mangal_dosha']['has_dosha'] ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success'; ?>" >
 				<?php echo $result['mangal_dosha']['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 			</div>
-			<?php if ( 'advanced' === $result_type ) : ?>
+			<?php if ( isset( $result['dasha_periods'] ) ) : ?>
 				<?php if ( $result['mangal_dosha']['has_exception'] ) : ?>
 					<h3>Exceptions</h3>
 					<ul>

@@ -77,9 +77,10 @@ class KundliMatchingController implements ReportControllerInterface {
 	 *
 	 * @throws \Exception On render failure.
 	 *
+	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process() {
+	public function process( $options = [] ) {
 		$girl_tz       = $this->get_timezone( 'girl_' );
 		$boy_tz        = $this->get_timezone( 'boy_' );
 		$client        = $this->get_api_client();

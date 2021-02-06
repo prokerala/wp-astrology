@@ -357,3 +357,17 @@
 	background-color: #fff;
 }
 
+.pk-astrology-kundli-charts-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.pk-astrology-kundli-chart {
+	flex: 1 1 50%;
+	min-width: 300px;
+}
+
+.pk-astrology-kundli-chart svg {
+	height: auto;
+	max-width: 100%;
+}
