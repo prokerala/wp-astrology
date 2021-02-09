@@ -42,6 +42,7 @@ return [
 					'vendor/symfony/options-resolver',
 					'vendor/symfony/service-contracts',
 					'vendor/symfony/var-exporter',
+					'vendor/symfony/polyfill-php80',
 				]
 			)
 			->name( [ '*.php' ] ),
@@ -50,6 +51,7 @@ return [
 
 	'files-whitelist'            => [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
+		'vendor/symfony/polyfill-php80/bootstrap.php',
 	],
 
 	'patchers'                   => [],
