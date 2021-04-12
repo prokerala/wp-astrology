@@ -27,6 +27,44 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
  - Porutham
  - Papasamyam Check
 
+## Usage
+
+The reports can be enabled on you block using blocks or shortcodes.
+
+### Blocks
+
+The plugin adds a new block name **Astrology Reports** to the block editor.
+
+### Shortcode
+
+If you are unable to use the block editor, then you can also activate the plugin using the short code `astrology`.
+
+```
+[astrology report="REPORT_NAME"]
+```
+
+Where `REPORT_NAME` must be one of following
+
+- `AuspiciousPeriod`
+- `BirthDetails`
+- `Chart`
+- `Choghadiya`
+- `InauspiciousPeriod`
+- `KaalSarpDosha`
+- `KundliCharts`
+- `Kundli`
+- `KundliMatching`
+- `MangalDosha`
+- `NakshatraPorutham`
+- `Panchang`
+- `PapasamyamCheck`
+- `Papasamyam`
+- `PlanetPosition`
+- `Porutham`
+- `SadeSati`
+- `ThirumanaPorutham`
+
+
 ### Frequently Asked Questions
 
 - __Do I need an account to use this plugin?__
