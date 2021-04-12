@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST">
+<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST" <?php echo isset( $options['form_action'] ) ? " action=\"{$options['form_action']}\"" : ''; ?>>
 
 	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
 	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'report_type' => $options['report_type'] ] ); ?>

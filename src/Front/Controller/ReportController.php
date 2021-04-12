@@ -119,9 +119,10 @@ class ReportController {
 	 */
 	public function render_form( $atts = [] ) {
 		static $args = [
+			'display_charts' => '',
+			'form_action'    => null,
 			'report'         => '',
 			'result_type'    => '',
-			'display_charts' => '',
 		];
 
 		$args = shortcode_atts( $args, $atts );
@@ -132,6 +133,7 @@ class ReportController {
 			return $controller->render_form(
 				[
 					'result_type' => isset( $args['result_type'] ) ? $args['result_type'] : '',
+					'form_action' => isset( $args['form_action'] ) ? $args['form_action'] : '',
 				]
 			);
 		} catch ( \RuntimeException $e ) {
@@ -149,8 +151,8 @@ class ReportController {
 	 */
 	public function render_result( $atts = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		static $args = [
-			'report'         => '',
 			'display_charts' => '',
+			'report'         => '',
 		];
 
 		try {
