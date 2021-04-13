@@ -1,0 +1,32 @@
+# Directories
+/.wordpress-org
+/.git
+/.github
+/node_modules
+/vendor
+/assets/src
+/bin
+
+# Files
+.babelrc
+.distignore
+.editorconfig
+.eslintcache
+.eslintignore
+.eslintrc.js
+.gitignore
+.gitattributes
+.phpcs.xml
+.postcssrc.js
+.stylelintignore
+.stylelintrc
+.webpack.config.js
+CHANGELOG.md
+README.md
+SECURITY.md
+astrology.zip
+composer.json
+composer.lock
+package.json
+package-lock.json
+scoper.inc.php
