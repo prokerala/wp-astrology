@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST" <?php echo isset( $options['form_action'] ) ? " action=\"{$options['form_action']}\"" : ''; ?>>
 
 	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'report_type' => $options['report_type'] ] ); ?>
+	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Result</button>

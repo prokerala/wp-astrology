@@ -223,10 +223,12 @@ class Configuration {
 		return get_site_option(
 			'astrology_plugin_options',
 			[
+				'attribution'   => '1',
 				'ayanamsa'      => '1',
-				'timezone'      => date_default_timezone_get(),
 				'client_id'     => '',
 				'client_secret' => '',
+				'theme'         => '',
+				'timezone'      => date_default_timezone_get(),
 			]
 		);
 	}

@@ -177,6 +177,6 @@ final class Front {
 	private function is_shortcode_enabled() {
 		global $post;
 
-		return is_a( $post, 'WP_Post' ) || has_shortcode( $post->post_content, 'astrology' );
+		return is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'astrology' );
 	}
 }
