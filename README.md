@@ -7,25 +7,25 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
 ## Available Services
 
 - Daily Panchang Calculators
- - Panchang
- - Auspicious Period
- - Inauspicious Period
- - Choghadiya
+  - Panchang
+  - Auspicious Period
+  - Inauspicious Period
+  - Choghadiya
 - Horoscope Calculators
- - Birth Details
- - Charts
- - Kundli
- - Mangal Dosha
- - Kaalsarp Dosha
- - Papasamyam
- - Planet Position
- - Sade-Sati
+  - Birth Details
+  - Charts
+  - Kundli
+  - Mangal Dosha
+  - Kaalsarp Dosha
+  - Papasamyam
+  - Planet Position
+  - Sade-Sati
 - Marriage Matching Calculators
- - Kundli Matching
- - Nakshatra Porutham
- - Thirumana Porutham
- - Porutham
- - Papasamyam Check
+  - Kundli Matching
+  - Nakshatra Porutham
+  - Thirumana Porutham
+  - Porutham
+  - Papasamyam Check
 
 ## Usage
 
@@ -69,11 +69,11 @@ Where `REPORT_NAME` must be one of following
 
 - __Do I need an account to use this plugin?__
 
- Yes, you need to signup for an account at https://api.prokerala.com to use this plugin.
+   Yes, you need to signup for an account at https://api.prokerala.com to use this plugin.
 
 - __Do I need a paid subscription?__
 
-  No, you can start using the plugin with our free subscription.
+   No, you can start using the plugin with our free subscription.
 
 ### About Prokerala Astrology
 
@@ -87,3 +87,4 @@ Prokerala Astrology API is in pursuance of our efforts to make astrology service
 The directory layout for this plugin was inspired by [WPPlugin](https://github.com/wppunk/WPPlugin) by [wppunk](https://github.com/wppunk).
 
 The composer dependency management code is based on [Google Site kit](https://github.com/google/site-kit-wp).
+

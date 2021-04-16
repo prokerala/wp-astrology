@@ -61,9 +61,7 @@ The plugin adds a new block name **Astrology Reports** to the block editor.
 
 If you are unable to use the block editor, then you can also activate the plugin using the short code `astrology`.
 
-<code>
-[astrology report="REPORT_NAME"]
-</code>
+<code>[astrology report="REPORT_NAME"]</code>
 
 Where `REPORT_NAME` must be one of following
 
