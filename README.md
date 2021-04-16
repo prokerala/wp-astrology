@@ -64,6 +64,31 @@ Where `REPORT_NAME` must be one of following
 - `SadeSati`
 - `ThirumanaPorutham`
 
+#### Shortcode attributes
+
+- **`display_charts`**
+
+   The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
+
+   ```
+   [astrology report="Kundli" display_charts="lagna,rasi"]
+   ```
+
+- **`result_type`**
+
+   In calculators that support `basic` and `advanced` results, the result type can be forced using the `result_type` attribute. Settings this attribute will remove the corresponding input fields from the form.
+
+   ```
+   [astrology report="Kundli" result_type="advanced"]
+   ```
+
+- **`chart_style`**
+
+   You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
+
+   ```
+   [astrology report="Kundli" chart_style="south-indian"]
+   ```
 
 ### Frequently Asked Questions
 
@@ -87,4 +112,3 @@ Prokerala Astrology API is in pursuance of our efforts to make astrology service
 The directory layout for this plugin was inspired by [WPPlugin](https://github.com/wppunk/WPPlugin) by [wppunk](https://github.com/wppunk).
 
 The composer dependency management code is based on [Google Site kit](https://github.com/google/site-kit-wp).
-
