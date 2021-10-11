@@ -89,6 +89,7 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new InauspiciousPeriod( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
+		$method->setTimeZone( $tz );
 		$result = $method->process( $location, $datetime );
 
 		$data = [];

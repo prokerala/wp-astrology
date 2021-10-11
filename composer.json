@@ -23,7 +23,7 @@
     "composer/installers": "~1.0",
     "kriswallsmith/buzz": "1.1.0",
     "slim/psr7": "^1.2",
-    "prokerala/astrology-sdk": "^0.5",
+    "prokerala/astrology-sdk": "^0.5.3",
     "symfony/cache": "^4.4"
   },
   "require-dev": {

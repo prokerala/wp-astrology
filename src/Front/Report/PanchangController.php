@@ -92,6 +92,7 @@ class PanchangController implements ReportControllerInterface {
 		$advanced = 'advanced' === $result_type;
 		$method   = new Panchang( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
+		$method->setTimeZone( $tz );
 		$result = $method->process( $location, $datetime, $advanced );
 
 		$panchang_result = [
