@@ -93,6 +93,7 @@ final class SettingsPage {
 	public function validate( $input ) {
 		$input['client_id']     = trim( $input['client_id'] );
 		$input['client_secret'] = trim( $input['client_secret'] );
+		$input['attribution']   = trim( $input['attribution'] );
 
 		$this->validate_client( $input['client_id'], $input['client_secret'] );
 
