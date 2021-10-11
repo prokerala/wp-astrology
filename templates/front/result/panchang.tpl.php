@@ -47,9 +47,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<span class="pk-astrology-block"><?php echo $value['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 
 							<?php if ( 'Nakshatra' === $key ) : ?>
-								(Lord: <?php echo $value['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?>) :
+								(Lord: <?php echo $value['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?>)
 							<?php endif; ?>
-							<?php echo $value['start']->format( 'h:i A' ) . ' - ' . $value['end']->format( 'h:i A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+							: <?php echo $value['start']->format( 'h:i A' ) . ' - ' . $value['end']->format( 'h:i A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 					<?php endforeach; ?>
 
 				<?php elseif ( 'vaara' === $key ) : ?>
