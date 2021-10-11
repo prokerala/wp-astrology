@@ -10,5 +10,5 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
-[1.0.4]: https://github.com/10up/action-wordpress-plugin-asset-update/compare/1.0.3...1.0.4
-[1.0.3]: https://github.com/10up/action-wordpress-plugin-asset-update/compare/1.0.2...1.0.3
+[1.0.4]: https://github.com/prokerala/wp-astrology/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/prokerala/wp-astrology/compare/v1.0.2...v1.0.3
