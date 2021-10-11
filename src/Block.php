@@ -102,9 +102,11 @@ class Block {
 				'attributes'      => [
 					'report'     => [
 						'default' => 'Chart',
+						'type'    => 'string',
 					],
 					'resultType' => [
 						'default' => '',
+						'type'    => 'string',
 					],
 				],
 			]
