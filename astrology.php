@@ -11,7 +11,7 @@
  * Plugin Name: Astrology
  * Plugin URI:  https://api.prokerala.com
  * Description: Integrate astrology calculators powered by Prokerala's Astrology API
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Prokerala
  * Author URI:  https://www.prokerala.com
  * License:     GPLv2 or later
