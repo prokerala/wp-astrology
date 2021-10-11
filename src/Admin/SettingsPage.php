@@ -196,9 +196,9 @@ final class SettingsPage {
 		?>
 		<label>
 			<input type="checkbox" id="astrology_plugin_setting_attribution" name="astrology_plugin_options[attribution]" <?php echo '1' === (string) $attribution ? 'checked' : ''; ?> value="1" onclick="return this.checked || confirm('Please continue only if you are on our paid plan. Attribution is mandatory on free plan. Hiding attribution on free plan can lead to account suspension and domain blacklisting without further notice.')" />
-            Hide <em>Powered by Prokerala</em> attribution.
-        </label>
-        <p class="help">Attribution is mandatory on free plan. Violation can lead to account suspension and domain blacklisting without further notice.</p>
+			Show <em>Powered by Prokerala</em> attribution.
+		</label>
+		<p class="help">Attribution is mandatory on free plan. Violation can lead to account suspension and domain blacklisting without further notice.</p>
 		<?php
 	}
 
