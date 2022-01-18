@@ -2,8 +2,8 @@
 Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.5
-Tested up to: 5.8.1
-Stable tag: 1.0.5
+Tested up to: 5.8.3
+Stable tag: 1.0.6
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -115,6 +115,9 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.0.6 =
+* Fix datetimes reverting to UTC
 
 = 1.0.5 =
 * Location parameters where not being passed correctly
