@@ -235,6 +235,30 @@ final class SettingsPage {
 	 * @return void
 	 */
 	public function render_timezone() { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+
+		$regions = $this->get_timezone_list();
+		$current = $this->config->get_option( 'timezone' );
+
+		echo '<select id="astrology_plugin_setting_timezone" name="astrology_plugin_options[timezone]">';
+		foreach ( $regions as $region => $zones ) {
+			echo "<optgroup label='{$region}'>";
+			foreach ( $zones as $zone => $label ) {
+				echo "<option value='{$zone}'" . ( $current === $zone ? ' selected' : '' ) . ">{$label}</option>";
+			}
+			echo '</optgroup>';
+		}
+		echo '</select>';
+	}
+
+	/**
+	 * Generate list of timezones
+	 *
+	 * @since 1.0.6
+	 *
+	 * @return array
+	 */
+	private function get_timezone_list() {
+
 		$tz_list = \DateTimeZone::listIdentifiers( \DateTimeZone::ALL );
 		$now     = new \DateTimeImmutable();
 		$regions = [
@@ -255,17 +279,7 @@ final class SettingsPage {
 			}
 		);
 
-		$current = $this->config->get_option( 'timezone' );
-
-		echo '<select id="astrology_plugin_setting_timezone" name="astrology_plugin_options[timezone]">';
-		foreach ( $regions as $region => $zones ) {
-			echo "<optgroup label='{$region}'>";
-			foreach ( $zones as $zone => $label ) {
-				echo "<option value='{$zone}'" . ( $current === $zone ? ' selected' : '' ) . ">{$label}</option>";
-			}
-			echo '</optgroup>';
-		}
-		echo '</select>';
+		return $regions;
 	}
 
 	/**

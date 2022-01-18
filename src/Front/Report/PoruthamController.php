@@ -104,20 +104,35 @@ class PoruthamController implements ReportControllerInterface {
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $girl_profile, $boy_profile, $system, $advanced );
 
+		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
+
+		return $this->render(
+			'result/porutham',
+			[
+				'result'      => $compatibility_result,
+				'result_type' => $result_type,
+				'girl_dob'    => $girl_dob,
+				'boy_dob'     => $boy_dob,
+				'options'     => $this->get_options(),
+			]
+		);
+	}
+
+	/**
+	 * Get compatability result
+	 *
+	 * @param object $result API Result.
+	 * @param int    $advanced Advanced Result.
+	 * @return array
+	 */
+	private function get_compatibility_result( $result, $advanced ) {
 		$compatibility_result = [];
-		$girl_info            = $result->getGirlInfo();
-		$girl_nakshatra       = $girl_info->getNakshatra();
-		$girl_rasi            = $girl_info->getRasi();
 
-		$boy_info      = $result->getBoyInfo();
-		$boy_nakshatra = $boy_info->getNakshatra();
-		$boy_rasi      = $boy_info->getRasi();
-
+		$girl_info           = $result->getGirlInfo();
+		$girl_nakshatra      = $girl_info->getNakshatra();
+		$girl_rasi           = $girl_info->getRasi();
 		$girl_nakshatra_lord = $girl_nakshatra->getLord();
-		$boy_nakshatra_lord  = $boy_nakshatra->getLord();
-
-		$girl_rasi_lord = $girl_rasi->getLord();
-		$boy_rasi_lord  = $boy_rasi->getLord();
+		$girl_rasi_lord      = $girl_rasi->getLord();
 
 		$compatibility_result['girlInfo'] = [
 			'nakshatra' => [
@@ -141,7 +156,13 @@ class PoruthamController implements ReportControllerInterface {
 			],
 		];
 
-		$compatibility_result['boyInfo']       = [
+		$boy_info           = $result->getBoyInfo();
+		$boy_nakshatra      = $boy_info->getNakshatra();
+		$boy_rasi           = $boy_info->getRasi();
+		$boy_nakshatra_lord = $boy_nakshatra->getLord();
+		$boy_rasi_lord      = $boy_rasi->getLord();
+
+		$compatibility_result['boyInfo'] = [
 			'nakshatra' => [
 				'id'   => $boy_nakshatra->getId(),
 				'name' => $boy_nakshatra->getName(),
@@ -162,6 +183,7 @@ class PoruthamController implements ReportControllerInterface {
 				],
 			],
 		];
+
 		$compatibility_result['maximumPoints'] = $result->getMaximumPoints();
 		$compatibility_result['totalPoints']   = $result->getTotalPoints();
 		$message                               = $result->getMessage();
@@ -186,15 +208,6 @@ class PoruthamController implements ReportControllerInterface {
 			$compatibility_result['matches'][] = $matches;
 		}
 
-		return $this->render(
-			'result/porutham',
-			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'girl_dob'    => $girl_dob,
-				'boy_dob'     => $boy_dob,
-				'options'     => $this->get_options(),
-			]
-		);
+		return $compatibility_result;
 	}
 }

@@ -113,7 +113,7 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$client = $this->get_api_client();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
@@ -130,6 +130,27 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 
 		$method = new NakshatraPorutham( $client );
 		$result = $method->process( $girl_profile, $boy_profile, $advanced );
+
+		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
+
+		return $this->render(
+			'result/nakshatra-porutham',
+			[
+				'result'      => $compatibility_result,
+				'result_type' => $result_type,
+				'options'     => $this->get_options(),
+			]
+		);
+	}
+
+	/**
+	 * Get compatability result
+	 *
+	 * @param object $result API Result.
+	 * @param int    $advanced Advanced Result.
+	 * @return array
+	 */
+	private function get_compatibility_result( $result, $advanced ) {
 
 		$compatibility_result = [];
 
@@ -155,13 +176,6 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 			}
 		}
 
-		return $this->render(
-			'result/nakshatra-porutham',
-			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
-			]
-		);
+		return $compatibility_result;
 	}
 }

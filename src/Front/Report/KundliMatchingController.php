@@ -104,24 +104,37 @@ class KundliMatchingController implements ReportControllerInterface {
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result = $method->process( $girl_profile, $boy_profile, $advanced );
 
-		$girl_info = $result->getGirlInfo();
-		$boy_info  = $result->getBoyInfo();
-		$boy_koot  = $boy_info->getKoot();
-		$girl_koot = $girl_info->getKoot();
+		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
-		$girl_nakshatra      = $girl_info->getNakshatra();
-		$boy_nakshatra       = $boy_info->getNakshatra();
-		$girl_nakshatra_lord = $girl_nakshatra->getLord();
-		$boy_nakshatra_lord  = $boy_nakshatra->getLord();
+		return $this->render(
+			'result/kundli-matching',
+			[
+				'result'      => $compatibility_result,
+				'result_type' => $result_type,
+				'girl_dob'    => $girl_dob,
+				'boy_dob'     => $boy_dob,
+				'options'     => $this->get_options(),
+			]
+		);
+	}
 
-		$girl_rasi      = $girl_info->getRasi();
-		$boy_rasi       = $boy_info->getRasi();
-		$girl_rasi_lord = $girl_rasi->getLord();
-		$boy_rasi_lord  = $boy_rasi->getLord();
+	/**
+	 * Get compatability result
+	 *
+	 * @param object $result API Result.
+	 * @param int    $advanced Advanced Result.
+	 * @return array
+	 */
+	private function get_compatibility_result( $result, $advanced ) {
+		$compatibility_result = [];
+		$girl_info            = $result->getGirlInfo();
+		$girl_nakshatra       = $girl_info->getNakshatra();
+		$girl_nakshatra_lord  = $girl_nakshatra->getLord();
+		$girl_rasi            = $girl_info->getRasi();
+		$girl_rasi_lord       = $girl_rasi->getLord();
+		$girl_koot            = $girl_info->getKoot();
 
-		$compatibility_result['boyInfo']['koot']  = $boy_koot->getKoot();
-		$compatibility_result['girlInfo']['koot'] = $girl_koot->getKoot();
-
+		$compatibility_result['girlInfo']['koot']      = $girl_koot->getKoot();
 		$compatibility_result['girlInfo']['nakshatra'] = [
 			'id'   => $girl_nakshatra->getId(),
 			'name' => $girl_nakshatra->getName(),
@@ -130,17 +143,6 @@ class KundliMatchingController implements ReportControllerInterface {
 				'id'        => $girl_nakshatra_lord->getId(),
 				'name'      => $girl_nakshatra_lord->getName(),
 				'vedicName' => $girl_nakshatra_lord->getVedicName(),
-			],
-		];
-
-		$compatibility_result['boyInfo']['nakshatra'] = [
-			'id'   => $boy_nakshatra->getId(),
-			'name' => $boy_nakshatra->getName(),
-			'pada' => $boy_nakshatra->getPada(),
-			'lord' => [
-				'id'        => $boy_nakshatra_lord->getId(),
-				'name'      => $boy_nakshatra_lord->getName(),
-				'vedicName' => $boy_nakshatra_lord->getVedicName(),
 			],
 		];
 
@@ -154,7 +156,25 @@ class KundliMatchingController implements ReportControllerInterface {
 			],
 		];
 
-		$compatibility_result['boyInfo']['rasi'] = [
+		$boy_info           = $result->getBoyInfo();
+		$boy_nakshatra      = $boy_info->getNakshatra();
+		$boy_nakshatra_lord = $boy_nakshatra->getLord();
+		$boy_rasi           = $boy_info->getRasi();
+		$boy_rasi_lord      = $boy_rasi->getLord();
+
+		$boy_koot                                     = $boy_info->getKoot();
+		$compatibility_result['boyInfo']['koot']      = $boy_koot->getKoot();
+		$compatibility_result['boyInfo']['nakshatra'] = [
+			'id'   => $boy_nakshatra->getId(),
+			'name' => $boy_nakshatra->getName(),
+			'pada' => $boy_nakshatra->getPada(),
+			'lord' => [
+				'id'        => $boy_nakshatra_lord->getId(),
+				'name'      => $boy_nakshatra_lord->getName(),
+				'vedicName' => $boy_nakshatra_lord->getVedicName(),
+			],
+		];
+		$compatibility_result['boyInfo']['rasi']      = [
 			'id'   => $boy_rasi->getId(),
 			'name' => $boy_rasi->getName(),
 			'lord' => [
@@ -176,49 +196,42 @@ class KundliMatchingController implements ReportControllerInterface {
 			'maximumPoints' => $guna_milan->getMaximumPoints(),
 		];
 
-		if ( $advanced ) {
-			$ar_guna = $guna_milan->getGuna();
-
-			foreach ( $ar_guna as $guna ) {
-				$compatibility_result['gunaMilan']['guna'][] = [
-					'id'             => $guna->getId(),
-					'name'           => $guna->getName(),
-					'girlKoot'       => $guna->getGirlKoot(),
-					'boyKoot'        => $guna->getBoyKoot(),
-					'maximumPoints'  => $guna->getMaximumPoints(),
-					'obtainedPoints' => $guna->getObtainedPoints(),
-					'description'    => $guna->getDescription(),
-				];
-			}
-			$compatibility_result['exceptions'] = $result->getExceptions();
-
-			$girl_mangal_dosha_details = $result->getGirlMangalDoshaDetails();
-			$boy_mangal_dosha_details  = $result->getBoyMangalDoshaDetails();
-
-			$compatibility_result['girlMangalDoshaDetails'] = [
-				'hasMangalDosha'  => $girl_mangal_dosha_details->hasDosha(),
-				'hasException'    => $girl_mangal_dosha_details->hasException(),
-				'mangalDoshaType' => $girl_mangal_dosha_details->getDoshaType(),
-				'description'     => $girl_mangal_dosha_details->getDescription(),
-			];
-
-			$compatibility_result['boyMangalDoshaDetails'] = [
-				'hasMangalDosha'  => $boy_mangal_dosha_details->hasDosha(),
-				'hasException'    => $boy_mangal_dosha_details->hasException(),
-				'mangalDoshaType' => $boy_mangal_dosha_details->getDoshaType(),
-				'description'     => $boy_mangal_dosha_details->getDescription(),
-			];
+		if ( ! $advanced ) {
+			return $compatibility_result;
 		}
 
-		return $this->render(
-			'result/kundli-matching',
-			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'girl_dob'    => $girl_dob,
-				'boy_dob'     => $boy_dob,
-				'options'     => $this->get_options(),
-			]
-		);
+		$ar_guna = $guna_milan->getGuna();
+
+		foreach ( $ar_guna as $guna ) {
+			 $compatibility_result['gunaMilan']['guna'][] = [
+				 'id'             => $guna->getId(),
+				 'name'           => $guna->getName(),
+				 'girlKoot'       => $guna->getGirlKoot(),
+				 'boyKoot'        => $guna->getBoyKoot(),
+				 'maximumPoints'  => $guna->getMaximumPoints(),
+				 'obtainedPoints' => $guna->getObtainedPoints(),
+				 'description'    => $guna->getDescription(),
+			 ];
+		}
+		$compatibility_result['exceptions'] = $result->getExceptions();
+
+		$girl_mangal_dosha_details = $result->getGirlMangalDoshaDetails();
+		$boy_mangal_dosha_details  = $result->getBoyMangalDoshaDetails();
+
+		$compatibility_result['girlMangalDoshaDetails'] = [
+			'hasMangalDosha'  => $girl_mangal_dosha_details->hasDosha(),
+			'hasException'    => $girl_mangal_dosha_details->hasException(),
+			'mangalDoshaType' => $girl_mangal_dosha_details->getDoshaType(),
+			'description'     => $girl_mangal_dosha_details->getDescription(),
+		];
+
+		$compatibility_result['boyMangalDoshaDetails'] = [
+			'hasMangalDosha'  => $boy_mangal_dosha_details->hasDosha(),
+			'hasException'    => $boy_mangal_dosha_details->hasException(),
+			'mangalDoshaType' => $boy_mangal_dosha_details->getDoshaType(),
+			'description'     => $boy_mangal_dosha_details->getDescription(),
+		];
+
+		 return $compatibility_result;
 	}
 }
