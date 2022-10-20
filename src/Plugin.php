@@ -162,7 +162,7 @@ final class Plugin {
 	 * @license Apache 2.0
 	 * @url https://github.com/google/site-kit-wp/
 	 */
-	private function opcache_reset() {     // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	public function opcache_reset() {     // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		if ( version_compare( PHP_VERSION, PK_ASTROLOGY_PHP_MINIMUM, '<' ) ) {
 			return;
 		}
