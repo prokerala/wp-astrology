@@ -50,7 +50,7 @@ return [
 		Finder::create()->append( [ 'composer.json' ] ),
 	],
 
-	'files-whitelist'            => [
+	'exclude-files'            => [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
 		'vendor/symfony/polyfill-php73/bootstrap.php',
 		'vendor/symfony/polyfill-php80/bootstrap.php',
@@ -62,7 +62,7 @@ return [
 		'Psr\*',
 		'Prokerala\*',
 	],
-	'whitelist-global-constants' => false,
-	'whitelist-global-classes'   => false,
-	'whitelist-global-functions' => false,
+	'expose-global-constants' => false,
+	'expose-global-classes'   => false,
+	'expose-global-functions' => false,
 ];
