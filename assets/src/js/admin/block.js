@@ -5,34 +5,16 @@ const { serverSideRender: ServerSideRender } = wp;
 const { InspectorControls } = wp.blockEditor;
 import ChartOptions from './blocks/chart';
 import KundliOptions from './blocks/kundli';
+import NumerologyOptions from './blocks/numerology';
 
 const { __ } = wp.i18n;
 
-const REPORTS = [
-	{value: 'Choghadiya', name: 'Choghadiya', advanced: false},
-	{value: 'BirthDetails', name: 'Birth Details', advanced: false},
-	{value: 'AuspiciousPeriod', name: 'Auspicious Period', advanced: false},
-	{value: 'InauspiciousPeriod', name: 'Inauspicious Period', advanced: false},
-	{value: 'Panchang', name: 'Panchang', advanced: true},
-	{value: 'Chart', name: 'Chart', advanced: false},
-	{value: 'KaalSarpDosha', name: 'Kaal Sarp Dosha', advanced: false},
-	{value: 'Kundli', name: 'Kundli', advanced: true},
-	{value: 'MangalDosha', name: 'Mangal Dosha', advanced: true},
-	{value: 'Papasamyam', name: 'Papa Samyam', advanced: false},
-	{value: 'PlanetPosition', name: 'Planet Position', advanced: false},
-	{value: 'SadeSati', name: 'Sade Sati', advanced: true},
-	{value: 'KundliMatching', name: 'Kundli Matching', advanced: true},
-	{value: 'NakshatraPorutham', name: 'Nakshatra Porutham', advanced: true},
-	{value: 'PapasamyamCheck', name: 'Papa Samyam Check', advanced: false},
-	{value: 'Porutham', name: 'Porutham', advanced: true},
-	{value: 'ThirumanaPorutham', name: 'Thirumana Porutham', advanced: true}
+const DETAILED_REPORTS = [
+	'Panchang', 'Kundli', 'MangalDosha', 'SadeSati',
+	'KundliMatching', 'NakshatraPorutham', 'Porutham', 'ThirumanaPorutham'
 ];
 
-const labelOptions = REPORTS.map( ({value, name}) => {
-    return {value, label: name};
-});
-
-function AddAdvancedOption( report, attributes, setAttributes ) {
+function AddAdvancedOption( attributes, setAttributes ) {
 	const { resultType } = attributes;
 
 	return (
@@ -64,21 +46,29 @@ function ReportOptions( props ) {
 	const { attributes } = props;
 	const { onChange } = props;
 
-	let report = findReport( props.report );
+	let { report } = props;
 
 	const { options } = attributes;
-	const setOptions = ( val ) => onChange({options: Object.assign({}, options, val )});
+	const setOption = ( val ) => onChange({options: Object.assign({}, options, val )});
 
-	if ( 'Chart' === report.value ) {
-		return ChartOptions( report, attributes, setOptions );
+	if ( 'Chart' === report ) {
+		return ChartOptions( attributes, setOption );
 	}
 
-	if ( 'Kundli' === report.value ) {
-		return KundliOptions( report, attributes, setOptions );
+	if ( 'Kundli' === report ) {
+		return [
+			KundliOptions( attributes, setOption ),
+			AddAdvancedOption( attributes, onChange )
+		];
 	}
 
-	if ( report.advanced ) {
-		return AddAdvancedOption( report, attributes, onChange );
+	if ( 'Numerology' === report ) {
+		return NumerologyOptions( attributes, setOption );
+	}
+
+	const hasDetailed = DETAILED_REPORTS.includes( report );
+	if ( hasDetailed ) {
+		return AddAdvancedOption( attributes, onChange );
 	}
 
 	return null;
@@ -124,10 +114,36 @@ registerBlockType( 'astrology/report', {
 						label={__( 'Report' )}
 						value={report}
 						onChange={report => setAttributes({report})}
-						options={labelOptions}
-					/>
+					>
+						<optgroup label="Daily Panchang">
+							<option value="AuspiciousPeriod">Auspicious Period</option>
+							<option value="InauspiciousPeriod">Inauspicious Period</option>
+							<option value="Choghadiya">Choghadiya</option>
+							<option value="Panchang">Panchang</option>
+						</optgroup>
+						<optgroup label="Horoscope">
+							<option value="BirthDetails">Birth Details</option>
+							<option value="Chart">Chart</option>
+							<option value="KaalSarpDosha">Kaal Sarp Dosha</option>
+							<option value="Kundli">Kundli</option>
+							<option value="MangalDosha">Mangal Dosha</option>
+							<option value="Papasamyam">Papa Samyam</option>
+							<option value="PlanetPosition">Planet Position</option>
+							<option value="SadeSati">Sade Sati</option>
+						</optgroup>
+						<optgroup label="Marriage Matching">
+							<option value="KundliMatching">Kundli Matching</option>
+							<option value="NakshatraPorutham">Nakshatra Porutham</option>
+							<option value="PapasamyamCheck">Papa Samyam Check</option>
+							<option value="Porutham">Porutham</option>
+							<option value="ThirumanaPorutham">Thirumana Porutham</option>
+						</optgroup>
+						<optgroup label="Numerology">
+							<option value="Numerology">Numerology</option>
+						</optgroup>
+					</SelectControl>
 
-					<ReportOptions
+						<ReportOptions
 						report={report}
 						attributes={attributes}
 						onChange={setAttributes}

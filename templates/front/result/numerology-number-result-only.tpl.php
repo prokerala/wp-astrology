@@ -37,11 +37,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div class="alert alert-info text-center">
 	<h3 class="my-2">
-		<?php echo $number_result['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :
-		<?php echo $number_result['number'] ?? 'No Number';  // phpcs:ignore WordPress.Security.EscapeOutput ?>
+		<?php echo $name; // phpcs:ignore WordPress.Security.EscapeOutput ?> :
+		<?php echo $number ?? 'No Number';  // phpcs:ignore WordPress.Security.EscapeOutput ?>
 	</h3>
 </div>
-<?php if ( isset( $number_result['age'] ) ) : ?>
-	<p>Age: <?php echo $number_result['age']; // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+<?php if ( isset( $age ) ) : ?>
+	<p>Age: <?php echo $age; // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
 <?php endif; ?>
-<p><?php echo $number_result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+<p><?php echo $description; // phpcs:ignore WordPress.Security.EscapeOutput ?></p>

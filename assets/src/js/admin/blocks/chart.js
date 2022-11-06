@@ -22,7 +22,7 @@ const chartStyleOptions = Object.entries( chartStyles ).map( ([ value, label ]) 
 	return {value, label};
 });
 
-export default function ChartOptions( report, attributes, setOptions ) {
+export default function ChartOptions( attributes, setOptions ) {
 	/* eslint-disable camelcase */
 	const { chart_type, chart_style } = attributes.options;
 

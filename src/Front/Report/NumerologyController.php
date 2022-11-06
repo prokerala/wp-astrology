@@ -29,18 +29,96 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\BirthDetails;
+use Prokerala\Api\Numerology\Service\Chaldean\LifePathNumber as ChaldeanLifePathNumber;
+use Prokerala\Api\Numerology\Service\AttainmentNumber;
+use Prokerala\Api\Numerology\Service\BalanceNumber;
+use Prokerala\Api\Numerology\Service\BirthdayNumber;
+use Prokerala\Api\Numerology\Service\BirthMonthNumber;
+use Prokerala\Api\Numerology\Service\BridgeNumber;
+use Prokerala\Api\Numerology\Service\CapstoneNumber;
+use Prokerala\Api\Numerology\Service\Chaldean\BirthNumber;
+use Prokerala\Api\Numerology\Service\Chaldean\DailyNameNumber;
+use Prokerala\Api\Numerology\Service\Chaldean\IdentityInitialCode;
+use Prokerala\Api\Numerology\Service\Chaldean\WholeNameNumber;
+use Prokerala\Api\Numerology\Service\ChallengeNumber;
+use Prokerala\Api\Numerology\Service\CornerstoneNumber;
+use Prokerala\Api\Numerology\Service\DestinyNumber;
+use Prokerala\Api\Numerology\Service\ExpressionNumber;
+use Prokerala\Api\Numerology\Service\HiddenPassionNumber;
+use Prokerala\Api\Numerology\Service\InnerDreamNumber;
+use Prokerala\Api\Numerology\Service\KarmicDebtNumber;
+use Prokerala\Api\Numerology\Service\LifeCycleNumber;
+use Prokerala\Api\Numerology\Service\LifePathNumber;
+use Prokerala\Api\Numerology\Service\MaturityNumber;
+use Prokerala\Api\Numerology\Service\PersonalDayNumber;
+use Prokerala\Api\Numerology\Service\PersonalityNumber;
+use Prokerala\Api\Numerology\Service\PersonalMonthNumber;
+use Prokerala\Api\Numerology\Service\PersonalYearNumber;
+use Prokerala\Api\Numerology\Service\PinnacleNumber;
+use Prokerala\Api\Numerology\Service\RationalThoughtNumber;
+use Prokerala\Api\Numerology\Service\SoulUrgeNumber;
+use Prokerala\Api\Numerology\Service\SubconsciousSelfNumber;
+use Prokerala\Api\Numerology\Service\UniversalDayNumber;
+use Prokerala\Api\Numerology\Service\UniversalMonthNumber;
+use Prokerala\Api\Numerology\Service\UniversalYearNumber;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
  * Numerology Form Controller.
  *
- * @since   1.0.0
+ * @since   1.1.0
  */
 class NumerologyController implements ReportControllerInterface {
 
-	use ReportControllerTrait;
+	use ReportControllerTrait {
+		get_attribute_defaults as getCommonAttributeDefaults;
+	}
+
+	const DATE          = 0;
+	const DATE_REF_YEAR = 1;
+	const DATE_NAME     = 2;
+	const NAME          = 3;
+	const NAME_VOWEL    = 4;
+
+	const CALCULATORS = [
+		'pythagorean' => [
+			'life-path-number'         => [ 'Life Path Number', LifePathNumber::class, self::DATE ],
+			'capstone-number'          => [ 'Capstone Number', CapStoneNumber::class, self::NAME ],
+			'personality-number'       => [ 'Personality Number', PersonalityNumber::class, self::NAME_VOWEL ],
+			'challenge-number'         => [ 'Challenge Number', ChallengeNumber::class, self::DATE ],
+			'inner-dream-number'       => [ 'Inner Dream Number', InnerDreamNumber::class, self::NAME_VOWEL ],
+			'personal-year-number'     => [ 'Personal Year Number', PersonalYearNumber::class, self::DATE_REF_YEAR ],
+			'expression-number'        => [ 'Expression Number', ExpressionNumber::class, self::NAME ],
+			'universal-month-number'   => [ 'Universal Month Number', UniversalMonthNumber::class, self::DATE ],
+			'personal-month-number'    => [ 'Personal Month Number', PersonalMonthNumber::class, self::DATE_REF_YEAR ],
+			'soul-urge-number'         => [ 'Soul Urge Number', SoulUrgeNumber::class, self::NAME ],
+			'destiny-number'           => [ 'Destiny Number', DestinyNumber::class, self::NAME ],
+			'attainment-number'        => [ 'Attainment Number', AttainmentNumber::class, self::DATE_NAME ],
+			'birthday-number'          => [ 'Birth Day Number', BirthDayNumber::class, self::DATE ],
+			'universal-day-number'     => [ 'Universal Day Number', UniversalDayNumber::class, self::DATE ],
+			'birth-month-number'       => [ 'Birth Month Number', BirthMonthNumber::class, self::DATE ],
+			'universal-year-number'    => [ 'Universal Year Number', UniversalYearNumber::class, self::DATE ],
+			'balance-number'           => [ 'Balance Number', BalanceNumber::class, self::NAME ],
+			'personal-day-number'      => [ 'Personal Day Number', PersonalDayNumber::class, self::DATE_REF_YEAR ],
+			'cornerstone-number'       => [ 'Cornerstone Number', CornerStoneNumber::class, self::NAME ],
+			'subconscious-self-number' => [ 'Subconscious Self Number', SubconsciousSelfNumber::class, self::NAME ],
+			'maturity-number'          => [ 'Maturity Number', MaturityNumber::class, self::DATE_NAME ],
+			'hidden-passion-number'    => [ 'Hidden Passion Number', HiddenPassionNumber::class, self::NAME ],
+			'rational-thought-number'  => [ 'Rational Thought Number', RationalThoughtNumber::class, self::DATE_NAME ],
+			'pinnacle-number'          => [ 'Pinnacle Number', PinnacleNumber::class, self::DATE ],
+			'karmic-debt-number'       => [ 'Karmic Debt Number', KarmicDebtNumber::class, self::DATE_NAME ],
+			'bridge-number'            => [ 'Bridge Number', BridgeNumber::class, self::DATE_NAME ],
+			'life-cycle-number'        => [ 'Life Cycle Number', LifeCycleNumber::class, self::DATE ],
+		],
+		'chaldean'    => [
+			'birth-number'                 => [ 'Birth Number', BirthNumber::class, self::DATE ],
+			'daily-name-number'            => [ 'Daily Name Number', DailyNameNumber::class, self::NAME ],
+			'life-path-number'             => [ 'Life Path Number', ChaldeanLifePathNumber::class, self::DATE ],
+			'identity-initial-code-number' => [ 'Identity Initial Code Number', IdentityInitialCode::class, self::NAME ],
+			'whole-name-number'            => [ 'Whole Name Number', WholeNameNumber::class, self::NAME ],
+		],
+	];
 
 	/**
 	 * NumerologyController constructor
@@ -60,46 +138,26 @@ class NumerologyController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$calculators = [
-			'pythagorean' => [
-				'attainment-number'        => 'Attainment Number',
-				'balance-number'           => 'Balance Number',
-				'birth-month-number'       => 'Birth Month Number',
-				'birthday-number'          => 'Birthday Number',
-				'bridge-number'            => 'Bridge Number',
-				'capstone-number'          => 'Capstone Number',
-				'challenge-number'         => 'Challenge Number',
-				'cornerstone-number'       => 'Corner Stone Number',
-				'destiny-number'           => 'Destiny Number',
-				'expression-number'        => 'Expression Number',
-				'hidden-passion-number'    => 'Hidden Passion Number',
-				'inner-dream-number'       => 'Inner Dream Number',
-				'karmic-debt-number'       => 'Karmic Debt Number',
-				'life-path-number'         => 'Life Path Number',
-				'maturity-number'          => 'Maturity Number',
-				'personal-day-number'      => 'Personal Day Number',
-				'personal-month-number'    => 'Personal Month Number',
-				'personal-year-number'     => 'Personal Year Number',
-				'personality-number'       => 'Personality Number',
-				'pinnacle-number'          => 'Pinnacle Number',
-				'rational-thought-number'  => 'Rational Thought Number',
-				'soul-urge-number'         => 'Soul Urge Number',
-				'subconscious-self-number' => 'Subconscious Self Number',
-				'universal-day-number'     => 'Universal Day Number',
-				'universal-month-number'   => 'Universal Month Number',
-				'universal-year-number'    => 'Universal Year Number',
-			],
-			'chaldean'    => [
-				'birth-number'                 => 'Birth Number',
-				'daily-name-number'            => 'Daily Name Number',
-				'identity-initial-code-number' => 'Identity Initial Code Number',
-				'life-path-number'             => 'Life Path Number',
-				'whole-name-number'            => 'Whole Name Number',
-			],
+		$calculators = array_map(
+			function ( $calculators ) {
+				return array_map(
+					function ( $val ) {
+							 return $val[0];
+					},
+					$calculators
+				); },
+			self::CALCULATORS
+		);
+
+		$systems = [
+			'chaldean'    => 'Chaldean',
+			'pythagorean' => 'Pythagorean',
 		];
 
-		$selected_system          = $options['system'];
-		$selected_calculator_name = $calculators[ $selected_system ][ $options['calculator'] ];
+		$selected_system          = $options['system'] ?: 'pythagorean';
+		$selected_calculator_name = $calculators[ $selected_system ][ $options['calculator'] ] ?? '';
+
+		$input = $this->get_post_data();
 
 		return $this->render(
 			'form/numerology-birth-details',
@@ -107,11 +165,10 @@ class NumerologyController implements ReportControllerInterface {
 				'options'                  => $options + $this->get_options(),
 				'datetime'                 => new \DateTimeImmutable( 'now', $this->get_timezone() ),
 				'reference_year'           => ( new \DateTimeImmutable( 'now', $this->get_timezone() ) )->format( 'Y' ),
-				'calculators'              => $calculators,
-				'selected_system'          => $selected_system,
 				'selected_calculator_name' => $selected_calculator_name,
-				'selected_calculator'      => $options['calculator'],
-			]
+				'systems'                  => $systems,
+				'calculators'              => $calculators,
+			] + $input
 		);
 	}
 
@@ -127,143 +184,89 @@ class NumerologyController implements ReportControllerInterface {
 		$tz     = $this->get_timezone();
 		$client = $this->get_api_client();
 
-		$calculator_class = [
-			'pythagorean' => [
-				'life-path-number'         => LifePathNumber::class,
-				'capstone-number'          => CapStoneNumber::class,
-				'personality-number'       => PersonalityNumber::class,
-				'challenge-number'         => ChallengeNumber::class,
-				'inner-dream-number'       => InnerDreamNumber::class,
-				'personal-year-number'     => PersonalYearNumber::class,
-				'expression-number'        => ExpressionNumber::class,
-				'universal-month-number'   => UniversalMonthNumber::class,
-				'personal-month-number'    => PersonalMonthNumber::class,
-				'soul-urge-number'         => SoulUrgeNumber::class,
-				'destiny-number'           => DestinyNumber::class,
-				'attainment-number'        => AttainmentNumber::class,
-				'birth-day-number'         => BirthDayNumber::class,
-				'universal-day-number'     => UniversalDayNumber::class,
-				'birth-month-number'       => BirthMonthNumber::class,
-				'universal-year-number'    => UniversalYearNumber::class,
-				'balance-number'           => BalanceNumber::class,
-				'personal-day-number'      => PersonalDayNumber::class,
-				'cornerstone-number'       => CornerStoneNumber::class,
-				'subconscious-self-number' => SubconsciousSelfNumber::class,
-				'maturity-number'          => MaturityNumber::class,
-				'hidden-passion-number'    => HiddenPassionNumber::class,
-				'rational-thought-number'  => RationalThoughtNumber::class,
-				'pinnacle-number'          => PinnacleNumber::class,
-				'karmic-debt-number'       => KarmicDebtNumber::class,
-				'bridge-number'            => BridgeNumber::class,
-			],
-			'chaldean'    => [
-				'birth-number'                 => BirthNumber::class,
-				'daily-name-number'            => DailyNameNumber::class,
-				'life-path-number'             => ChaldeanLifePathNumber::class,
-				'identity-initial-code-number' => IdentityInitialCode::class,
-				'whole-name-number'            => WholeNameNumber::class,
-			],
-		];
+		[
+			'date' => $date, 'system' => $system, 'calculator' => $calculator,
+			'first_name' => $first_name, 'middle_name' => $middle_name, 'last_name' => $last_name,
+			'reference_year' => $reference_year, 'vowel' => $vowel,
+		] = $this->get_post_data();
 
-		$calculator_params = [
-			'pythagorean' => [
-				'date'                    => [
-					'life-path-number',
-					'birth-month-number',
-					'universal-month-number',
-					'birth-day-number',
-					'universal-day-number',
-					'universal-year-number',
-					'challenge-number',
-					'pinnacle-number',
-					'life-cycle-number',
-				],
-				'date_and_reference_year' => [
-					'personal-year-number',
-					'personal-month-number',
-					'personal-day-number',
-				],
-				'name'                    => [
-					'capstone-number',
-					'destiny-number',
-					'expression-number',
-					'hidden-passion-number',
-					'balance-number',
-					'subconscious-self-number',
-					'soul-urge-number',
-					'cornerstone-number',
+		$date = new \DateTimeImmutable( $date, $tz );
 
-				],
-				'name_and_vowel'          => [
-					'personality-number',
-					'inner-dream-number',
-				],
-				'date_and_name'           => [
-					'attainment-number',
-					'maturity-number',
-					'rational-thought-number',
-					'karmic-debt-number',
-					'bridge-number',
-				],
-			],
-			'chaldean'    => [
-				'date' => [
-					'birth-number',
-					'life-path-number',
-				],
-				'name' => [
-					'identity-initial-code-number',
-					'whole-name-number',
-				],
-			],
-		];
+		[ $calculator_name, $calculator_class, $param_type ] = self::CALCULATORS[ $system ][ $calculator ];
+		$method = new $calculator_class( $client );
 
-		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$date           = isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['date'] ) ) : '';
-		$system         = isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['system'] ) ) : '';
-		$calculator     = isset( $_POST['calculator'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['calculator'] ) ) : '';
-		$first_name     = isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['first_name'] ) ) : '';
-		$middle_name    = isset( $_POST['middle_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['middle_name'] ) ) : '';
-		$last_name      = isset( $_POST['last_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['last_name'] ) ) : '';
-		$reference_year = isset( $_POST['reference_year'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['reference_year'] ) ) : '';
-		$vowel          = isset( $_POST['vowel'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vowel'] ) ) : '';
-
-		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$date   = new \DateTimeImmutable( $date, $tz );
-		$method = new $calculator_class[ $system ][ $calculator ]( $client );
-
-		if ( in_array( $calculator, $calculator_params[ $system ]['date'], true ) ) {
+		if ( self::DATE === $param_type ) {
 			$result = $method->process( $date );
-		} elseif ( in_array( $calculator, $calculator_params[ $system ]['name'], true ) ) {
+		} elseif ( self::NAME === $param_type ) {
 			$result = $method->process( $first_name, $middle_name, $last_name );
-		} elseif ( in_array( $calculator, $calculator_params[ $system ]['date_and_name'], true ) ) {
+		} elseif ( self::DATE_NAME === $param_type ) {
 			$result = $method->process( $date, $first_name, $middle_name, $last_name );
-		} elseif ( in_array( $calculator, $calculator_params[ $system ]['name_and_vowel'], true ) ) {
+		} elseif ( self::NAME_VOWEL === $param_type ) {
 			$result = $method->process( $first_name, $middle_name, $last_name, $vowel );
-		} elseif ( in_array( $calculator, $calculator_params[ $system ]['date_and_reference_year'], true ) ) {
+		} elseif ( self::DATE_REF_YEAR === $param_type ) {
 			$result = $method->process( $date, $reference_year );
 		} else {
 			throw new \Exception( 'Selected calculator not found' );
 		}
 
-		$data                    = [];
-		$data['calculator_name'] = ucwords( str_replace( '-', ' ', $calculator ) );
-		$data['calculator']      = $calculator;
-		$data['result']          = $result;
-		$data['first_name']      = $first_name;
-		$data['middle_name']     = $middle_name;
-		$data['last_name']       = $last_name;
-		$data['date']            = $date;
-		$data['vowel']           = $vowel;
-		$data['reference_year']  = $reference_year;
+		$data = [
+			'calculator_name' => ucwords( str_replace( '-', ' ', $calculator ) ),
+			'system'          => $system,
+			'calculator'      => $calculator,
+			'result'          => $result,
+			'first_name'      => $first_name,
+			'middle_name'     => $middle_name,
+			'last_name'       => $last_name,
+			'date'            => $date,
+			'vowel'           => $vowel,
+			'reference_year'  => $reference_year,
+		];
 
 		return $this->render(
 			'result/numerology-result',
 			[
-				'result'  => $result,
-				'data'    => $data,
-				'options' => $this->get_options(),
+				'system'     => $system,
+				'calculator' => $calculator,
+				'result'     => $result,
+				'data'       => $data,
+				'options'    => $this->get_options(),
 			]
 		);
+	}
+
+	/**
+	 * Retrieve post data from form submission.
+	 *
+	 * @return string[]
+	 */
+	private function get_post_data() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$data = [
+			'date'           => isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['date'] ) ) : '',
+			'system'         => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['system'] ) ) : 'pythagorean',
+			'calculator'     => isset( $_POST['calculator'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['calculator'] ) ) : 'life-path-number',
+			'first_name'     => isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['first_name'] ) ) : '',
+			'middle_name'    => isset( $_POST['middle_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['middle_name'] ) ) : '',
+			'last_name'      => isset( $_POST['last_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['last_name'] ) ) : '',
+			'reference_year' => isset( $_POST['reference_year'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['reference_year'] ) ) : '',
+			'vowel'          => isset( $_POST['vowel'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vowel'] ) ) : '',
+		];
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+		return $data;
+	}
+
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function get_attribute_defaults() {
+		return $this->getCommonAttributeDefaults() + [
+			'system'     => '',
+			'calculator' => '',
+		];
 	}
 }

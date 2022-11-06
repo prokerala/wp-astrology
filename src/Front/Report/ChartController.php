@@ -118,6 +118,7 @@ class ChartController implements ReportControllerInterface {
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style );
 		$result['chart_type'] = $chart_type;
+
 		return $this->render(
 			'result/chart',
 			[

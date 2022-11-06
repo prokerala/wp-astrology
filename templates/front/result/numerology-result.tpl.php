@@ -41,123 +41,123 @@ $multiple_age_number_result = false;
 $multiple_number_result     = false;
 
 if ( 'pythagorean' === $system ) {
-
-	if ( 'life-path-number' === $selected_calculator ) {
+	if ( 'life-path-number' === $calculator ) {
 		$number_result_object = $result->getLifePathNumber();
-	} elseif ( 'personality-number' === $selected_calculator ) {
+	} elseif ( 'personality-number' === $calculator ) {
 		$number_result_object = $result->getPersonalityNumber();
-	} elseif ( 'personal-year-number' === $selected_calculator ) {
+	} elseif ( 'personal-year-number' === $calculator ) {
 		$number_result_object = $result->getPersonalYearNumber();
-	} elseif ( 'universal-month-number' === $selected_calculator ) {
+	} elseif ( 'universal-month-number' === $calculator ) {
 		$number_result_object = $result->getUniversalMonthNumber();
-	} elseif ( 'personal-day-number' === $selected_calculator ) {
+	} elseif ( 'personal-day-number' === $calculator ) {
 		$number_result_object = $result->getPersonalDayNumber();
-	} elseif ( 'personal-month-number' === $selected_calculator ) {
+	} elseif ( 'personal-month-number' === $calculator ) {
 		$number_result_object = $result->getPersonalMonthNumber();
-	} elseif ( 'birthday-number' === $selected_calculator ) {
+	} elseif ( 'birthday-number' === $calculator ) {
 		$number_result_object = $result->getBirthdayNumber();
-	} elseif ( 'birth-month-number' === $selected_calculator ) {
+	} elseif ( 'birth-month-number' === $calculator ) {
 		$number_result_object = $result->getBirthMonthNumber();
-	} elseif ( 'universal-day-number' === $selected_calculator ) {
+	} elseif ( 'universal-day-number' === $calculator ) {
 		$number_result_object = $result->getUniversalDayNumber();
-	} elseif ( 'universal-year-number' === $selected_calculator ) {
+	} elseif ( 'universal-year-number' === $calculator ) {
 		$number_result_object = $result->getUniversalYearNumber();
-	} elseif ( 'inner-dream-number' === $selected_calculator ) {
+	} elseif ( 'inner-dream-number' === $calculator ) {
 		$number_result_object = $result->getInnerDreamNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'attainment-number' === $selected_calculator ) {
+	} elseif ( 'attainment-number' === $calculator ) {
 		$number_result_object = $result->getAttainmentNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'expression-number' === $selected_calculator ) {
+	} elseif ( 'expression-number' === $calculator ) {
 		$number_result_object = $result->getExpressionNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'soul-urge-number' === $selected_calculator ) {
+	} elseif ( 'soul-urge-number' === $calculator ) {
 		$number_result_object = $result->getSoulUrgeNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'balance-number' === $selected_calculator ) {
+	} elseif ( 'balance-number' === $calculator ) {
 		$number_result_object = $result->getBalanceNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'destiny-number' === $selected_calculator ) {
+	} elseif ( 'destiny-number' === $calculator ) {
 		$number_result_object = $result->getDestinyNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'capstone-number' === $selected_calculator ) {
+	} elseif ( 'capstone-number' === $calculator ) {
 		$number_result_object = $result->getCapstoneNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'cornerstone-number' === $selected_calculator ) {
+	} elseif ( 'cornerstone-number' === $calculator ) {
 		$number_result_object = $result->getCornerstoneNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'subconscious-self-number' === $selected_calculator ) {
+	} elseif ( 'subconscious-self-number' === $calculator ) {
 		$number_result_object = $result->getSubconsciousSelfNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'maturity-number' === $selected_calculator ) {
+	} elseif ( 'maturity-number' === $calculator ) {
 		$number_result_object = $result->getMaturityNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'hidden-passion-number' === $selected_calculator ) {
+	} elseif ( 'hidden-passion-number' === $calculator ) {
 		$number_result_object = $result->getHiddenPassionNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'rational-thought-number' === $selected_calculator ) {
+	} elseif ( 'rational-thought-number' === $calculator ) {
 		$number_result_object = $result->getRationalThoughtNumber();
 		$name_chart           = $result->getNameChart();
-	} elseif ( 'challenge-number' === $selected_calculator ) {
+	} elseif ( 'challenge-number' === $calculator ) {
 		$name                       = $result->getChallengeNumber()->getName();
 		$multiple_age_numbers       = $result->getChallengeNumber()->getChallenges();
 		$multiple_age_number_result = true;
-	} elseif ( 'pinnacle-number' === $selected_calculator ) {
+	} elseif ( 'pinnacle-number' === $calculator ) {
 		$name                       = $result->getPinnacleNumber()->getName();
 		$multiple_age_numbers       = $result->getPinnacleNumber()->getPinnacles();
 		$multiple_age_number_result = true;
-	} elseif ( 'karmic-debt-number' === $selected_calculator ) {
+	} elseif ( 'karmic-debt-number' === $calculator ) {
 		$name                   = $result->getKarmicDebtNumber()->getName();
 		$multiple_numbers       = $result->getKarmicDebtNumber()->getDebts();
 		$multiple_number_result = true;
-	} elseif ( 'bridge-number' === $selected_calculator ) {
+	} elseif ( 'bridge-number' === $calculator ) {
 		$name                   = $result->getBridgeNumber()->getName();
 		$multiple_numbers       = $result->getBridgeNumber()->getDifferences();
 		$multiple_number_result = true;
 	}
 } else {
-	if ( 'birth-number' === $selected_calculator ) {
+	if ( 'birth-number' === $calculator ) {
 		$number_result_object = $result->getBirthNumber();
-	} elseif ( 'life-path-number' === $selected_calculator ) {
+	} elseif ( 'life-path-number' === $calculator ) {
 		$number_result_object = $result->getLifePathNumber();
-	} elseif ( 'identity-initial-code-number' === $selected_calculator ) {
+	} elseif ( 'identity-initial-code-number' === $calculator ) {
 		$number_result_object = $result->getIdentityInitialCodeNumber();
-	} elseif ( 'daily-name-number' === $selected_calculator ) {
+	} elseif ( 'daily-name-number' === $calculator ) {
 		$number_result_object = $result->getDailyNameNumber();
-	} elseif ( 'whole-name-number' === $selected_calculator ) {
+	} elseif ( 'whole-name-number' === $calculator ) {
 		$name                   = $result->getWholeNameNumber()->getName();
 		$multiple_numbers       = $result->getWholeNameNumber()->getEnergies();
 		$multiple_number_result = true;
 	}
 }
-
-if ( $number_result_object ) {
-	$number_result = [
-		'name'        => $number_result_object->getName(),
-		'number'      => $number_result_object->getNumber(),
-		'description' => $number_result_object->getDescription(),
-	];
-}
-
 ?>
 
-
-<?php if ( $number_result ) : ?>
-	<?php include __DIR__ . '/numerology-number-result-only.tpl.php'; ?>
+<?php if ( $number_result_object ) : ?>
+	<?php
+	$this->render(
+		__DIR__ . '/numerology-number-result-only.tpl.php',
+		[
+			'name'        => $number_result_object->getName(),
+			'number'      => $number_result_object->getNumber(),
+			'description' => $number_result_object->getDescription(),
+		]
+	);
+	?>
 <?php endif; ?>
 
 <?php if ( $multiple_age_number_result ) : ?>
 	<h3><?php echo $name; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 	<?php foreach ( $multiple_age_numbers as $number ) : ?>
 		<?php
-			$number_result = [
+		$this->render(
+			__DIR__ . '/numerology-number-result-only.tpl.php',
+			[
 				'name'        => $number->getName(),
 				'age'         => $number->getAge(),
 				'number'      => $number->getNumber(),
 				'description' => $number->getDescription(),
-			];
-			?>
-		<?php include __DIR__ . '/numerology-number-result-only.tpl.php'; ?>
+			]
+		);
+		?>
 	<?php endforeach; ?>
 <?php endif; ?>
 
@@ -166,16 +166,18 @@ if ( $number_result_object ) {
 	<h3><?php echo $name; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 	<?php foreach ( $multiple_numbers as $number ) : ?>
 		<?php
-		$number_result = [
-			'name'        => $number->getName(),
-			'number'      => $number->getNumber(),
-			'description' => $number->getDescription(),
-		];
+		$this->render(
+			__DIR__ . '/numerology-number-result-only.tpl.php',
+			[
+				'name'        => $number->getName(),
+				'number'      => $number->getNumber(),
+				'description' => $number->getDescription(),
+			]
+		);
 		?>
-		<?php include __DIR__ . '/numerology-number-result-only.tpl.php'; ?>
 	<?php endforeach; ?>
 <?php endif; ?>
 
 <?php if ( $name_chart ) : ?>
-	<?php include __DIR__ . '/numerology-name-chart-only.tpl.php'; ?>
+	<?php $this->render( __DIR__ . '/numerology-name-chart-only.tpl.php', [ 'name_chart' => $name_chart ] ); ?>
 <?php endif; ?>

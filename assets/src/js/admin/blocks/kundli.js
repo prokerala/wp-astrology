@@ -12,7 +12,7 @@ const chartStyleOptions = Object.entries( chartStyles ).map( ([ value, label ]) 
 	return {value, label};
 });
 
-export default function KundliOptions( report, attributes, setOptions ) {
+export default function KundliOptions( attributes, setOptions ) {
 	/* eslint-disable camelcase */
 	const { display_charts, chart_style } = attributes.options;
 	const isChecked = !! display_charts;
