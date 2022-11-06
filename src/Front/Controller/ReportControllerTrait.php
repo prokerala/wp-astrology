@@ -222,5 +222,29 @@ trait ReportControllerTrait {
 			'result_type' => '',
 		];
 	}
+
+	/**
+	 * Check whether result can be rendered for current request.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function can_render_result() {
+		return (
+			! isset( $_SERVER['REQUEST_METHOD'] )
+			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		);
+	}
+
+	private function get_post_input( $var, $default = '' ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		if ( ! isset( $_POST[ $var ] ) ) {
+			return $default;
+		}
+
+		return sanitize_text_field( wp_unslash( (string) $_POST[ $var ] ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+	}
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

@@ -1,6 +1,6 @@
 <?php
 /**
- * Report Controller Interface.
+ * Choghadiya result.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2020 Ennexa Technologies Private Limited
@@ -27,51 +27,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace Prokerala\WP\Astrology\Front;
+// phpcs:disable VariableAnalysis, WordPress.WP.GlobalVariablesOverride.Prohibited
 
-/**
- * Report Controller Interface.
- *
- * @since 1.0.0
- */
-interface ReportControllerInterface {
-
-	/**
-	 * Render report form.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array $options Short code attributes.
-	 * @return string
-	 */
-	public function render_form( $options = [] );
-
-
-	/**
-	 * Process and render result.
-	 *
-	 * @since 1.0.1
-	 *
-	 * @param array $options Short code attributes.
-	 * @return string
-	 */
-	public function process( $options = [] );
-
-	/**
-	 * Get default values for supported attributes.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @return array<string,mixed>
-	 */
-	public function get_attribute_defaults();
-
-	/**
-	 * Check whether result can be rendered for current request.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @return bool
-	 */
-	public function can_render_result();
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
+?>
+<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
+	<?php foreach ( $result as $sign => $prediction ) : ?>
+		<h3><?php echo $prediction['sign']; ?></h3>
+		<p><?php echo $prediction['prediction']; ?></p>
+	<?php endforeach; ?>
+</div>
+
+<?php echo $options['attribution'] ? '<div class="pk-astrology-text-right"><em>Powered by <a href="https://www.prokerala.com/">Prokerala.com</a></em></div>' : ''; ?>

@@ -118,10 +118,6 @@ final class Front {
 	 * @return string
 	 */
 	public function render_result( $atts = [] ) {
-		if ( ! $this->is_post_request() ) {
-			return '';
-		}
-
 		return $this->report_controller->render_result( $atts );
 	}
 

@@ -148,6 +148,10 @@ class ReportController {
 		try {
 			$controller = $this->get_controller( $atts['report'] ?? '' );
 
+			if ( ! $controller->can_render_result() ) {
+				return '';
+			}
+
 			$args = shortcode_atts( $controller->get_attribute_defaults(), $atts );
 
 			return $controller->process( $args );
@@ -185,7 +189,7 @@ class ReportController {
 		$controller_class  = "Prokerala\\WP\\Astrology\\Front\\Report\\{$report_controller}";
 
 		if ( ! class_exists( $controller_class ) ) {
-			throw new \RuntimeException( 'Invalid report type' );
+			throw new \RuntimeException( 'Invalid report type' . $controller_class );
 		}
 
 		return new $controller_class( $this->config->get_options() );

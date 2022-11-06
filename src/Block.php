@@ -128,26 +128,14 @@ class Block {
 	public function render_block( $attributes ) {
 		$result  = '';
 		$options = [
-			'report'      => isset( $attributes['report'] ) ? $attributes['report'] : '',
-			'result_type' => isset( $attributes['resultType'] ) ? $attributes['resultType'] : '',
+			'report'      => $attributes['report'] ?? '',
+			'result_type' => $attributes['resultType'] ?? '',
 		] + $attributes['options'] ?? [];
 
-		if ( ! wp_doing_ajax() && $this->is_post_request() ) {
+		if ( ! wp_doing_ajax() ) {
 			$result = $this->report_controller->render_result( $options );
 		}
 
 		return $result . $this->report_controller->render_form( $options );
-	}
-
-	/**
-	 * Check whether current request is via POST.
-	 *
-	 * @return bool
-	 */
-	private function is_post_request() {
-		return (
-			! isset( $_SERVER['REQUEST_METHOD'] )
-			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		);
 	}
 }

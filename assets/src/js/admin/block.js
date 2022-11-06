@@ -6,6 +6,7 @@ const { InspectorControls } = wp.blockEditor;
 import ChartOptions from './blocks/chart';
 import KundliOptions from './blocks/kundli';
 import NumerologyOptions from './blocks/numerology';
+import DailyPredictionOptions from './blocks/horoscope';
 
 const { __ } = wp.i18n;
 
@@ -60,6 +61,10 @@ function ReportOptions( props ) {
 			KundliOptions( attributes, setOption ),
 			AddAdvancedOption( attributes, onChange )
 		];
+	}
+
+	if ( 'DailyPrediction' === report ) {
+		return DailyPredictionOptions( attributes, setOption );
 	}
 
 	if ( 'Numerology' === report ) {
@@ -138,22 +143,19 @@ registerBlockType( 'astrology/report', {
 							<option value="Porutham">Porutham</option>
 							<option value="ThirumanaPorutham">Thirumana Porutham</option>
 						</optgroup>
+						<optgroup label="Predictions">
+							<option value="DailyPrediction">Daily Horoscope</option>
+						</optgroup>
 						<optgroup label="Numerology">
 							<option value="Numerology">Numerology</option>
 						</optgroup>
 					</SelectControl>
 
-						<ReportOptions
-						report={report}
-						attributes={attributes}
-						onChange={setAttributes}
-					/>
+					<ReportOptions report={report} attributes={attributes} onChange={setAttributes}/>
 
 				</InspectorControls>
-				<ServerSideRender
-					block="astrology/report"
-					attributes={attributes}
-				/>
+
+				<ServerSideRender block="astrology/report" attributes={attributes} />
 			</div>
 		);
 	},
