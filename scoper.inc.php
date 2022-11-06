@@ -11,8 +11,8 @@
 use Isolated\Symfony\Component\Finder\Finder;
 
 return [
-	'prefix'                     => 'Prokerala\\Astrology\\Vendor',
-	'finders'                    => [
+	'prefix'                  => 'Prokerala\\Astrology\\Vendor',
+	'finders'                 => [
 		Finder::create()
 			->files()
 			->ignoreVCS( true )
@@ -50,17 +50,18 @@ return [
 		Finder::create()->append( [ 'composer.json' ] ),
 	],
 
-	'exclude-files'            => [
+	'exclude-files'           => [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
 		'vendor/symfony/polyfill-php73/bootstrap.php',
 		'vendor/symfony/polyfill-php80/bootstrap.php',
 	],
 
-	'patchers'                   => [],
+	'patchers'                => [],
 
-	'whitelist'                  => [
-		'Psr\*',
-		'Prokerala\*',
+	'whitelist'               => [],
+	'exclude-namespaces'      => [
+		'Prokerala',
+		'/^Psr\\\/',
 	],
 	'expose-global-constants' => false,
 	'expose-global-classes'   => false,

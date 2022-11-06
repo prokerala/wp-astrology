@@ -207,5 +207,20 @@ trait ReportControllerTrait {
 
 		return $this->view()->render( $tpl_file, $data );
 	}
+
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function get_attribute_defaults() {
+		return [
+			'form_action' => null,
+			'report'      => '',
+			'result_type' => '',
+		];
+	}
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

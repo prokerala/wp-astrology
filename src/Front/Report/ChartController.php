@@ -40,7 +40,9 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
  */
 class ChartController implements ReportControllerInterface {
 
-	use ReportControllerTrait;
+	use ReportControllerTrait {
+		get_attribute_defaults as getCommonAttributeDefaults;
+	}
 
 	/**
 	 * ChartController constructor
@@ -123,5 +125,12 @@ class ChartController implements ReportControllerInterface {
 				'options' => $this->get_options(),
 			]
 		);
+	}
+
+	public function get_attribute_defaults() {
+		return $this->getCommonAttributeDefaults() + [
+			'chart_style' => 'rasi',
+			'chart_type'  => 'north-indian',
+		];
 	}
 }

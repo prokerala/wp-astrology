@@ -3,6 +3,8 @@ const { createElement } = wp.element;
 const { SelectControl } = wp.components;
 const { serverSideRender: ServerSideRender } = wp;
 const { InspectorControls } = wp.blockEditor;
+import ChartOptions from './blocks/chart';
+import KundliOptions from './blocks/kundli';
 
 const { __ } = wp.i18n;
 
@@ -30,21 +32,14 @@ const labelOptions = REPORTS.map( ({value, name}) => {
     return {value, label: name};
 });
 
-function AdvancedOption( props ) {
-
-	let report = findReport( props.report );
-	if ( ! report.advanced ) {
-		return null;
-	}
-
-	const { resultType } = props;
-	const { onChange } = props;
+function AddAdvancedOption( report, attributes, setAttributes ) {
+	const { resultType } = attributes;
 
 	return (
 		<SelectControl
 			label={__( 'Result Type' )}
 			value={resultType}
-			onChange={resultType => onChange({resultType})}
+			onChange={resultType => setAttributes({resultType})}
 			options={[
 				{value: '', label: ''},
 				{value: 'basic', label: 'Basic'},
@@ -52,6 +47,41 @@ function AdvancedOption( props ) {
 			]}
 		/>
 	);
+}
+
+function transformKeys( object ) {
+	return Object.fromEntries(
+		Object.entries( object ).map(
+			([ key, val ]) => [
+				key.replace( /[A-Z]/, ( char ) => `_${char.toLowerCase()}` ),
+				val
+			]
+		)
+	);
+}
+
+function ReportOptions( props ) {
+	const { attributes } = props;
+	const { onChange } = props;
+
+	let report = findReport( props.report );
+
+	const { options } = attributes;
+	const setOptions = ( val ) => onChange({options: Object.assign({}, options, val )});
+
+	if ( 'Chart' === report.value ) {
+		return ChartOptions( report, attributes, setOptions );
+	}
+
+	if ( 'Kundli' === report.value ) {
+		return KundliOptions( report, attributes, setOptions );
+	}
+
+	if ( report.advanced ) {
+		return AddAdvancedOption( report, attributes, onChange );
+	}
+
+	return null;
 }
 
 function findReport( name ) {
@@ -76,12 +106,16 @@ registerBlockType( 'astrology/report', {
 		resultType: {
 			type: 'string',
 			default: ''
+		},
+		options: {
+			type: 'object',
+			default: {
+			}
 		}
 	},
 	example: {},
 	edit({ attributes, setAttributes, className }) {
 		const { report } = attributes;
-		const { resultType } = attributes;
 
 		return (
 			<div className={className}>
@@ -93,9 +127,9 @@ registerBlockType( 'astrology/report', {
 						options={labelOptions}
 					/>
 
-					<AdvancedOption
+					<ReportOptions
 						report={report}
-						value={resultType}
+						attributes={attributes}
 						onChange={setAttributes}
 					/>
 

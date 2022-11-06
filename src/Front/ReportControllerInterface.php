@@ -56,4 +56,13 @@ interface ReportControllerInterface {
 	 * @return string
 	 */
 	public function process( $options = [] );
+
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function get_attribute_defaults();
 }

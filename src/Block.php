@@ -108,6 +108,10 @@ class Block {
 						'default' => '',
 						'type'    => 'string',
 					],
+					'options'    => [
+						'default' => [],
+						'type'    => 'object',
+					],
 				],
 			]
 		);
@@ -122,17 +126,17 @@ class Block {
 	 * @return string
 	 */
 	public function render_block( $attributes ) {
-		$result = '';
+		$result  = '';
+		$options = [
+			'report'      => isset( $attributes['report'] ) ? $attributes['report'] : '',
+			'result_type' => isset( $attributes['resultType'] ) ? $attributes['resultType'] : '',
+		] + $attributes['options'] ?? [];
+
 		if ( ! wp_doing_ajax() && $this->is_post_request() ) {
-			$result = $this->report_controller->render_result( $attributes );
+			$result = $this->report_controller->render_result( $options );
 		}
 
-		return $result . $this->report_controller->render_form(
-			[
-				'report'      => isset( $attributes['report'] ) ? $attributes['report'] : '',
-				'result_type' => isset( $attributes['resultType'] ) ? $attributes['resultType'] : '',
-			]
-		);
+		return $result . $this->report_controller->render_form( $options );
 	}
 
 	/**

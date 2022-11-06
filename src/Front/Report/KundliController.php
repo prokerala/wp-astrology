@@ -44,7 +44,9 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
  */
 class KundliController implements ReportControllerInterface {
 
-	use ReportControllerTrait;
+	use ReportControllerTrait {
+		get_attribute_defaults as getCommonAttributeDefaults;
+	}
 
 	/**
 	 * KundliController constructor
@@ -321,5 +323,12 @@ class KundliController implements ReportControllerInterface {
 			];
 		}
 		return $dasha_period_result;
+	}
+
+	public function get_attribute_defaults() {
+		return $this->getCommonAttributeDefaults() + [
+			'display_charts' => '',
+			'chart_style'    => 'north-indian',
+		];
 	}
 }

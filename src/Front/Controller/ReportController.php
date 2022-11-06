@@ -118,23 +118,18 @@ class ReportController {
 	 * @return string
 	 */
 	public function render_form( $atts = [] ) {
-		static $args = [
-			'display_charts' => '',
-			'form_action'    => null,
-			'report'         => '',
-			'result_type'    => '',
-		];
-
-		$args = shortcode_atts( $args, $atts );
-
 		try {
-			$controller = $this->get_controller( $args['report'] );
+			$controller = $this->get_controller( $atts['report'] ?? '' );
+
+			$args = shortcode_atts( $controller->get_attribute_defaults(), $atts );
 
 			return $controller->render_form(
 				[
 					'result_type' => isset( $args['result_type'] ) ? $args['result_type'] : '',
 					'form_action' => isset( $args['form_action'] ) ? $args['form_action'] : '',
-				]
+					'calculator'  => isset( $args['calculator'] ) ? $args['calculator'] : '',
+					'system'      => isset( $args['system'] ) ? $args['system'] : '',
+				] + $args
 			);
 		} catch ( \RuntimeException $e ) {
 			return "<blockquote>{$e->getMessage()}</blockquote>";
@@ -150,15 +145,10 @@ class ReportController {
 	 * @return string
 	 */
 	public function render_result( $atts = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
-		static $args = [
-			'display_charts' => '',
-			'report'         => '',
-		];
-
 		try {
-			$args = shortcode_atts( $args, $atts );
+			$controller = $this->get_controller( $atts['report'] ?? '' );
 
-			$controller = $this->get_controller( $args['report'] );
+			$args = shortcode_atts( $controller->get_attribute_defaults(), $atts );
 
 			return $controller->process( $args );
 		} catch ( ValidationException $e ) {
