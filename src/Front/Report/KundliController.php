@@ -3,6 +3,8 @@
  * Kundli controller.
  *
  * @package   Prokerala\WP\Astrology
+ * @subpackage WordPress Plugin
+ * @author    Prokerala<support+api@prokerala.com>
  * @copyright 2020 Ennexa Technologies Private Limited
  * @license   https://www.gnu.org/licenses/gpl-2.0.en.html GPLV2
  * @link      https://api.prokerala.com
@@ -325,6 +327,13 @@ class KundliController implements ReportControllerInterface {
 		return $dasha_period_result;
 	}
 
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return array<string,mixed>
+	 */
 	public function get_attribute_defaults() {
 		return $this->getCommonAttributeDefaults() + [
 			'display_charts' => '',

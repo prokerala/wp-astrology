@@ -125,10 +125,10 @@ class ReportController {
 
 			return $controller->render_form(
 				[
-					'result_type' => isset( $args['result_type'] ) ? $args['result_type'] : '',
-					'form_action' => isset( $args['form_action'] ) ? $args['form_action'] : '',
-					'calculator'  => isset( $args['calculator'] ) ? $args['calculator'] : '',
-					'system'      => isset( $args['system'] ) ? $args['system'] : '',
+					'result_type' => $args['result_type'] ?? '',
+					'form_action' => $args['form_action'] ?? '',
+					'calculator'  => $args['calculator'] ?? '',
+					'system'      => $args['system'] ?? '',
 				] + $args
 			);
 		} catch ( \RuntimeException $e ) {

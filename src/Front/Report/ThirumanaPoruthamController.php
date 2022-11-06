@@ -154,28 +154,33 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 */
 	private function get_compatibility_result( $result, $advanced ) {
 
-		$compatibility_result                  = [];
-		$compatibility_result['maximumPoint']  = $result->getMaximumPoints();
-		$compatibility_result['ObtainedPoint'] = $result->getObtainedPoints();
-		$message                               = $result->getMessage();
-		$compatibility_result['message']       = [
-			'type'        => $message->getType(),
-			'description' => $message->getDescription(),
-		];
+		$matches = [];
 
-		foreach ( $result->getMatches() as $idx => $match ) {
-			$matches = [
-				'id'          => $match->getId(),
-				'name'        => $match->getName(),
-				'hasPorutham' => $match->hasPorutham(),
+		foreach ( $result->getMatches() as $idx => $val ) {
+			$match = [
+				'id'          => $val->getId(),
+				'name'        => $val->getName(),
+				'hasPorutham' => $val->hasPorutham(),
 			];
 			if ( $advanced ) {
-				$matches['points']      = $match->getPoints();
-				$matches['description'] = $match->getDescription();
+				$match += [
+					'points'      => $val->getPoints(),
+					'description' => $val->getDescription(),
+				];
 			}
-			$compatibility_result['matches'][ $idx ] = $matches;
+			$matches[ $idx ] = $match;
 		}
 
-		return $compatibility_result;
+		$message = $result->getMessage();
+
+		return [
+			'maximumPoint'  => $result->getMaximumPoints(),
+			'ObtainedPoint' => $result->getObtainedPoints(),
+			'message'       => [
+				'type'        => $message->getType(),
+				'description' => $message->getDescription(),
+			],
+			'matches'       => $matches,
+		];
 	}
 }

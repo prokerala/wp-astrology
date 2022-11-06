@@ -127,6 +127,13 @@ class ChartController implements ReportControllerInterface {
 		);
 	}
 
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return array<string,mixed>
+	 */
 	public function get_attribute_defaults() {
 		return $this->getCommonAttributeDefaults() + [
 			'chart_style' => 'rasi',

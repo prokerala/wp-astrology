@@ -203,15 +203,15 @@ class KundliMatchingController implements ReportControllerInterface {
 		$ar_guna = $guna_milan->getGuna();
 
 		foreach ( $ar_guna as $guna ) {
-			 $compatibility_result['gunaMilan']['guna'][] = [
-				 'id'             => $guna->getId(),
-				 'name'           => $guna->getName(),
-				 'girlKoot'       => $guna->getGirlKoot(),
-				 'boyKoot'        => $guna->getBoyKoot(),
-				 'maximumPoints'  => $guna->getMaximumPoints(),
-				 'obtainedPoints' => $guna->getObtainedPoints(),
-				 'description'    => $guna->getDescription(),
-			 ];
+			$compatibility_result['gunaMilan']['guna'][] = [
+				'id'             => $guna->getId(),
+				'name'           => $guna->getName(),
+				'girlKoot'       => $guna->getGirlKoot(),
+				'boyKoot'        => $guna->getBoyKoot(),
+				'maximumPoints'  => $guna->getMaximumPoints(),
+				'obtainedPoints' => $guna->getObtainedPoints(),
+				'description'    => $guna->getDescription(),
+			];
 		}
 		$compatibility_result['exceptions'] = $result->getExceptions();
 
@@ -232,6 +232,6 @@ class KundliMatchingController implements ReportControllerInterface {
 			'description'     => $boy_mangal_dosha_details->getDescription(),
 		];
 
-		 return $compatibility_result;
+		return $compatibility_result;
 	}
 }
