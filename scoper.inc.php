@@ -34,16 +34,17 @@ return [
 					'vendor/php-http/httplug',
 					'vendor/php-http/promise',
 					'vendor/prokerala/astrology-sdk',
-					'vendor/psr/',
+					'vendor/psr',
 					'vendor/ralouphie/getallheaders',
 					'vendor/slim/psr7',
-					'vendor/symfony/cache',
 					'vendor/symfony/cache-contracts',
+					'vendor/symfony/cache',
+					'vendor/symfony/deprecation-contracts',
 					'vendor/symfony/options-resolver',
-					'vendor/symfony/service-contracts',
-					'vendor/symfony/var-exporter',
 					'vendor/symfony/polyfill-php73',
 					'vendor/symfony/polyfill-php80',
+					'vendor/symfony/service-contracts',
+					'vendor/symfony/var-exporter',
 				]
 			)
 			->name( [ '*.php' ] ),
@@ -52,8 +53,9 @@ return [
 
 	'exclude-files'           => [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
-		'vendor/symfony/polyfill-php73/bootstrap.php',
-		'vendor/symfony/polyfill-php80/bootstrap.php',
+		// 'vendor/symfony/polyfill-php73/bootstrap.php',
+		// 'vendor/symfony/polyfill-php80/bootstrap.php',
+		// 'vendor/symfony/deprecation-contracts/function.php',
 	],
 
 	'patchers'                => [],

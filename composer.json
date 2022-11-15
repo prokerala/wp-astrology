@@ -10,7 +10,7 @@
   ],
   "config": {
     "platform": {
-      "php": "7.2"
+      "php": "8.0"
     },
     "sort-packages": true,
     "optimize-autoloader": true,
@@ -21,13 +21,13 @@
     }
   },
   "require": {
-    "php": ">=7.2",
+    "php": ">=8.0",
     "ext-curl": "*",
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/installers": "^2.0",
     "kriswallsmith/buzz": "^1.2",
-    "prokerala/astrology-sdk": "dev-master",
+    "prokerala/astrology-sdk": "1.0.*@dev",
     "slim/psr7": "^1.4",
     "symfony/cache": "^4.4"
   },
@@ -57,16 +57,22 @@
     "lint": "phpcs .",
     "lint-fix": "phpcbf .",
     "post-install-cmd": [
-      "@prefix-dependencies"
+      "@prefix-dependencies",
+      "@rector-downgrade"
     ],
     "post-update-cmd": [
-      "@prefix-dependencies"
+      "@prefix-dependencies",
+      "@rector-downgrade"
+    ],
+    "rector-downgrade": [
+      "composer bin php-scoper require --dev rector/rector",
+      "rector process ./dependencies --config rector-downgrade.php"
     ],
     "install-php-scoper": [
       "composer bin php-scoper config minimum-stability dev",
       "composer bin php-scoper config prefer-stable true",
       "composer bin php-scoper require --dev humbug/php-scoper",
-      "php-scoper add-prefix --output-dir=./dependencies --force --quiet"
+      "php-scoper add-prefix --output-dir=./dependencies --force"
     ],
     "prefix-dependencies": [
       "@install-php-scoper",
