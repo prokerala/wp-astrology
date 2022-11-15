@@ -10,7 +10,7 @@
   ],
   "config": {
     "platform": {
-      "php": "7.2"
+      "php": "8.0"
     },
     "sort-packages": true,
     "optimize-autoloader": true,
@@ -21,13 +21,13 @@
     }
   },
   "require": {
-    "php": ">=7.2",
+    "php": ">=8.0",
     "ext-curl": "*",
     "ext-json": "*",
     "ext-openssl": "*",
     "composer/installers": "^2.0",
     "kriswallsmith/buzz": "^1.2",
-    "prokerala/astrology-sdk": "dev-master",
+    "prokerala/astrology-sdk": "1.0.0-beta",
     "slim/psr7": "^1.4",
     "symfony/cache": "^4.4"
   },
@@ -37,6 +37,7 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
     "php-stubs/wordpress-stubs": "^5.5.3",
     "phpcompatibility/php-compatibility": "^9.3",
+    "rector/rector": "^0.14.8",
     "roave/security-advisories": "dev-master",
     "wp-coding-standards/wpcs": "^2.3"
   },
@@ -57,16 +58,21 @@
     "lint": "phpcs .",
     "lint-fix": "phpcbf .",
     "post-install-cmd": [
-      "@prefix-dependencies"
+      "@prefix-dependencies",
+      "@rector-downgrade"
     ],
     "post-update-cmd": [
-      "@prefix-dependencies"
+      "@prefix-dependencies",
+      "@rector-downgrade"
+    ],
+    "rector-downgrade": [
+      "rector process ./dependencies --config rector-downgrade.php"
     ],
     "install-php-scoper": [
       "composer bin php-scoper config minimum-stability dev",
       "composer bin php-scoper config prefer-stable true",
       "composer bin php-scoper require --dev humbug/php-scoper",
-      "php-scoper add-prefix --output-dir=./dependencies --force --quiet"
+      "php-scoper add-prefix --output-dir=./dependencies --force"
     ],
     "prefix-dependencies": [
       "@install-php-scoper",
