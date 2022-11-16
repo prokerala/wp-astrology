@@ -117,7 +117,7 @@ class ReportController {
 	 * @param array $atts Short code attributes.
 	 * @return string
 	 */
-	public function render_form( $atts = [] ) {
+	public function render_form( $atts = [] ) {  // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		try {
 			$controller = $this->get_controller( $atts['report'] ?? '' );
 

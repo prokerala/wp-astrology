@@ -53,9 +53,6 @@ return [
 
 	'exclude-files'           => [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
-		// 'vendor/symfony/polyfill-php73/bootstrap.php',
-		// 'vendor/symfony/polyfill-php80/bootstrap.php',
-		// 'vendor/symfony/deprecation-contracts/function.php',
 	],
 
 	'patchers'                => [],

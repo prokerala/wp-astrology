@@ -142,7 +142,7 @@ class NumerologyController implements ReportControllerInterface {
 			function ( $calculators ) {
 				return array_map(
 					function ( $val ) {
-							 return $val[0];
+							return $val[0];
 					},
 					$calculators
 				); },
@@ -154,7 +154,7 @@ class NumerologyController implements ReportControllerInterface {
 			'pythagorean' => 'Pythagorean',
 		];
 
-		$selected_system          = $options['system'] ?: 'pythagorean';
+		$selected_system          = $options['system'] ? $options['system'] : 'pythagorean';
 		$selected_calculator_name = $calculators[ $selected_system ][ $options['calculator'] ] ?? '';
 
 		$input = $this->get_post_data();
@@ -180,7 +180,7 @@ class NumerologyController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$tz     = $this->get_timezone();
 		$client = $this->get_api_client();
 
@@ -239,17 +239,17 @@ class NumerologyController implements ReportControllerInterface {
 	 *
 	 * @return string[]
 	 */
-	private function get_post_data() {
+	private function get_post_data() { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$data = [
-			'date'           => isset( $_POST['date'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['date'] ) ) : '',
-			'system'         => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['system'] ) ) : 'pythagorean',
-			'calculator'     => isset( $_POST['calculator'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['calculator'] ) ) : 'life-path-number',
-			'first_name'     => isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['first_name'] ) ) : '',
-			'middle_name'    => isset( $_POST['middle_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['middle_name'] ) ) : '',
-			'last_name'      => isset( $_POST['last_name'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['last_name'] ) ) : '',
-			'reference_year' => isset( $_POST['reference_year'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['reference_year'] ) ) : '',
-			'vowel'          => isset( $_POST['vowel'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['vowel'] ) ) : '',
+			'date'           => $this->get_post_input( 'date', '' ),
+			'system'         => $this->get_post_input( 'system', 'pythagorean' ),
+			'calculator'     => $this->get_post_input( 'calculator', 'life-path-number' ),
+			'first_name'     => $this->get_post_input( 'first_name', '' ),
+			'middle_name'    => $this->get_post_input( 'middle_name', '' ),
+			'last_name'      => $this->get_post_input( 'last_name', '' ),
+			'reference_year' => $this->get_post_input( 'reference_year', '' ),
+			'vowel'          => $this->get_post_input( 'vowel', '' ),
 		];
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 

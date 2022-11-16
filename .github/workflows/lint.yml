@@ -18,12 +18,14 @@ jobs:
     - name: Set PHP version
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.2'
+        php-version: '8.0'
         coverage: none
-        tools: composer:v1
-    - name: composer install
-      run: composer install
-    - name: PHPCS check
-      uses: chekalsky/phpcs-action@v1
-      with:
-        phpcs_bin_path: './vendor/bin/phpcs .'
+        tools: composer:v2
+    - name: Install Dependencies
+      run: composer install --no-scripts
+    - name: PHPCS Check
+      run: ./vendor/bin/phpcs .
+    # - name: PHPCS check
+    #   uses: chekalsky/phpcs-action@v1
+    #   with:
+    #     phpcs_bin_path: './vendor/bin/phpcs ~/work/wp-astrology/wp-astrology'

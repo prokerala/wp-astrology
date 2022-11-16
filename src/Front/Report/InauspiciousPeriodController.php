@@ -84,7 +84,7 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
+		$datetime = $this->get_post_input( 'datetime', '' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new InauspiciousPeriod( $client );

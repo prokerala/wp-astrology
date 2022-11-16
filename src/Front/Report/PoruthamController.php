@@ -87,10 +87,10 @@ class PoruthamController implements ReportControllerInterface {
 		$boy_location  = $this->get_location( $tz, 'boy_' );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$girl_dob    = isset( $_POST['girl_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['girl_dob'] ) ) : '';
-		$boy_dob     = isset( $_POST['boy_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['boy_dob'] ) ) : '';
-		$system      = isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['system'] ) ) : '';
-		$result_type = isset( $_POST['result_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['result_type'] ) ) : '';
+		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
+		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
+		$system      = $this->get_post_input( 'system', '' );
+		$result_type = $this->get_post_input( 'result_type', '' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$advanced = 'advanced' === $result_type;

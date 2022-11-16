@@ -109,9 +109,9 @@ class ChartController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime    = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
-		$chart_type  = isset( $_POST['chart_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['chart_type'] ) ) : '';
-		$chart_style = isset( $_POST['chart_style'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['chart_style'] ) ) : '';
+		$datetime    = $this->get_post_input( 'datetime', '' );
+		$chart_type  = $this->get_post_input( 'chart_type', '' );
+		$chart_style = $this->get_post_input( 'chart_style', '' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new Chart( $client );

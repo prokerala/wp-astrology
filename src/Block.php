@@ -125,7 +125,7 @@ class Block {
 	 * @param array $attributes Short code attributes.
 	 * @return string
 	 */
-	public function render_block( $attributes ) {
+	public function render_block( $attributes ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$result  = '';
 		$options = [
 			'report'      => $attributes['report'] ?? '',

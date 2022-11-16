@@ -92,8 +92,8 @@ class DailyPredictionController implements ReportControllerInterface {
 	public function process( $options = [] ) {
 		$tz = $this->get_timezone();
 
-		$day  = $options['day'] ?: $this->get_post_input( 'day' );
-		$sign = $options['sign'] ?: $this->get_post_input( 'sign' );
+		$day  = $options['day'] ? $options['day'] : $this->get_post_input( 'day' );
+		$sign = $options['sign'] ? $options['sign'] : $this->get_post_input( 'sign' );
 
 		$datetime = new \DateTimeImmutable( $day, $tz );
 
@@ -133,9 +133,23 @@ class DailyPredictionController implements ReportControllerInterface {
 		return true;
 	}
 
-	private function load_predictions( $datetime, $sign ) {
+	/**
+	 * Load prediction for the requested day from, updating cache if the value is not yet cached.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param \DateTimeInterface $datetime Datetime to load prediction.
+	 * @param string             $sign Zodiac sign to fetch load. Empty to retrieve for all signs.
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function load_predictions( $datetime, $sign ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
-		$data = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) ) ?: [];
+		$data = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) );
+
+		if ( ! $data ) {
+			$data = [];
+		}
 
 		$result = [];
 
@@ -152,16 +166,31 @@ class DailyPredictionController implements ReportControllerInterface {
 		return $result;
 	}
 
+	/**
+	 * Fetch prediction from API server.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param \DateTimeInterface $datetime Datetime to fetch prediction.
+	 * @param string             $sign Zodiac sign to fetch load.
+	 *
+	 * @return array<string,mixed>
+	 */
 	private function fetch_prediction( $datetime, string $sign ) {
-		$client           = $this->get_api_client();
-		$method           = new DailyPrediction( $client );
-		$dailyPredictiton = $method->process( $datetime, $sign )->getDailyHoroscopePrediction();
+		$client            = $this->get_api_client();
+		$method            = new DailyPrediction( $client );
+		$daily_predictiton = $method->process( $datetime, $sign )->getDailyHoroscopePrediction();
 
-		$data          = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) ) ?: [];
+		$data = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) );
+
+		if ( ! $data ) {
+			$data = [];
+		}
+
 		$data[ $sign ] = [
-			'id'         => $dailyPredictiton->getSignId(),
-			'sign'       => $dailyPredictiton->getSignName(),
-			'prediction' => $dailyPredictiton->getPrediction(),
+			'id'         => $daily_predictiton->getSignId(),
+			'sign'       => $daily_predictiton->getSignName(),
+			'prediction' => $daily_predictiton->getPrediction(),
 		];
 		set_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ), $data, 259200 );
 

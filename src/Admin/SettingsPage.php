@@ -304,7 +304,7 @@ final class SettingsPage {
 	 * @param string $client_id Client id.
 	 * @param string $client_secret Client secret.
 	 */
-	private function validate_client( $client_id, $client_secret ) {
+	private function validate_client( $client_id, $client_secret ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		static $messages = [
 			'invalid_client'        => [ 'client_id', 'Server rejected the client id. Please check.' ],
 			'invalid_client_secret' => [ 'client_secret', 'Client secret is incorrect' ],

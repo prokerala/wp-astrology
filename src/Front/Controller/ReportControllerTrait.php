@@ -237,6 +237,16 @@ trait ReportControllerTrait {
 		);
 	}
 
+	/**
+	 * Get sanitized input value from POST request body.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $var Input parameter name.
+	 * @param string $default Default value.
+	 *
+	 * @return string
+	 */
 	private function get_post_input( $var, $default = '' ) {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if ( ! isset( $_POST[ $var ] ) ) {
