@@ -3,7 +3,7 @@
  * PHP-Scoper Configuration
  *
  * @package   Prokerala\WP\Astrology
- * @copyright 2020 Ennexa Technologies Private Limited
+ * @copyright 2022 Ennexa Technologies Private Limited
  * @license   https://www.gnu.org/licenses/gpl-2.0.en.html GPLV2
  * @link      https://api.prokerala.com
  */
