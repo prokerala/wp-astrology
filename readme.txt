@@ -1,9 +1,9 @@
 === Astrology ===
 Contributors: Prokerala
 Tags: astrology, prokerala
-Requires at least: 5.5
-Tested up to: 5.8.3
-Stable tag: 1.0.6
+Requires at least: 5.6
+Tested up to: 6.1.1
+Stable tag: 1.1.0
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -11,7 +11,9 @@ Turn your Wordpress blog into a full astrology site, powered by Prokerala's astr
 
 == Description ==
 
-Turn your Wordpress blog into a full astrology site, powered by Prokerala's astrology API.
+[youtube https://www.youtube.com/watch?v=QAEMQXtTdIc]
+
+Turn your Wordpress blog into a full astrology site, powered by [__Prokerala__](https://www.prokerala.com)'s astrology API.
 
 = Features =
 * Free
@@ -42,8 +44,12 @@ Turn your Wordpress blog into a full astrology site, powered by Prokerala's astr
 
 == Installation ==
 
-1. Upload `astrology` folder to the `/wp-content/plugins/` directory.
-2. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Go to Plugins -> Add New
+2. Search for "Prokerala Astrology"
+3. Click "Install"
+4. Click "Activate"
+5. Enter your Prokerala API credentials in the plugin's settings page.
+6. That's it. The `[astrology]` shortcode and `Astrology Reports` block will be available in your wordpress editor.
 
 == Usage ==
 
@@ -69,13 +75,14 @@ Where `REPORT_NAME` must be one of following
 - `BirthDetails`
 - `Chart`
 - `Choghadiya`
+- `DailyPrediction`
 - `InauspiciousPeriod`
 - `KaalSarpDosha`
-- `KundliCharts`
 - `Kundli`
 - `KundliMatching`
 - `MangalDosha`
 - `NakshatraPorutham`
+- `Numerology`
 - `Panchang`
 - `PapasamyamCheck`
 - `Papasamyam`
@@ -104,6 +111,14 @@ Where `REPORT_NAME` must be one of following
 
    `[astrology report="Kundli" chart_style="south-indian"]`
 
+- `sign`
+
+   By default the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+
+- `date`
+
+   By default the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+
 == Frequently Asked Questions ==
 
 = Do I need an account to use this plugin? =
@@ -115,6 +130,11 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.1.0 =
+* Added support for Daily Horoscope Predictions
+* Added support for Numerology
+* Added additional astrology services
 
 = 1.0.6 =
 * Fix datetimes reverting to UTC

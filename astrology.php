@@ -11,7 +11,7 @@
  * Plugin Name: Astrology
  * Plugin URI:  https://api.prokerala.com
  * Description: Integrate astrology calculators powered by Prokerala's Astrology API
- * Version:     1.0.6
+ * Version:     1.1.0
  * Author:      Prokerala
  * Author URI:  https://www.prokerala.com
  * License:     GPLv2 or later
@@ -22,7 +22,7 @@
 /*
  * This file is part of Prokerala Astrology WordPress plugin
  *
- * Copyright (c) 2020 Ennexa Technologies Private Limited
+ * Copyright (c) 2022 Ennexa Technologies Private Limited
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

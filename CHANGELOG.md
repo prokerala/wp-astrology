@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.1.0] - 2022-11-16
+### Added
+- Added support for Daily Horoscope Predictions
+- Added support for Numerology
+- Added additional astrology services
+
 ## [1.0.6] - 2022-01-18
 ### Fixed
 - Fix datetimes reverting to UTC
@@ -20,6 +26,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.1.0]: https://github.com/prokerala/wp-astrology/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/prokerala/wp-astrology/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/prokerala/wp-astrology/compare/v1.0.4...v1.0.5
 [1.0.4]: https://github.com/prokerala/wp-astrology/compare/v1.0.3...v1.0.4
