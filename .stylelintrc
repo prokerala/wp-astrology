@@ -1,6 +1,7 @@
 {
-  "extends": "stylelint-config-wordpress/scss",
+  "extends": "@wordpress/stylelint-config/scss",
   "plugins": ["stylelint-order"],
+  "customSyntax": "postcss-scss",
   "rules": {
     "order/properties-alphabetical-order": true,
     "max-line-length": 120

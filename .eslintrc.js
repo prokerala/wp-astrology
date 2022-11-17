@@ -2,35 +2,30 @@ module.exports = {
 	env: {
 		node: true,
 		browser: true,
-		es6: true
+		es6: true,
 	},
-	extends: [
-		'wordpress'
-	],
+	extends: ['plugin:@wordpress/eslint-plugin/recommended'],
 	parserOptions: {
-		'sourceType': 'module',
-		'ecmaFeatures': {
-			'jsx': true
-		}
+		sourceType: 'module',
+		ecmaFeatures: {
+			jsx: true,
+		},
 	},
 	rules: {
-		'complexity': [
+		complexity: [
 			'warn',
 			{
-				'max': 4
-			}
+				max: 4,
+			},
 		],
 		'max-lines-per-function': [
 			'error',
 			{
-				'max': 50,
-				'skipBlankLines': true,
-				'skipComments': true
-			}
+				max: 50,
+				skipBlankLines: true,
+				skipComments: true,
+			},
 		],
-		'max-depth': [
-			'error',
-			2
-		]
-	}
+		'max-depth': ['error', 2],
+	},
 };

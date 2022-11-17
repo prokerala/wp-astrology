@@ -2,9 +2,9 @@ const { SelectControl } = wp.components;
 const { __ } = wp.i18n;
 
 const systems = [
-	{label: '', value: ''},
-	{label: 'Pythagorean', value: 'pythagorean'},
-	{label: 'Chaldean', value: 'chaldean'}
+	{ label: '', value: '' },
+	{ label: 'Pythagorean', value: 'pythagorean' },
+	{ label: 'Chaldean', value: 'chaldean' },
 ];
 
 const calculators = {
@@ -12,8 +12,11 @@ const calculators = {
 		{ value: '', label: '' },
 		{ value: 'birth-number', label: 'Birth Number' },
 		{ value: 'life-path-number', label: 'Life Path Number' },
-		{ value: 'identity-initial-code-number', label: 'Identity Initial Code Number' },
-		{ value: 'whole-name-number', label: 'Whole Name Number' }
+		{
+			value: 'identity-initial-code-number',
+			label: 'Identity Initial Code Number',
+		},
+		{ value: 'whole-name-number', label: 'Whole Name Number' },
 	],
 	pythagorean: [
 		{ value: '', label: '' },
@@ -36,33 +39,36 @@ const calculators = {
 		{ value: 'balance-number', label: 'Balance Number' },
 		{ value: 'personal-day-number', label: 'Personal Day Number' },
 		{ value: 'cornerstone-number', label: 'Corner Stone Number' },
-		{ value: 'subconscious-self-number', label: 'Subconscious Self Number' },
+		{
+			value: 'subconscious-self-number',
+			label: 'Subconscious Self Number',
+		},
 		{ value: 'maturity-number', label: 'Maturity Number' },
 		{ value: 'hidden-passion-number', label: 'Hidden Passion Number' },
 		{ value: 'rational-thought-number', label: 'Rational Thought Number' },
 		{ value: 'pinnacle-number', label: 'Pinnacle Number' },
 		{ value: 'karmic-debt-number', label: 'Karmic Debt Number' },
-		{ value: 'bridge-number', label: 'Bridge Number' }
-	]
+		{ value: 'bridge-number', label: 'Bridge Number' },
+	],
 };
 
-export default function NumerologyOptions( attributes, setOptions ) {
+export default function NumerologyOptions(attributes, setOptions) {
 	/* eslint-disable camelcase */
 	const { calculator, system } = attributes.options;
 
 	return (
 		<div>
 			<SelectControl
-				label={ __( 'System' ) }
-				value={ system }
-				onChange={ system => setOptions({ system, calculator: '' }) }
-				options={ systems }
+				label={__('System')}
+				value={system}
+				onChange={(val) => setOptions({ system: val, calculator: '' })}
+				options={systems}
 			/>
 			<SelectControl
-				label={ __( 'Calculator' ) }
-				value={ calculator }
-				onChange={ calculator => setOptions({ calculator }) }
-				options={ calculators[system] }
+				label={__('Calculator')}
+				value={calculator}
+				onChange={(val) => setOptions({ calculator: val })}
+				options={calculators[system]}
 			/>
 		</div>
 	);

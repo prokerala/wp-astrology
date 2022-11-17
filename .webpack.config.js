@@ -1,10 +1,10 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const ErrorNotification = require("webpack-error-notification");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+var WebpackNotifierPlugin = require('webpack-notifier');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 		'js/admin/settings': ['./assets/src/js/admin/settings/app.js'],
 		'css/admin/settings': ['./assets/src/scss/admin/settings.scss'],
 		'js/admin/block': './assets/src/js/admin/block.js',
-		'js/main': ['./assets/src/js/front/main/app.js' ],
+		'js/main': ['./assets/src/js/front/main/app.js'],
 		'css/main': './assets/src/scss/main.scss',
 	},
 	output: {
@@ -24,12 +24,6 @@ module.exports = {
 	devtool: 'eval-cheap-source-map',
 	module: {
 		rules: [
-			{
-				enforce: 'pre',
-				exclude: /node_modules/,
-				test: /\.jsx$/,
-				loader: 'eslint-loader'
-			},
 			{
 				test: /\.jsx?$/,
 				loader: 'babel-loader'
@@ -58,7 +52,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
 		}),
-		new ErrorNotification(),
+		new WebpackNotifierPlugin(),
 		new CleanWebpackPlugin(),
 		new ESLintPlugin({
 			cache: true,
@@ -72,6 +66,6 @@ module.exports = {
 		})
 	],
 	optimization: {
-		minimizer: [new UglifyJsPlugin(), new OptimizeCssAssetsPlugin()]
+		minimizer: [new TerserPlugin(), new CssMinimizerPlugin()]
 	}
 };

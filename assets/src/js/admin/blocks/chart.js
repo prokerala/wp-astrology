@@ -5,39 +5,57 @@ const chartStyles = {
 	'': '',
 	'south-indian': 'South Indian',
 	'north-indian': 'North Indian',
-	'east-indian': 'East Indian'
+	'east-indian': 'East Indian',
 };
 
 const chartTypes = [
-	'', 'Rasi', 'Navamsa', 'Lagna', 'Trimsamsa', 'Drekkana', 'Chaturthamsa', 'Dasamsa', 'Ashtamsa',
-	'Dwadasamsa', 'Shodasamsa', 'Hora', 'Akshavedamsa', 'Shashtyamsa', 'Panchamsa', 'Khavedamsa',
-	'Saptavimsamsa', 'Shashtamsa', 'Chaturvimsamsa', 'Saptamsa', 'Vimsamsa'
+	'',
+	'Rasi',
+	'Navamsa',
+	'Lagna',
+	'Trimsamsa',
+	'Drekkana',
+	'Chaturthamsa',
+	'Dasamsa',
+	'Ashtamsa',
+	'Dwadasamsa',
+	'Shodasamsa',
+	'Hora',
+	'Akshavedamsa',
+	'Shashtyamsa',
+	'Panchamsa',
+	'Khavedamsa',
+	'Saptavimsamsa',
+	'Shashtamsa',
+	'Chaturvimsamsa',
+	'Saptamsa',
+	'Vimsamsa',
 ];
 
-const chartTypeOptions = chartTypes.map( label => {
-	return {value: label.toLowerCase(), label};
+const chartTypeOptions = chartTypes.map((label) => {
+	return { value: label.toLowerCase(), label };
 });
 
-const chartStyleOptions = Object.entries( chartStyles ).map( ([ value, label ]) => {
-	return {value, label};
+const chartStyleOptions = Object.entries(chartStyles).map(([value, label]) => {
+	return { value, label };
 });
 
-export default function ChartOptions( attributes, setOptions ) {
+export default function ChartOptions(attributes, setOptions) {
 	/* eslint-disable camelcase */
 	const { chart_type, chart_style } = attributes.options;
 
 	return (
 		<div>
 			<SelectControl
-				label={__( 'Chart Type' )}
+				label={__('Chart Type')}
 				value={chart_type}
-				onChange={chart_type => setOptions({ chart_type })}
+				onChange={(val) => setOptions({ chart_type: val })}
 				options={chartTypeOptions}
 			/>
 			<SelectControl
-				label={__( 'Chart Style' )}
+				label={__('Chart Style')}
 				value={chart_style}
-				onChange={chart_style => setOptions({ chart_style })}
+				onChange={(val) => setOptions({ chart_style: val })}
 				options={chartStyleOptions}
 			/>
 		</div>
