@@ -17,6 +17,8 @@ jobs:
         tools: composer:v2
     - name: composer install
       run: composer install
+    - name: remove composer-bin
+      run: rm -rf vendor-bin/
     - name: Build
       run: |
         npm ci
