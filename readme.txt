@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.1.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -130,6 +130,9 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.1.1 =
+* Fix: Drafts missing after enabling plugin
 
 = 1.1.0 =
 * Added support for Daily Horoscope Predictions
