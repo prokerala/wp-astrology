@@ -398,16 +398,16 @@
         },
         {
             "name": "prokerala/astrology-sdk",
-            "version": "1.0.2-beta",
+            "version": "1.0.3-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/prokerala/astrology-sdk.git",
-                "reference": "305ed236510570f736601c8fa76325ef95904fc9"
+                "reference": "58e432e012bc0808372e9b482c4ce9aa62b357b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prokerala/astrology-sdk/zipball/305ed236510570f736601c8fa76325ef95904fc9",
-                "reference": "305ed236510570f736601c8fa76325ef95904fc9",
+                "url": "https://api.github.com/repos/prokerala/astrology-sdk/zipball/58e432e012bc0808372e9b482c4ce9aa62b357b7",
+                "reference": "58e432e012bc0808372e9b482c4ce9aa62b357b7",
                 "shasum": ""
             },
             "require": {
@@ -455,9 +455,9 @@
             "description": "Prokerala.com Astrology API Client Library for PHP.",
             "support": {
                 "issues": "https://github.com/prokerala/astrology-sdk/issues",
-                "source": "https://github.com/prokerala/astrology-sdk/tree/v1.0.2-beta"
+                "source": "https://github.com/prokerala/astrology-sdk/tree/v1.0.3-beta"
             },
-            "time": "2022-11-16T17:09:02+00:00"
+            "time": "2022-12-08T10:33:17+00:00"
         },
         {
             "name": "psr/cache",
