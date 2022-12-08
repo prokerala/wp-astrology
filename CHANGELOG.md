@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.1.2] - 2022-12-08
+### Fixed
+- Fix PHP 7.x compatibility
+
 ## [1.1.1] - 2022-11-24
 ### Fixed
 - Drafts missing after enabling plugin
@@ -30,6 +34,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.1.2]: https://github.com/prokerala/wp-astrology/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/prokerala/wp-astrology/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/prokerala/wp-astrology/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/prokerala/wp-astrology/compare/v1.0.5...v1.0.6
