@@ -6,6 +6,8 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
 
 ## Available Services
 
+- Daily Horoscope Predictions
+- Numerology Calculators
 - Daily Panchang Calculators
   - Panchang
   - Auspicious Period
@@ -49,16 +51,17 @@ Where `REPORT_NAME` must be one of following
 - `BirthDetails`
 - `Chart`
 - `Choghadiya`
+- `DailyPrediction`
 - `InauspiciousPeriod`
 - `KaalSarpDosha`
-- `KundliCharts`
 - `Kundli`
 - `KundliMatching`
 - `MangalDosha`
 - `NakshatraPorutham`
+- `Numerology`
 - `Panchang`
-- `PapasamyamCheck`
 - `Papasamyam`
+- `PapasamyamCheck`
 - `PlanetPosition`
 - `Porutham`
 - `SadeSati`
@@ -89,6 +92,14 @@ Where `REPORT_NAME` must be one of following
    ```
    [astrology report="Kundli" chart_style="south-indian"]
    ```
+
+- **`sign`**
+
+   By default the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+
+- **`date`**
+
+   By default the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
 
 ### Frequently Asked Questions
 

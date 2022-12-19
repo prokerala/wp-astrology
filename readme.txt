@@ -21,6 +21,8 @@ Turn your Wordpress blog into a full astrology site, powered by [__Prokerala__](
 
 == Available Services ==
 
+* Daily Horoscope Predictions
+* Numerology Calculators
 * Daily Panchang Calculators
  * Panchang
  * Auspicious Period
@@ -84,8 +86,8 @@ Where `REPORT_NAME` must be one of following
 - `NakshatraPorutham`
 - `Numerology`
 - `Panchang`
-- `PapasamyamCheck`
 - `Papasamyam`
+- `PapasamyamCheck`
 - `PlanetPosition`
 - `Porutham`
 - `SadeSati`
