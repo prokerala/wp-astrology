@@ -68,7 +68,7 @@ class ChartController implements ReportControllerInterface {
 				'options'     => $options + $this->get_options(),
 				'datetime'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
 				'chart_type'  => 'rasi',
-				'chart_style' => 'south-indian',
+				'chart_style' => 'north-indian',
 				'chart_types' => [
 					'rasi',
 					'navamsa',
@@ -137,8 +137,8 @@ class ChartController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults() {
 		return $this->getCommonAttributeDefaults() + [
-			'chart_style' => 'rasi',
-			'chart_type'  => 'north-indian',
+			'chart_type'  => 'rasi',
+			'chart_style' => 'north-indian',
 		];
 	}
 }
