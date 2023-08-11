@@ -127,7 +127,11 @@ trait ReportControllerTrait {
 	 * @return int
 	 */
 	protected function get_input_ayanamsa() {
-		return isset( $_POST['ayanamsa'] ) ? (int) $_POST['ayanamsa'] : '';
+		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+			return '';
+		}
+
+		return isset( $_POST['ayanamsa'] ) ? (int) $_POST['ayanamsa'] : 1;
 	}
 
 	/**
