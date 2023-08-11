@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.1.3] - 2023-08-11
+### Fixed
+- Fix error message when saving shortcode without ayanamsa attribute
+- Fix interchanged default value for chart_type and chart_style
+
 ## [1.1.2] - 2022-12-08
 ### Fixed
 - Fix PHP 7.x compatibility
@@ -34,6 +39,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.1.3]: https://github.com/prokerala/wp-astrology/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/prokerala/wp-astrology/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/prokerala/wp-astrology/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/prokerala/wp-astrology/compare/v1.0.6...v1.1.0
