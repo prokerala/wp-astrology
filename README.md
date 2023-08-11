@@ -73,25 +73,19 @@ Where `REPORT_NAME` must be one of following
 
    The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
 
-   ```
-   [astrology report="Kundli" display_charts="lagna,rasi"]
-   ```
+        [astrology report="Kundli" display_charts="lagna,rasi"]
 
 - **`result_type`**
 
    In calculators that support `basic` and `advanced` results, the result type can be forced using the `result_type` attribute. Settings this attribute will remove the corresponding input fields from the form.
 
-   ```
-   [astrology report="Kundli" result_type="advanced"]
-   ```
+        [astrology report="Kundli" result_type="advanced"]
 
 - **`chart_style`**
 
    You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
 
-   ```
-   [astrology report="Kundli" chart_style="south-indian"]
-   ```
+        [astrology report="Kundli" chart_style="south-indian"]
 
 - **`sign`**
 
