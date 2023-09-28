@@ -61,7 +61,7 @@ class MangalDoshaController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
 
 		return $this->render(
 			'form/mangal-dosha',
@@ -87,7 +87,7 @@ class MangalDoshaController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		$datetime    = $this->get_post_input( 'datetime', '' );
-		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
 
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;

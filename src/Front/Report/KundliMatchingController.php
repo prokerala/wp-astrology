@@ -63,7 +63,7 @@ class KundliMatchingController implements ReportControllerInterface {
 	public function render_form( $options = [] ) {
 		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
-		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
 
 		return $this->render(
 			'form/kundli-matching',
@@ -93,7 +93,7 @@ class KundliMatchingController implements ReportControllerInterface {
 
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
-		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
 
 		$advanced = 'advanced' === $result_type;
 		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
