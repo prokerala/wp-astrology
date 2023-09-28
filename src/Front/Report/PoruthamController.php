@@ -61,14 +61,16 @@ class PoruthamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
+		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
+		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
 		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
 		return $this->render(
 			'form/porutham',
 			[
 				'options'     => $options + $this->get_options(),
-				'girl_dob'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
-				'boy_dob'     => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'girl_dob'    => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'     => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
 				'result_type' => $result_type,
 			]
 		);
@@ -83,21 +85,20 @@ class PoruthamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function process( $options = [] ) {
-		$tz            = $this->get_timezone();
+		$girl_tz       = $this->get_timezone( 'girl_' );
+		$boy_tz        = $this->get_timezone( 'boy_' );
 		$client        = $this->get_api_client();
 		$girl_location = $this->get_location( $tz, 'girl_' );
 		$boy_location  = $this->get_location( $tz, 'boy_' );
 
-		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
 		$system      = $this->get_post_input( 'system', '' );
-		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
 		$advanced = 'advanced' === $result_type;
-		$girl_dob = new \DateTimeImmutable( $girl_dob, $tz );
-		$boy_dob  = new \DateTimeImmutable( $boy_dob, $tz );
+		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
+		$boy_dob  = new \DateTimeImmutable( $boy_dob, $girl_tz );
 
 		$girl_profile = new Profile( $girl_location, $girl_dob );
 		$boy_profile  = new Profile( $boy_location, $boy_dob );

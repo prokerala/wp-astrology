@@ -60,11 +60,13 @@ class PapasamyamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
+		$datetime = $this->get_post_input( 'datetime', 'now' );
+
 		return $this->render(
 			'form/papasamyam',
 			[
 				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( 'now', $this->get_timezone() ),
+				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
 			]
 		);
 	}
