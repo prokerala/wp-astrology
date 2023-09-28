@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
+<div class="pk-astrology-prediction-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php foreach ( $result as $sign => $prediction ) : ?>
 		<h3><?php echo $prediction['sign'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<p><?php echo $prediction['prediction'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
