@@ -20,6 +20,10 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
 	</rule>
+    <rule ref="WordPress-Core">
+      <type>error</type>
+      <exclude name="Universal.Arrays.DisallowShortArraySyntax" />
+    </rule>
 
 	<rule ref="PHPCompatibility"/>
 

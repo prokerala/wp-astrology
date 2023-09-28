@@ -57,7 +57,6 @@ return [
 
 	'patchers'                => [],
 
-	'whitelist'               => [],
 	'exclude-namespaces'      => [
 		'Prokerala',
 		'/^Psr\\\/',
