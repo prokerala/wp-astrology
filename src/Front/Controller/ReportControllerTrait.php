@@ -246,18 +246,18 @@ trait ReportControllerTrait {
 	 *
 	 * @since 1.1.0
 	 *
-	 * @param string $var Input parameter name.
-	 * @param string $default Default value.
+	 * @param string $name Input parameter name.
+	 * @param string $fallback Default value.
 	 *
 	 * @return string
 	 */
-	private function get_post_input( $var, $default = '' ) {
+	private function get_post_input( $name, $fallback = '' ) {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		if ( ! isset( $_POST[ $var ] ) ) {
-			return $default;
+		if ( ! isset( $_POST[ $name ] ) ) {
+			return $fallback;
 		}
 
-		return sanitize_text_field( wp_unslash( (string) $_POST[ $var ] ) );
+		return sanitize_text_field( wp_unslash( (string) $_POST[ $name ] ) );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 	}
 }

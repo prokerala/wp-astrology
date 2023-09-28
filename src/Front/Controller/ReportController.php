@@ -189,7 +189,7 @@ class ReportController {
 		$controller_class  = "Prokerala\\WP\\Astrology\\Front\\Report\\{$report_controller}";
 
 		if ( ! class_exists( $controller_class ) ) {
-			throw new \RuntimeException( 'Invalid report type' . $controller_class );
+			throw new \RuntimeException( 'Invalid report type' . $controller_class ); // phpcs:ignore:WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		return new $controller_class( $this->config->get_options() );

@@ -136,7 +136,7 @@ final class Plugin {
 	 * @param string $main_file main plugin file.
 	 */
 	public static function load( $main_file ) {
-		$instance = new static( $main_file );
+		$instance = new self( $main_file );
 		$instance->register();
 	}
 

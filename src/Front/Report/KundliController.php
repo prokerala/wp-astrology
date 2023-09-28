@@ -213,7 +213,7 @@ class KundliController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
@@ -227,7 +227,7 @@ class KundliController implements ReportControllerInterface {
 		$kundli_result = $this->get_kundli_details( $client, $location, $datetime, $advanced );
 
 		if ( $options['display_charts'] ) {
-			$chart_style = isset( $options['chart_style'] ) ? $options['chart_style'] : 'north-indian';
+			$chart_style = $options['chart_style'] ?? 'north-indian';
 
 			$kundli_result['charts'] = [
 				'lagna'   => $this->get_chart( $client, $location, $datetime, 'lagna', $chart_style ),

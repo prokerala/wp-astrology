@@ -283,20 +283,6 @@ final class SettingsPage {
 	}
 
 	/**
-	 * Get validation message from status
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $status Client status.
-	 *
-	 * @return void
-	 */
-	public function get_client_status_notice( $status ) {
-		$origin = $this->get_origin();
-
-	}
-
-	/**
 	 * Validate API client id with server.
 	 *
 	 * @since 1.0.0
@@ -304,7 +290,7 @@ final class SettingsPage {
 	 * @param string $client_id Client id.
 	 * @param string $client_secret Client secret.
 	 */
-	private function validate_client( $client_id, $client_secret ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	private function validate_client( $client_id, $client_secret ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh,Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		static $messages = [
 			'invalid_client'        => [ 'client_id', 'Server rejected the client id. Please check.' ],
 			'invalid_client_secret' => [ 'client_secret', 'Client secret is incorrect' ],
@@ -324,8 +310,7 @@ final class SettingsPage {
 		$response = wp_remote_post(
 			"https://api.prokerala.com/client/verify/{$client_id}",
 			[
-				'headers'   => $headers,
-				'sslverify' => false,
+				'headers' => $headers,
 			]
 		);
 
@@ -377,7 +362,7 @@ final class SettingsPage {
 	 *
 	 * @return string
 	 */
-	private function render( $template, array $data = [] ) {
+	private function render( $template, array $data = [] ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$engine = new Engine();
 
 		return $engine->render(

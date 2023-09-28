@@ -114,20 +114,18 @@ if ( 'pythagorean' === $system ) {
 		$multiple_numbers       = $result->getBridgeNumber()->getDifferences();
 		$multiple_number_result = true;
 	}
-} else {
-	if ( 'birth-number' === $calculator ) {
+} elseif ( 'birth-number' === $calculator ) {
 		$number_result_object = $result->getBirthNumber();
-	} elseif ( 'life-path-number' === $calculator ) {
-		$number_result_object = $result->getLifePathNumber();
-	} elseif ( 'identity-initial-code-number' === $calculator ) {
-		$number_result_object = $result->getIdentityInitialCodeNumber();
-	} elseif ( 'daily-name-number' === $calculator ) {
-		$number_result_object = $result->getDailyNameNumber();
-	} elseif ( 'whole-name-number' === $calculator ) {
-		$name                   = $result->getWholeNameNumber()->getName();
-		$multiple_numbers       = $result->getWholeNameNumber()->getEnergies();
-		$multiple_number_result = true;
-	}
+} elseif ( 'life-path-number' === $calculator ) {
+	$number_result_object = $result->getLifePathNumber();
+} elseif ( 'identity-initial-code-number' === $calculator ) {
+	$number_result_object = $result->getIdentityInitialCodeNumber();
+} elseif ( 'daily-name-number' === $calculator ) {
+	$number_result_object = $result->getDailyNameNumber();
+} elseif ( 'whole-name-number' === $calculator ) {
+	$name                   = $result->getWholeNameNumber()->getName();
+	$multiple_numbers       = $result->getWholeNameNumber()->getEnergies();
+	$multiple_number_result = true;
 }
 ?>
 

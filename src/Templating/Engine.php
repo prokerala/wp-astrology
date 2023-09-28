@@ -104,7 +104,7 @@ class Engine {
 				$status  = include $template;
 				$content = ob_get_clean();
 				if ( false === $status || false === $content ) {
-					throw new \RuntimeException( "Failed to render template - {$template}" );
+					throw new \RuntimeException( "Failed to render template - {$template}" ); // phpcs:ignore:WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				}
 
 				return $content;
