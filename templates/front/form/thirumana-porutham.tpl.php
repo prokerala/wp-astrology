@@ -92,7 +92,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</div>
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'report_type' => $options['report_type'] ] ); ?>
+	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Result</button>
