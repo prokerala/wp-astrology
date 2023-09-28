@@ -61,13 +61,15 @@ class PoruthamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
+		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+
 		return $this->render(
 			'form/porutham',
 			[
 				'options'     => $options + $this->get_options(),
 				'girl_dob'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
 				'boy_dob'     => new \DateTimeImmutable( 'now', $this->get_timezone() ),
-				'result_type' => 'basic',
+				'result_type' => $result_type,
 			]
 		);
 	}
@@ -90,8 +92,8 @@ class PoruthamController implements ReportControllerInterface {
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
 		$system      = $this->get_post_input( 'system', '' );
-		$result_type = $this->get_post_input( 'result_type', '' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
 		$advanced = 'advanced' === $result_type;
 		$girl_dob = new \DateTimeImmutable( $girl_dob, $tz );

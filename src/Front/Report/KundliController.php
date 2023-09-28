@@ -68,12 +68,14 @@ class KundliController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
+		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+
 		return $this->render(
 			'form/kundli',
 			[
 				'options'     => $options + $this->get_options(),
 				'datetime'    => new \DateTimeImmutable( 'now', $this->get_timezone() ),
-				'result_type' => 'basic',
+				'result_type' => $result_type,
 			]
 		);
 	}
@@ -218,8 +220,8 @@ class KundliController implements ReportControllerInterface {
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime    = $this->get_post_input( 'datetime', '' );
-		$result_type = $this->get_post_input( 'result_type', '' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;
 

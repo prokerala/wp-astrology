@@ -96,12 +96,14 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
+		$result_type = isset( $options['result_type'] ) ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+
 		return $this->render(
 			'form/thirumana-porutham',
 			[
 				'options'        => $options + $this->get_options(),
 				'nakshatra_list' => self::NAKSHATA_LIST,
-				'result_type'    => 'basic',
+				'result_type'    => $result_type,
 			]
 		);
 	}
