@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.1.4] - 2023-10-03
+### Fixed
+- Fix form date input changing to current date on result page
+- Fix layout issue with short prediction content
+
 ## [1.1.3] - 2023-08-11
 ### Fixed
 - Fix error message when saving shortcode without ayanamsa attribute
@@ -39,6 +44,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.1.4]: https://github.com/prokerala/wp-astrology/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/prokerala/wp-astrology/compare/v1.1.2...v1.1.3
 [1.1.2]: https://github.com/prokerala/wp-astrology/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/prokerala/wp-astrology/compare/v1.1.0...v1.1.1
