@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Profile;
 use Prokerala\Api\Astrology\Service\Porutham;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
@@ -48,37 +50,39 @@ class PoruthamController implements ReportControllerInterface {
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render porutham form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en', 'ml']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = in_array($options['form_language'], ['en', 'ml']) ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml']));
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
 
 		return $this->render(
 			'form/porutham',
 			[
 				'options'     => $options + $this->get_options(),
-				'girl_dob'    => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
-				'boy_dob'     => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'girl_dob'    => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'     => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
 				'result_type' => $result_type,
-				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
-				'selected_lang' => $options['form_lang'] ?? 'en'
 			]
 		);
 	}
@@ -86,12 +90,14 @@ class PoruthamController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
+		$tz = $this->get_timezone();
 		$girl_tz       = $this->get_timezone( 'girl_' );
 		$boy_tz        = $this->get_timezone( 'boy_' );
 		$client        = $this->get_api_client();
@@ -105,7 +111,7 @@ class PoruthamController implements ReportControllerInterface {
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};
@@ -113,8 +119,8 @@ class PoruthamController implements ReportControllerInterface {
 		$result_lang = in_array($result_lang, ['en', 'ml']) ? $result_lang : 'en';
 
 		$advanced = 'advanced' === $result_type;
-		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
-		$boy_dob  = new \DateTimeImmutable( $boy_dob, $girl_tz );
+		$girl_dob = new DateTimeImmutable( $girl_dob, $girl_tz );
+		$boy_dob  = new DateTimeImmutable( $boy_dob, $girl_tz );
 
 		$girl_profile = new Profile( $girl_location, $girl_dob );
 		$boy_profile  = new Profile( $boy_location, $boy_dob );
@@ -142,10 +148,11 @@ class PoruthamController implements ReportControllerInterface {
 	 * Get compatability result
 	 *
 	 * @param object $result API Result.
-	 * @param int    $advanced Advanced Result.
+	 * @param int $advanced Advanced Result.
 	 * @return array
 	 */
-	private function get_compatibility_result( $result, $advanced ) {
+	private function get_compatibility_result(object $result, int $advanced ): array
+	{
 		$compatibility_result = [];
 
 		$girl_info           = $result->getGirlInfo();

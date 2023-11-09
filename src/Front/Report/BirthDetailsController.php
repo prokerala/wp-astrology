@@ -29,12 +29,14 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Service\BirthDetails;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Birthdetails Form Controller.
+ * Birth Details Form Controller.
  *
  * @since   1.0.0
  */
@@ -43,36 +45,38 @@ class BirthDetailsController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	/**
-	 * BirthdetailsController constructor
+	 * BirthDetailsController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
-	 * Render birthdetails form.
+	 * Render Birth details form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en', 'hi', 'ta', 'ml']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml']) ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'hi']));
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
 
 		return $this->render(
 			'form/birth-details',
 			[
 				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'datetime' => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -81,12 +85,13 @@ class BirthDetailsController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
@@ -94,13 +99,13 @@ class BirthDetailsController implements ReportControllerInterface {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$method   = new BirthDetails( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};

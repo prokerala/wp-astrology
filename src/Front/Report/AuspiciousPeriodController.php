@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Service\AuspiciousPeriod;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -47,31 +49,34 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render auspicious-period form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$dir = __DIR__ . "/../../Locale/$form_lang.php";
+		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml', 'te']) ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'te', 'hi']));
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
 
 		return $this->render(
 			'form/auspicious-period',
 			[
 				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'datetime' => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -80,27 +85,28 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime = $this->get_post_input( 'datetime', '' );
+		$datetime = $this->get_post_input( 'datetime');
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$method   = new AuspiciousPeriod( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};
@@ -127,7 +133,7 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 			[
 				'result'  => $data,
 				'options' => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang
+				'selected_lang' => $lang ?: $result_lang
 			]
 		);
 	}

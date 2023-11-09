@@ -29,6 +29,7 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use Exception;
 use Prokerala\Api\Astrology\NakshatraProfile;
 use Prokerala\Api\Astrology\Service\ThirumanaPorutham;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
@@ -44,70 +45,38 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	/**
-	 * NakhatraList
-	 */
-
-	const NAKSHATA_LIST = [
-		'Ashwini',
-		'Bharani',
-		'Krithika',
-		'Rohini',
-		'Mrigashirsha',
-		'Ardra',
-		'Punarvasu',
-		'Pushya',
-		'Ashlesha',
-		'Magha',
-		'Purva Phalguni',
-		'Uttara Phalguni',
-		'Hasta',
-		'Chitra',
-		'Swati',
-		'Vishaka',
-		'Anuradha',
-		'Jyeshta',
-		'Moola',
-		'Purva Ashadha',
-		'Uttara Ashadha',
-		'Shravana',
-		'Dhanishta',
-		'Shatabhisha',
-		'Purva Bhadrapada',
-		'Uttara Bhadrapada',
-		'Revati',
-	];
-
-
-	/**
 	 * ThirumanaPoruthamController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render ThirumanaPorutham form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = $options['form_language'] == 'en' ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => $val == 'en');
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
+
 		return $this->render(
 			'form/thirumana-porutham',
 			[
 				'options'        => $options + $this->get_options(),
 				'result_type'    => $result_type,
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -117,12 +86,13 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+	public function process( $options = [] ): string
+	{ // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$client = $this->get_api_client();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
@@ -139,7 +109,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};
@@ -164,10 +134,11 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * Get compatability result
 	 *
 	 * @param object $result API Result.
-	 * @param int    $advanced Advanced Result.
+	 * @param int $advanced Advanced Result.
 	 * @return array
 	 */
-	private function get_compatibility_result( $result, $advanced ) {
+	private function get_compatibility_result(object $result, int $advanced ): array
+	{
 
 		$matches = [];
 

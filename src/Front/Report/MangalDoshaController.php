@@ -62,9 +62,10 @@ class MangalDoshaController implements ReportControllerInterface {
 	public function render_form( $options = [] ) {
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en', 'hi', 'ta', 'ml']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml']) ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'hi']));
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
 
 		return $this->render(
@@ -73,8 +74,8 @@ class MangalDoshaController implements ReportControllerInterface {
 				'options'     => $options + $this->get_options(),
 				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type' => $result_type,
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -103,7 +104,7 @@ class MangalDoshaController implements ReportControllerInterface {
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};

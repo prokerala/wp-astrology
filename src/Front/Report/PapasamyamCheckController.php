@@ -29,6 +29,7 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
 use Prokerala\Api\Astrology\Service\PapaSamyamCheck;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -53,28 +54,31 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render papasamyamcheck form.
+	 * Render Papasamyam Check form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$girl_dob = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob  = $this->get_post_input( 'boy_dob', 'now' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en', 'hi', 'ta', 'ml']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml']) ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'hi']));
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
+
 		return $this->render(
 			'form/papasamyam-check',
 			[
 				'options'  => $options + $this->get_options(),
-				'girl_dob' => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
-				'boy_dob'  => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'girl_dob' => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'  => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -88,7 +92,8 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
 
 		$girl_tz       = $this->get_timezone( 'girl_' );
 		$boy_tz        = $this->get_timezone( 'boy_' );
@@ -101,8 +106,8 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$boy_dob  = isset( $_POST['boy_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['boy_dob'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
-		$boy_dob  = new \DateTimeImmutable( $boy_dob, $boy_tz );
+		$girl_dob = new DateTimeImmutable( $girl_dob, $girl_tz );
+		$boy_dob  = new DateTimeImmutable( $boy_dob, $boy_tz );
 
 		$girl_profile = new Profile( $girl_location, $girl_dob );
 		$boy_profile  = new Profile( $boy_location, $boy_dob );
@@ -111,7 +116,7 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$lang = $this->get_post_input('lang');
 
 		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			($options['form_language'] && !$lang) =>  $options['form_language'],
 			!empty($lang) => $lang,
 			default => 'en'
 		};
@@ -145,7 +150,8 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	 * @param array<string,mixed> $papasamyam papasamyam data.
 	 * @return array
 	 */
-	public function getPapasamyam( $papasamyam ) {
+	public function getPapasamyam(array $papasamyam ): array
+	{
 		$papa_samyam_result                = [];
 		$papa_samyam_result['total_point'] = $papasamyam->getTotalPoints();
 		$papa_samyam                       = $papasamyam->getPapaSamyam();

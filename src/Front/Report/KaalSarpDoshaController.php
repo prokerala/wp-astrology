@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Service\KaalSarpDosha;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -47,33 +49,34 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render kaal-sarp-dosha form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_lang = $options['form_lang'] ?: 'en';
-		$file_name = in_array($form_lang, ['en']) ? $form_lang : 'en';
-		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$form_language = $options['form_language'] == 'en' ? $options['form_language'] : 'en';
+		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
+		$available_language = array_filter($report_language, fn ($val) => $val == 'en');
+		$dir = __DIR__ . "/../../Locale/$form_language.php";
 		$translation_data = include $dir;
 
 		return $this->render(
 			'form/kaal-sarp-dosha',
 			[
 				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'enable_lang' => $options['enable_lang'],
-				'selected_lang' => $options['form_lang'] ?? 'en',
+				'datetime' => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang' => $form_language,
+				'report_language' => $available_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -83,12 +86,13 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
@@ -97,7 +101,7 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$method   = new KaalSarpDosha( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$lang = $this->get_post_input('lang');
@@ -107,7 +111,7 @@ class KaalSarpDoshaController implements ReportControllerInterface {
 			!empty($lang) => $lang,
 			default => 'en'
 		};
-		$result_lang = in_array($result_lang, ['en']) ? $result_lang : 'en';
+		$result_lang = $result_lang == 'en' ? $result_lang : 'en';
 
 
 		$result = $method->process( $location, $datetime, $result_lang );

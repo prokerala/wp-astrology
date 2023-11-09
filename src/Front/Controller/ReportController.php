@@ -130,7 +130,8 @@ class ReportController {
 					'form_action' => $args['form_action'] ?? '',
 					'calculator'  => $args['calculator'] ?? '',
 					'system'      => $args['system'] ?? '',
-					'enable_lang' => $args['enable_lang'] ?? false,
+					'form_language' => $args['form_language'] ?? '',
+					'report_language' => $args['report_language'] ?? '',
 				] + $args
 			);
 		} catch ( RuntimeException $e ) {
