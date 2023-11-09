@@ -224,6 +224,8 @@ trait ReportControllerTrait {
 			'form_action' => null,
 			'report'      => '',
 			'result_type' => '',
+			'form_language' => '',
+			'report_language' => '',
 		];
 	}
 
