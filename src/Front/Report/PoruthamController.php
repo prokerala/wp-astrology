@@ -63,7 +63,11 @@ class PoruthamController implements ReportControllerInterface {
 	public function render_form( $options = [] ) {
 		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en', 'ml']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/porutham',
@@ -72,6 +76,9 @@ class PoruthamController implements ReportControllerInterface {
 				'girl_dob'    => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
 				'boy_dob'     => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
 				'result_type' => $result_type,
+				'enable_lang' => $options['enable_lang'],
+				'translation_data' => $translation_data,
+				'selected_lang' => $options['form_lang'] ?? 'en'
 			]
 		);
 	}
@@ -94,7 +101,16 @@ class PoruthamController implements ReportControllerInterface {
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
 		$system      = $this->get_post_input( 'system', '' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+
+		$result_lang = in_array($result_lang, ['en', 'ml']) ? $result_lang : 'en';
 
 		$advanced = 'advanced' === $result_type;
 		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
@@ -105,7 +121,7 @@ class PoruthamController implements ReportControllerInterface {
 
 		$method = new Porutham( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $girl_profile, $boy_profile, $system, $advanced );
+		$result = $method->process( $girl_profile, $boy_profile, $system, $advanced, $result_lang );
 
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
@@ -117,6 +133,7 @@ class PoruthamController implements ReportControllerInterface {
 				'girl_dob'    => $girl_dob,
 				'boy_dob'     => $boy_dob,
 				'options'     => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

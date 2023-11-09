@@ -95,14 +95,21 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
-
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 		return $this->render(
 			'form/nakshatra-porutham',
 			[
 				'options'        => $options + $this->get_options(),
 				'nakshatra_list' => self::NAKSHATA_LIST,
 				'result_type'    => $result_type,
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -129,10 +136,16 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 		$girl_profile = new NakshatraProfile( $girl_nakshatra, $girl_nakshatra_pada );
 		$boy_profile  = new NakshatraProfile( $boy_nakshatra, $boy_nakshatra_pada );
 		$advanced     = 'advanced' === $result_type;
+		$lang = $this->get_post_input('lang');
 
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
 		$method = new NakshatraPorutham( $client );
-		$result = $method->process( $girl_profile, $boy_profile, $advanced );
 
+		$result = $method->process( $girl_profile, $boy_profile, $advanced, $result_lang);
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
 		return $this->render(
@@ -141,6 +154,7 @@ class NakshatraPoruthamController implements ReportControllerInterface {
 				'result'      => $compatibility_result,
 				'result_type' => $result_type,
 				'options'     => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

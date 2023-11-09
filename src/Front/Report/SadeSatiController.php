@@ -61,7 +61,11 @@ class SadeSatiController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/sade-sati',
@@ -69,6 +73,7 @@ class SadeSatiController implements ReportControllerInterface {
 				'options'     => $options + $this->get_options(),
 				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type' => $result_type,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -126,5 +131,6 @@ class SadeSatiController implements ReportControllerInterface {
 				'options'     => $this->get_options(),
 			]
 		);
+
 	}
 }

@@ -61,12 +61,20 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en', 'hi']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/choghadiya',
 			[
 				'options'  => $options + $this->get_options(),
 				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -91,7 +99,16 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$method   = new Choghadiya( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$result = $method->process( $location, $datetime );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result_lang = in_array($result_lang, ['en', 'hi']) ? $result_lang : 'en';
+
+		$result = $method->process( $location, $datetime, $result_lang );
 
 		$data = [];
 		foreach ( $result->getMuhurat() as $muhurat ) {
@@ -111,6 +128,7 @@ class ChoghadiyaController implements ReportControllerInterface {
 			[
 				'result'  => $data,
 				'options' => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

@@ -61,12 +61,18 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$dir = __DIR__ . "/../../Locale/$form_lang.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/auspicious-period',
 			[
 				'options'  => $options + $this->get_options(),
 				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -91,7 +97,14 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 		$method   = new AuspiciousPeriod( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$result = $method->process( $location, $datetime );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result = $method->process( $location, $datetime, $result_lang );
 
 		$data = [];
 
@@ -114,6 +127,7 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 			[
 				'result'  => $data,
 				'options' => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

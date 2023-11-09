@@ -61,12 +61,19 @@ class PlanetPositionController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$dir = __DIR__ . "/../../Locale/$form_lang.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/planet-position',
 			[
 				'options'  => $options + $this->get_options(),
 				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -90,7 +97,14 @@ class PlanetPositionController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new PlanetPosition( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result = $method->process( $location, $datetime, null, $result_lang );
 
 		$planet_position_result = [];
 
@@ -119,6 +133,7 @@ class PlanetPositionController implements ReportControllerInterface {
 			[
 				'result'  => $planet_position_result,
 				'options' => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

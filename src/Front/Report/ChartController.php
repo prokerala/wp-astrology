@@ -63,6 +63,9 @@ class ChartController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$dir = __DIR__ . "/../../Locale/$form_lang.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/chart',
@@ -71,6 +74,8 @@ class ChartController implements ReportControllerInterface {
 				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'chart_type'  => 'rasi',
 				'chart_style' => 'north-indian',
+				'enable_lang' => $options['enable_lang'],
+				'translation_data' => $translation_data,
 				'chart_types' => [
 					'rasi',
 					'navamsa',
@@ -118,7 +123,15 @@ class ChartController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new Chart( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+
+		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style, $result_lang );
 		$result['chart_type'] = $chart_type;
 
 		return $this->render(

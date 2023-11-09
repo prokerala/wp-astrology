@@ -61,7 +61,11 @@ class MangalDoshaController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en', 'hi', 'ta', 'ml']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/mangal-dosha',
@@ -69,6 +73,9 @@ class MangalDoshaController implements ReportControllerInterface {
 				'options'     => $options + $this->get_options(),
 				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type' => $result_type,
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -87,13 +94,22 @@ class MangalDoshaController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		$datetime    = $this->get_post_input( 'datetime', '' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
 
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;
 		$method   = new MangalDosha( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime, $advanced );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result_lang = in_array($result_lang, ['en', 'hi', 'ta', 'ml']) ? $result_lang : 'en';
+
+		$result = $method->process( $location, $datetime, $advanced, $result_lang );
 
 		$mangal_dosha_result = [];
 
@@ -114,6 +130,7 @@ class MangalDoshaController implements ReportControllerInterface {
 				'result'      => $mangal_dosha_result,
 				'result_type' => $result_type,
 				'options'     => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang
 			]
 		);
 	}

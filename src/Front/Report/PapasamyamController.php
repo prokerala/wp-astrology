@@ -61,12 +61,19 @@ class PapasamyamController implements ReportControllerInterface {
 	 */
 	public function render_form( $options = [] ) {
 		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$file_name = in_array($form_lang, ['en', 'hi', 'ta', 'ml']) ? $form_lang : 'en';
+		$dir = __DIR__ . "/../../Locale/$file_name.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/papasamyam',
 			[
 				'options'  => $options + $this->get_options(),
 				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -90,7 +97,16 @@ class PapasamyamController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new Papasamyam( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result_lang = in_array($result_lang, ['en', 'hi', 'ta', 'ml']) ? $result_lang : 'en';
+
+		$result = $method->process( $location, $datetime, $result_lang );
 
 		$papasamyam_result['total_points'] = $result->getTotalPoints();
 		$papa_samyam                       = $result->getPapaSamyam();
@@ -113,6 +129,8 @@ class PapasamyamController implements ReportControllerInterface {
 			[
 				'result'  => $papasamyam_result,
 				'options' => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result
+
 			]
 		);
 	}

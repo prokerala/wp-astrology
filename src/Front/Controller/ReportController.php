@@ -35,6 +35,7 @@ use Prokerala\Common\Api\Exception\ValidationException;
 use Prokerala\WP\Astrology\Configuration;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 use Prokerala\WP\Astrology\Plugin;
+use RuntimeException;
 
 /**
  * Report Controller class.
@@ -129,9 +130,10 @@ class ReportController {
 					'form_action' => $args['form_action'] ?? '',
 					'calculator'  => $args['calculator'] ?? '',
 					'system'      => $args['system'] ?? '',
+					'enable_lang' => $args['enable_lang'] ?? false,
 				] + $args
 			);
-		} catch ( \RuntimeException $e ) {
+		} catch ( RuntimeException $e ) {
 			return "<blockquote>{$e->getMessage()}</blockquote>";
 		}
 	}
@@ -181,7 +183,7 @@ class ReportController {
 	 *
 	 * @param string $report Report type.
 	 * @return ReportControllerInterface
-	 * @throws \RuntimeException Throws on invalid report type.
+	 * @throws RuntimeException Throws on invalid report type.
 	 */
 	private function get_controller( $report ) {
 
@@ -189,7 +191,7 @@ class ReportController {
 		$controller_class  = "Prokerala\\WP\\Astrology\\Front\\Report\\{$report_controller}";
 
 		if ( ! class_exists( $controller_class ) ) {
-			throw new \RuntimeException( 'Invalid report type' . $controller_class ); // phpcs:ignore:WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new RuntimeException( 'Invalid report type' . $controller_class ); // phpcs:ignore:WordPress.Security.EscapeOutput.ExceptionNotEscaped
 		}
 
 		return new $controller_class( $this->config->get_options() );

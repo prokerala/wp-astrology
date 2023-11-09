@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Service\Panchang;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -41,34 +43,43 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 class PanchangController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
+	use PanchangControllerTrait;
 
 	/**
 	 * PanchangController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct(array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render panchang form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ): string
+	{
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$form_lang = $options['form_lang'] ?: 'en';
+		$dir = __DIR__ . "/../../Locale/$form_lang.php";
+		$translation_data = include $dir;
 
 		return $this->render(
 			'form/panchang',
 			[
 				'options'     => $options + $this->get_options(),
-				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'datetime'    => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type' => $result_type,
+				'enable_lang' => $options['enable_lang'],
+				'selected_lang' => $options['form_lang'] ?? 'en',
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -76,25 +87,33 @@ class PanchangController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string
+	{
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 
-		$datetime    = $this->get_post_input( 'datetime', '' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$datetime    = $this->get_post_input( 'datetime');
+		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
 
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;
 		$method   = new Panchang( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$result = $method->process( $location, $datetime, $advanced );
+		$lang = $this->get_post_input('lang');
+
+		$result_lang = match(true) {
+			($options['form_lang'] && !$lang) =>  $options['form_lang'],
+			!empty($lang) => $lang,
+			default => 'en'
+		};
+		$result = $method->process( $location, $datetime, $advanced, $result_lang );
 
 		$panchang_result = [
 			'sunrise'  => $result->getSunrise(),
@@ -126,58 +145,10 @@ class PanchangController implements ReportControllerInterface {
 				'result'      => $data,
 				'result_type' => $result_type,
 				'options'     => $this->get_options(),
+				'selected_lang' => $options['form_lang'] ?? $result_lang,
+				'title' => 'Panchang Details',
+
 			]
 		);
-	}
-
-	/**
-	 * Muhurat timing
-	 *
-	 * @param array<string,mixed> $muhurat muhuratdetails.
-	 * @return array
-	 */
-	public function getAdvancedInfo( $muhurat ) {
-		$muhurat_details = [];
-		foreach ( $muhurat as $data ) {
-			$field   = $data->getName();
-			$periods = $data->getPeriod();
-			foreach ( $periods as $period ) {
-				$muhurat_details[ $field ][] = [
-					'start' => $period->getStart(),
-					'end'   => $period->getEnd(),
-				];
-			}
-		}
-
-		return $muhurat_details;
-	}
-
-	/**
-	 * Panchang Details
-	 *
-	 * @param array<string,mixed> $panchang panchang data.
-	 * @return array
-	 */
-	public function getPanchangDetails( $panchang ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
-		$data_list       = [ 'Nakshatra', 'Tithi', 'Karana', 'Yoga' ];
-		$panchang_result = [];
-
-		foreach ( $data_list as $key ) {
-			foreach ( $panchang[ $key ] as $idx => $data ) {
-				$panchang_result[ $key ][ $idx ] = [
-					'id'    => $data->getId(),
-					'name'  => $data->getName(),
-					'start' => $data->getStart(),
-					'end'   => $data->getEnd(),
-				];
-				if ( 'Nakshatra' === $key ) {
-					$panchang_result[ $key ][ $idx ]['nakshatra_lord'] = $data->getLord();
-				} elseif ( 'Tithi' === $key ) {
-					$panchang_result[ $key ][ $idx ]['paksha'] = $data->getPaksha();
-				}
-			}
-		}
-
-		return $panchang_result;
 	}
 }
