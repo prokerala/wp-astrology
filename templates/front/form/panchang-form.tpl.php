@@ -49,14 +49,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<input type="hidden" name="ayanamsa" value="<?php echo (int) $options['ayanamsa']; ?>">
 <?php endif; ?>
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Date: </label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['date']?>: </label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
 		<input type='date' name="datetime" class="pk-astrology-form-control" required="required" value="<?php echo $datetime->format( 'Y-m-d' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
 	</div>
 </div>
 
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Location:</label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['pob']?>:</label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
 		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required>
 	</div>

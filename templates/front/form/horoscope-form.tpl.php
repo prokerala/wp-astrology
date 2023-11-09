@@ -36,12 +36,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <?php if ( empty( $options['ayanamsa'] ) ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
-		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label ">Ayanamsa</label>
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label "><?= $translation_data['ayanamsa']?></label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 			<select name="ayanamsa" class="pk-astrology-form-control">
-				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>>Lahiri</option>
-				<option value="3" <?php echo '3' === (string) $ayanamsa ? 'selected' : ''; ?>>Raman</option>
-				<option value="5" <?php echo '5' === (string) $ayanamsa ? 'selected' : ''; ?>>KP</option>
+				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>><?= $translation_data['lahiri']?></option>
+				<option value="3" <?php echo '3' === (string) $ayanamsa ? 'selected' : ''; ?>><?= $translation_data['raman']?></option>
+				<option value="5" <?php echo '5' === (string) $ayanamsa ? 'selected' : ''; ?>><?= $translation_data['kp']?></option>
 			</select>
 		</div>
 	</div>
@@ -49,14 +49,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<input type="hidden" name="ayanamsa" value="<?php echo (int) $options['ayanamsa']; ?>">
 <?php endif; ?>
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Date: </label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['date']?>: </label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
 		<input type='datetime-local' name="datetime" class="pk-astrology-form-control" required="required" value="<?php echo $datetime->format( 'Y-m-d\Th:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
 	</div>
 </div>
 
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Place Of Birth:</label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['pob']?>:</label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
 		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required>
 	</div>

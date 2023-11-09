@@ -51,15 +51,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php endif; ?>
 <div class="pk-astrology-row">
 	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall">Enter Girl's Birth Details</legend>
+		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall"><?= $translation_data['enter_girl_birth']?></legend>
 		<div class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Date Of Birth:</label>
+			<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['dob']?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<input type='datetime-local' name="girl_dob" class="pk-astrology-form-control"  required="required" value="<?php echo $girl_dob->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
 			</div>
 		</div>
 		<div id="glocationField" class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Place of birth:</label>
+			<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['pob']?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='g-location'>
 					<input type='text' id="g-autocomplete" name="girl_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" value="" required="required" data-location_input_prefix="girl"/>
@@ -68,15 +68,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall">Enter Boy's Birth Details</legend>
+		<legend class="pk-astrology-form-label pk-astrology-pad-xsmall"><?= $translation_data['enter_boy_birth']?></legend>
 		<div class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-md-4 pk-astrology-col-form-label">Date Of Birth:</label>
+			<label class="pk-astrology-col-md-4 pk-astrology-col-form-label"><?= $translation_data['dob']?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<input type='datetime-local' name="boy_dob" class="pk-astrology-form-control"  required="required" value="<?php echo $boy_dob->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>" />
 			</div>
 		</div>
 		<div id="blocationField" class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-md-4 pk-astrology-form-label">Place of birth:</label>
+			<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?= $translation_data['pob']?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='b-location'>
 					<input type='text' id="b-coordinates" name="boy_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" required="required" data-location_input_prefix="boy"/>

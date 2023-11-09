@@ -46,19 +46,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="pk-astrology-row">
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-			<legend class="pk-astrology-form-label">Enter Girl's Details</legend>
+			<legend class="pk-astrology-form-label"><?= $translation_data['enter_girl_birth']?></legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['girl_nakshatra']?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra" class="pk-astrology-form-control">
-						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
+						<?php foreach ( $translation_data['nakshatra_name_list'] as $nakshatra_id => $nakshatra ) : ?>
 							<option value="<?php echo $nakshatra_id; ?>" <?php echo $nakshatra_id === $girl_nakshatra ? 'selected' : ''; ?>><?php echo $nakshatra; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['girl_nakshatra_pada']?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -69,19 +69,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-			<legend class="pk-astrology-form-label">Enter Boy's Details</legend>
+			<legend class="pk-astrology-form-label"><?= $translation_data['enter_boy_birth']?></legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Boy Nakshatra</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['boy_nakshatra']?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra" class="pk-astrology-form-control">
-						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
+						<?php foreach ( $translation_data['nakshatra_name_list'] as $nakshatra_id => $nakshatra ) : ?>
 							<option value="<?php echo $nakshatra_id; ?>" <?php echo $nakshatra_id === $boy_nakshatra ? 'selected' : ''; ?>><?php echo $nakshatra; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label">Girl Nakshatra Pada</label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['boy_nakshatra_pada']?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -93,9 +93,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
+	<?php if ($enable_lang): ?>
+		<?php $selected_lang ??= 'en'; ?>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?= $translation_data['location']?>: </label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
+				<select name="lang" id="select-lang">
+					<option value='en' <?= 'en' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['en']?></option>
+				</select>
+			</div>
+		</div>
+
+	<?php endif;?>
 
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
+		<button type="submit" class="pk-astrology-btn"><?= $translation_data['get_result']?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>
