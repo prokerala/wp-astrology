@@ -85,4 +85,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 </div>
+
+<?php if ($report_language): ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?= $translation_data['language']?>: </label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
+			<select name="lang" id="select-lang">
+				<?php foreach ($report_language as $language): ?>
+					<option value=<?= $language?> <?= $selected_lang ===  $language ? 'selected' : ''; ?>><?= $translation_data[$language]?></option>
+				<?php endforeach;?>
+			</select>
+		</div>
+	</div>
+<?php endif;?>
 <div id="form-hidden-fields"></div>

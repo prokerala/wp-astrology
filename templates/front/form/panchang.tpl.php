@@ -47,22 +47,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
 	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 
-	<?php if ($enable_lang): ?>
-		<?php $selected_lang ??= 'en'; ?>
-		<div class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?= $translation_data['location']?>: </label>
-			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
-				<select name="lang" id="select-lang">
-					<option value='en' <?= 'en' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['en']?></option>
-					<option value='ml' <?= 'ml' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['ml']?></option>
-					<option value='ta' <?= 'ta' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['ta']?></option>
-					<option value='hi' <?= 'hi' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['hi']?></option>
-					<option value='te' <?= 'te' ===  $selected_lang ? 'selected' : ''; ?>><?= $translation_data['te']?></option>
-				</select>
-			</div>
-		</div>
-
-	<?php endif;?>
 
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn"><?= $translation_data['get_result']?></button>
