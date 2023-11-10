@@ -44,6 +44,9 @@ class PapasamyamCheckController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en', 'hi', 'ta', 'ml'
+	];
 	/**
 	 * PapasamyamCheckController constructor
 	 *
@@ -65,11 +68,9 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	{
 		$girl_dob = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob  = $this->get_post_input( 'boy_dob', 'now' );
-		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml']) ? $options['form_language'] : 'en';
-		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
-		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'hi']));
-		$dir = __DIR__ . "/../../Locale/$form_language.php";
-		$translation_data = include $dir;
+		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
+		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
+		$translation_data = $this->get_localisation_data($form_language);
 
 		return $this->render(
 			'form/papasamyam-check',
@@ -78,7 +79,7 @@ class PapasamyamCheckController implements ReportControllerInterface {
 				'girl_dob' => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
 				'boy_dob'  => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
 				'selected_lang' => $form_language,
-				'report_language' => $available_language,
+				'report_language' => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -113,17 +114,10 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$boy_profile  = new Profile( $boy_location, $boy_dob );
 		$method       = new PapaSamyamCheck( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$lang = $this->get_post_input('lang');
 
-		$result_lang = match(true) {
-			($options['form_language'] && !$lang) =>  $options['form_language'],
-			!empty($lang) => $lang,
-			default => 'en'
-		};
-		$result_lang = in_array($result_lang, ['en', 'hi', 'ta', 'ml']) ? $result_lang : 'en';
+		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
 
-
-		$result = $method->process( $girl_profile, $boy_profile, $result_lang );
+		$result = $method->process( $girl_profile, $boy_profile, $lang );
 
 		$message                             = $result->getMessage();
 		$papa_samyam_check_result['message'] = [
@@ -139,7 +133,7 @@ class PapasamyamCheckController implements ReportControllerInterface {
 			[
 				'result'  => $papa_samyam_check_result,
 				'options' => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang
+				'selected_lang' => $lang
 			]
 		);
 	}

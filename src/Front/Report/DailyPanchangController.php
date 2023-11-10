@@ -50,6 +50,9 @@ class DailyPanchangController implements ReportControllerInterface {
 	}
 	use PanchangControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en', 'hi', 'ta', 'ml', 'te'
+	];
  	/**
 	 * PanchangController constructor
 	 *
@@ -85,13 +88,8 @@ class DailyPanchangController implements ReportControllerInterface {
 		$tz       = $this->get_timezone();
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
 		$advanced = 'advanced' === $result_type;
-		$lang = $this->get_post_input('lang');
 
-		$result_lang = match(true) {
-			($options['form_lang'] && !$lang) =>  $options['form_lang'],
-			!empty($lang) => $lang,
-			default => 'en'
-		};
+		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
 
 		$client   = $this->get_api_client();
 
@@ -109,7 +107,7 @@ class DailyPanchangController implements ReportControllerInterface {
 		$result = $this->load_cached_panchang_data($key) ;
 
 		if (empty($result)) {
-			$result = $method->process( $location, $datetime, $advanced, $result_lang );
+			$result = $method->process( $location, $datetime, $advanced, $lang );
 			$this->cache_panchang_data($key, $result);
 		}
 
@@ -144,7 +142,7 @@ class DailyPanchangController implements ReportControllerInterface {
 				'result'      => $data,
 				'result_type' => $result_type,
 				'options'     => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang,
+				'selected_lang' => $lang,
 				'title' => 'Daily Panchang',
 
 			]

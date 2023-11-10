@@ -45,6 +45,9 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en', 'hi', 'ta', 'ml', 'te'
+	];
 	/**
 	 *  InauspiciousPeriodController constructor
 	 *
@@ -65,11 +68,9 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 	public function render_form( $options = [] ): string
 	{
 		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$form_language = in_array($options['form_language'], ['en', 'hi', 'ta', 'ml']) ? $options['form_language'] : 'en';
-		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
-		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'ml', 'ta', 'te', 'hi']));
-		$dir = __DIR__ . "/../../Locale/$form_language.php";
-		$translation_data = include $dir;
+		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
+		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
+		$translation_data = $this->get_localisation_data($form_language);
 
 		return $this->render(
 			'form/inauspicious-period',
@@ -77,7 +78,7 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 				'options'  => $options + $this->get_options(),
 				'datetime' => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'selected_lang' => $form_language,
-				'report_language' => $available_language,
+				'report_language' => $report_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -105,14 +106,9 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 		$method   = new InauspiciousPeriod( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$lang = $this->get_post_input('lang');
+		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
 
-		$result_lang = match(true) {
-			($options['form_language'] && !$lang) =>  $options['form_language'],
-			!empty($lang) => $lang,
-			default => 'en'
-		};
-		$result = $method->process( $location, $datetime, $result_lang );
+		$result = $method->process( $location, $datetime, $lang );
 
 		$data = [];
 
@@ -135,7 +131,7 @@ class InauspiciousPeriodController implements ReportControllerInterface {
 			[
 				'result'  => $data,
 				'options' => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang
+				'selected_lang' => $lang
 			]
 		);
 	}

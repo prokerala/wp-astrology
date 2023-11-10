@@ -43,6 +43,9 @@ class KundliMatchingController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en', 'hi'
+	];
 	/**
 	 * KundliMatchingController constructor
 	 *
@@ -64,11 +67,9 @@ class KundliMatchingController implements ReportControllerInterface {
 		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = in_array($options['form_language'], ['en', 'hi']) ? $options['form_language'] : 'en';
-		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
-		$available_language = array_filter($report_language, fn ($val) => in_array($val, ['en', 'hi']));
-		$dir = __DIR__ . "/../../Locale/$form_language.php";
-		$translation_data = include $dir;
+		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
+		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
+		$translation_data = $this->get_localisation_data($form_language);
 
 		return $this->render(
 			'form/kundli-matching',
@@ -78,7 +79,7 @@ class KundliMatchingController implements ReportControllerInterface {
 				'boy_dob'     => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
 				'result_type' => $result_type,
 				'selected_lang' => $form_language,
-				'report_language' => $available_language,
+				'report_language' => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -101,14 +102,8 @@ class KundliMatchingController implements ReportControllerInterface {
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$lang = $this->get_post_input('lang');
+		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
 
-		$result_lang = match(true) {
-			($options['form_language'] && !$lang) =>  $options['form_language'],
-			!empty($lang) => $lang,
-			default => 'en'
-		};
-		$result_lang = in_array($result_lang, ['en', 'hi']) ? $result_lang : 'en';
 		$advanced = 'advanced' === $result_type;
 
 
@@ -120,7 +115,7 @@ class KundliMatchingController implements ReportControllerInterface {
 
 		$method = new KundliMatching( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $girl_profile, $boy_profile, $advanced, $result_lang );
+		$result = $method->process( $girl_profile, $boy_profile, $advanced, $lang );
 
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
@@ -132,7 +127,7 @@ class KundliMatchingController implements ReportControllerInterface {
 				'girl_dob'    => $girl_dob,
 				'boy_dob'     => $boy_dob,
 				'options'     => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang
+				'selected_lang' => $lang
 			]
 		);
 	}

@@ -44,6 +44,9 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en'
+	];
 	/**
 	 * ThirumanaPoruthamController constructor
 	 *
@@ -64,11 +67,9 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	public function render_form( $options = [] ): string
 	{
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $options['form_language'] == 'en' ? $options['form_language'] : 'en';
-		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
-		$available_language = array_filter($report_language, fn ($val) => $val == 'en');
-		$dir = __DIR__ . "/../../Locale/$form_language.php";
-		$translation_data = include $dir;
+		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
+		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
+		$translation_data = $this->get_localisation_data($form_language);
 
 		return $this->render(
 			'form/thirumana-porutham',
@@ -76,7 +77,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 				'options'        => $options + $this->get_options(),
 				'result_type'    => $result_type,
 				'selected_lang' => $form_language,
-				'report_language' => $available_language,
+				'report_language' => $report_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -106,15 +107,11 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 		$girl_profile = new NakshatraProfile( $girl_nakshatra, $girl_nakshatra_pada );
 		$boy_profile  = new NakshatraProfile( $boy_nakshatra, $boy_nakshatra_pada );
 		$advanced     = 'advanced' === $result_type;
-		$lang = $this->get_post_input('lang');
 
-		$result_lang = match(true) {
-			($options['form_language'] && !$lang) =>  $options['form_language'],
-			!empty($lang) => $lang,
-			default => 'en'
-		};
+		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+
 		$method = new ThirumanaPorutham( $client );
-		$result = $method->process( $girl_profile, $boy_profile, $advanced, $result_lang );
+		$result = $method->process( $girl_profile, $boy_profile, $advanced, $lang );
 
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
@@ -124,7 +121,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 				'result'      => $compatibility_result,
 				'result_type' => $result_type,
 				'options'     => $this->get_options(),
-				'selected_lang' => $options['form_lang'] ?? $result_lang
+				'selected_lang' => $lang
 			]
 		);
 	}

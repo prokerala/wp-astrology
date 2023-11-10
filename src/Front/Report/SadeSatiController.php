@@ -44,6 +44,9 @@ class SadeSatiController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en'
+	];
 	/**
 	 * SadeSatiController constructor
 	 *
@@ -65,11 +68,9 @@ class SadeSatiController implements ReportControllerInterface {
 	{
 		$datetime    = $this->get_post_input( 'datetime', 'now' );
 		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $options['form_language'] == 'en' ? $options['form_language'] : 'en';
-		$report_language = $options['report_language'] ? explode(',', $options['report_language']) : [];
-		$available_language = array_filter($report_language, fn ($val) => $val == 'en');
-		$dir = __DIR__ . "/../../Locale/$form_language.php";
-		$translation_data = include $dir;
+		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
+		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
+		$translation_data = $this->get_localisation_data($form_language);
 
 		return $this->render(
 			'form/sade-sati',
@@ -78,7 +79,7 @@ class SadeSatiController implements ReportControllerInterface {
 				'datetime'    => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type' => $result_type,
 				'selected_lang' => $form_language,
-				'report_language' => $available_language,
+				'report_language' => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
