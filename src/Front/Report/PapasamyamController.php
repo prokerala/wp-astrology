@@ -44,7 +44,10 @@ class PapasamyamController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi', 'ta', 'ml'
+		'en',
+		'hi',
+		'ta',
+		'ml',
 	];
 	/**
 	 * PapasamyamController constructor
@@ -63,20 +66,19 @@ class PapasamyamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/papasamyam',
 			[
-				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -90,8 +92,7 @@ class PapasamyamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
+	public function process( $options = [] ): string {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
@@ -103,7 +104,7 @@ class PapasamyamController implements ReportControllerInterface {
 		$method   = new Papasamyam( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$result = $method->process( $location, $datetime, $lang );
 
@@ -126,9 +127,9 @@ class PapasamyamController implements ReportControllerInterface {
 		return $this->render(
 			'result/papasamyam',
 			[
-				'result'  => $papasamyam_result,
-				'options' => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $papasamyam_result,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 
 			]
 		);

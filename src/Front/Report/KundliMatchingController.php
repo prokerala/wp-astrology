@@ -44,7 +44,8 @@ class KundliMatchingController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi'
+		'en',
+		'hi',
 	];
 	/**
 	 * KundliMatchingController constructor
@@ -64,22 +65,22 @@ class KundliMatchingController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
-		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+		$girl_dob         = $this->get_post_input( 'girl_dob', 'now' );
+		$boy_dob          = $this->get_post_input( 'boy_dob', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/kundli-matching',
 			[
-				'options'     => $options + $this->get_options(),
-				'girl_dob'    => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
-				'boy_dob'     => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
-				'result_type' => $result_type,
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'girl_dob'         => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'          => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -99,13 +100,12 @@ class KundliMatchingController implements ReportControllerInterface {
 		$client        = $this->get_api_client();
 		$girl_location = $this->get_location( $girl_tz, 'girl_' );
 		$boy_location  = $this->get_location( $boy_tz, 'boy_' );
-		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
-		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$girl_dob      = $this->get_post_input( 'girl_dob', '' );
+		$boy_dob       = $this->get_post_input( 'boy_dob', '' );
+		$result_type   = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$lang          = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$advanced = 'advanced' === $result_type;
-
 
 		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
 		$boy_dob  = new \DateTimeImmutable( $boy_dob, $boy_tz );
@@ -122,12 +122,12 @@ class KundliMatchingController implements ReportControllerInterface {
 		return $this->render(
 			'result/kundli-matching',
 			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'girl_dob'    => $girl_dob,
-				'boy_dob'     => $boy_dob,
-				'options'     => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $compatibility_result,
+				'result_type'   => $result_type,
+				'girl_dob'      => $girl_dob,
+				'boy_dob'       => $boy_dob,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}

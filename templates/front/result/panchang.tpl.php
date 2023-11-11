@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h2 class="pk-astrology-text-center"><?= $title?></h2>
+		<h2 class="pk-astrology-text-center"><?php echo esc_attr( $title ); ?></h2>
 		<div class="pk-astrology-panchang-details">
 			<?php foreach ( $result['basic_info'] as $key => $data ) : ?>
 

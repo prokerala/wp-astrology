@@ -32,8 +32,10 @@ namespace Prokerala\WP\Astrology\Front\Report;
 use DateTimeImmutable;
 use DateTimeZone;
 use Exception;
+use InvalidArgumentException;
 use Prokerala\Api\Astrology\Location;
 use Prokerala\Api\Astrology\Result\Panchang\AdvancedPanchang;
+use Prokerala\Api\Astrology\Result\Panchang\Panchang as BasicPanchang;
 use Prokerala\Api\Astrology\Service\Panchang;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -41,24 +43,28 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 /**
  * Daily Panchang Form Controller.
  *
- * @since   1.0.0
+ * @since   1.2.0
  */
 class DailyPanchangController implements ReportControllerInterface {
 
-	use ReportControllerTrait{
+	use ReportControllerTrait {
 		get_attribute_defaults as getCommonAttributeDefaults;
 	}
 	use PanchangControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi', 'ta', 'ml', 'te'
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
 	];
- 	/**
+	/**
 	 * PanchangController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -70,8 +76,7 @@ class DailyPanchangController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
+	public function render_form( $options = [] ): string {
 		return '';
 	}
 
@@ -81,69 +86,46 @@ class DailyPanchangController implements ReportControllerInterface {
 	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
+	 *
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
-		$tz       = $this->get_timezone();
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$advanced = 'advanced' === $result_type;
+	public function process( $options = [] ): string {
+		$tz          = $this->get_timezone();
+		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$advanced    = 'advanced' === $result_type;
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
-		$client   = $this->get_api_client();
+		$client = $this->get_api_client();
 
-		$method   = new Panchang( $client );
+		$method = new Panchang( $client );
 
 		$method->setTimeZone( $tz );
 
-		$method->setAyanamsa( $options['ayanamsa']);
+		$method->setAyanamsa( $options['ayanamsa'] );
 
 		$datetime = new DateTimeImmutable( $options['date'], $tz );
-		$location = $this->get_location_from_shortcode( $options['coordinates'], $tz );
+		$location = $this->get_location_from_shortcode( $options['coordinate'], $tz );
 
 		$key = "astrology_daily_prediction_{$result_type}_{$options['date']}";
 
-		$result = $this->load_cached_panchang_data($key) ;
+		$result = $this->load_cached_panchang_data( $key );
 
-		if (empty($result)) {
+		if ( empty( $result ) ) {
 			$result = $method->process( $location, $datetime, $advanced, $lang );
-			$this->cache_panchang_data($key, $result);
+			$this->cache_panchang_data( $key, $result );
 		}
 
-
-		$panchang_result = [
-			'sunrise'  => $result->getSunrise(),
-			'sunset'   => $result->getSunset(),
-			'moonrise' => $result->getMoonrise(),
-			'moonset'  => $result->getMoonset(),
-			'vaara'    => $result->getVaara(),
-		];
-
-		$panchang              = [];
-		$panchang['Nakshatra'] = $result->getNakshatra();
-		$panchang['Tithi']     = $result->getTithi();
-		$panchang['Karana']    = $result->getKarana();
-		$panchang['Yoga']      = $result->getYoga();
-
-		$panchang_details = $this->getPanchangDetails( $panchang );
-		$panchang_result  = array_merge( $panchang_result, $panchang_details );
-
-		$data['basic_info'] = $panchang_result;
-
-		if ( $advanced ) {
-			$data['auspicious_period']   = $this->getAdvancedInfo( $result->getAuspiciousPeriod() );
-			$data['inauspicious_period'] = $this->getAdvancedInfo( $result->getInauspiciousPeriod() );
-		}
+		$data = $this->process_result( $result, $advanced );
 
 		return $this->render(
 			'result/panchang',
 			[
-				'result'      => $data,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
+				'result'        => $data,
+				'result_type'   => $result_type,
+				'options'       => $this->get_options(),
 				'selected_lang' => $lang,
-				'title' => 'Daily Panchang',
+				'title'         => 'Daily Panchang',
 
 			]
 		);
@@ -157,57 +139,99 @@ class DailyPanchangController implements ReportControllerInterface {
 	 *
 	 * @return array<string,mixed>
 	 */
-	public function get_attribute_defaults(): array
-	{
+	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
-				'date' => '',
-				'ayanamsa' => 1,
-				'coordinates' => '',
-			];
+			'date'       => '',
+			'ayanamsa'   => 1,
+			'coordinate' => '',
+		];
 	}
 
 
 	/**
 	 * Create location object from short code.
-	 *
-	 * @param DateTimeZone $tz Timezone.
-	 * @param string $coordinates Render options.
-	 * @return Location
-	 *@since 1.0.0
-	 *
-	 */
-	protected function get_location_from_shortcode(string $coordinates, DateTimeZone $tz ): Location
-	{
-		[$latitude, $longitude] = explode( ',', $coordinates );
 
-		return new Location( (float)$latitude, (float)$longitude, 0, $tz );
+	 * @param string       $coordinates Render options.
+	 * @param DateTimeZone $tz Timezone.
+	 * @return Location
+	 * @since 1.2.0
+	 */
+	protected function get_location_from_shortcode( string $coordinates, DateTimeZone $tz ): Location {
+		$default = [ 23.179300, 75.784912 ];
+
+		if ( empty( $coordinates ) ) {
+			[$latitude, $longitude] = $default;
+		} else {
+			[$latitude, $longitude] = array_map( 'floatval', explode( ',', $coordinates ) );
+
+			if ( ! $this->in_range( $latitude, -90, 90, true ) || ! $this->in_range( $longitude, -180, 180, true ) ) {
+				[$latitude, $longitude] = $default;
+			}
+		}
+
+		return new Location( (float) $latitude, (float) $longitude, 0, $tz );
 	}
 
-	private function load_cached_panchang_data(string $key)
-	{
+	/**
+	 * Try to load the panchang data from cache.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $key Cache key.
+	 *
+	 * @return array|false
+	 */
+	private function load_cached_panchang_data( string $key ) {
 		return get_transient( $key )['panchang'];
 	}
 
-	private function cache_panchang_data(string $key, \Prokerala\Api\Astrology\Result\Panchang\Panchang|AdvancedPanchang $result): void
-	{
+	/**
+	 * Try to load the panchang data from cache.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string                         $key Cache key.
+	 * @param BasicPanchang|AdvancedPanchang $result .
+	 *
+	 * @return void
+	 */
+	private function cache_panchang_data( string $key, BasicPanchang|AdvancedPanchang $result ): void {
 		$data['panchang'] = $result;
 
-		$current_time = current_time('timestamp');
-		$end_of_day = strtotime('today midnight +1 day') - 1;
-		$expiration_time = $end_of_day - $current_time;
+		$now = new \DateTimeImmutable( 'now' );
 
-		set_transient( $key, $data, $expiration_time );
+		set_transient( $key . '_' . $now->format( 'Y_m_d' ), $data, 86400 );
 	}
 
 	/**
 	 * Check whether result can be rendered for current request.
 	 *
-	 * @since 1.1.0
+	 * @since 1.2.0
 	 *
 	 * @return bool
 	 */
-	public function can_render_result(): bool
-	{
+	public function can_render_result(): bool {
 		return true;
+	}
+
+	/**
+	 * Determines if $number is between $min and $max.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param  string  $number     The number from shortcode.
+	 * @param  integer $min        The minimum value in the range.
+	 * @param  integer $max        The maximum value in the range.
+	 * @param  boolean $inclusive  Whether the range should be inclusive or not.
+	 * @return boolean              Whether the number was in the range.
+	 */
+	private function in_range( $number, $min, $max, $inclusive = false ) {
+		if ( $number && is_float( $number ) ) {
+			return $inclusive
+				? ( $number >= $min && $number <= $max )
+				: ( $number > $min && $number < $max );
+		}
+
+		return false;
 	}
 }

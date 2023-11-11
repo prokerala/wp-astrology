@@ -126,11 +126,11 @@ class ReportController {
 
 			return $controller->render_form(
 				[
-					'result_type' => $args['result_type'] ?? '',
-					'form_action' => $args['form_action'] ?? '',
-					'calculator'  => $args['calculator'] ?? '',
-					'system'      => $args['system'] ?? '',
-					'form_language' => $args['form_language'] ?? '',
+					'result_type'     => $args['result_type'] ?? '',
+					'form_action'     => $args['form_action'] ?? '',
+					'calculator'      => $args['calculator'] ?? '',
+					'system'          => $args['system'] ?? '',
+					'form_language'   => $args['form_language'] ?? '',
 					'report_language' => $args['report_language'] ?? '',
 				] + $args
 			);

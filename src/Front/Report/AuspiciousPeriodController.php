@@ -45,7 +45,11 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi', 'ta', 'ml', 'te'
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
 	];
 
 	/**
@@ -53,7 +57,7 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -65,20 +69,19 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$datetime = $this->get_post_input( 'datetime', 'now' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/auspicious-period',
 			[
-				'options'  => $options + $this->get_options(),
-				'datetime' => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -92,21 +95,20 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
+	public function process( $options = [] ): string {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$datetime = $this->get_post_input( 'datetime');
+		$datetime = $this->get_post_input( 'datetime' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$method   = new AuspiciousPeriod( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$result = $method->process( $location, $datetime, $lang );
 
@@ -129,9 +131,9 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 		return $this->render(
 			'result/auspicious-period',
 			[
-				'result'  => $data,
-				'options' => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $data,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}

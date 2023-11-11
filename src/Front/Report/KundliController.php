@@ -54,14 +54,17 @@ class KundliController implements ReportControllerInterface {
 	}
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi', 'ta', 'ml'
+		'en',
+		'hi',
+		'ta',
+		'ml',
 	];
 	/**
 	 * KundliController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -73,22 +76,21 @@ class KundliController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/kundli',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'result_type' => $result_type,
-				'report_language' => $report_language,
-				'selected_lang' => $form_language,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'result_type'      => $result_type,
+				'report_language'  => $report_language,
+				'selected_lang'    => $form_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -97,27 +99,27 @@ class KundliController implements ReportControllerInterface {
 	/**
 	 * Process result
 	 *
-	 * @param Client $client API Client.
-	 * @param Location $location User location.
+	 * @param Client            $client API Client.
+	 * @param Location          $location User location.
 	 * @param DateTimeInterface $datetime Datetime.
-	 * @param bool $advanced Whether to return detailed report.
-	 * @param string $resultLang language of report.
+	 * @param bool              $advanced Whether to return detailed report.
+	 * @param string            $result_lang language of report.
 	 * @return array
-	 *@throws Exception On API query failure.
+	 * @throws Exception On API query failure.
 	 *
 	 * @since 1.0.1
 	 */
 	protected function get_kundli_details(
-		Client            $client,
-		Location          $location,
+		Client $client,
+		Location $location,
 		DateTimeInterface $datetime,
-		bool              $advanced,
-		string            $resultLang
+		bool $advanced,
+		string $result_lang
 	): array {
 
 		$method = new Kundli( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result            = $method->process( $location, $datetime, $advanced, $resultLang );
+		$result            = $method->process( $location, $datetime, $advanced, $result_lang );
 		$nakshatra_details = $result->getNakshatraDetails();
 		$nakshatra         = $nakshatra_details->getNakshatra();
 		$nakshatra_lord    = $nakshatra->getLord();
@@ -207,18 +209,17 @@ class KundliController implements ReportControllerInterface {
 	/**
 	 * Process result
 	 *
-	 * @param Client $client API Client.
-	 * @param Location $location User location.
+	 * @param Client            $client API Client.
+	 * @param Location          $location User location.
 	 * @param DateTimeInterface $datetime Datetime.
-	 * @param string $chart_type Chart type.
-	 * @param string $chart_style Chart style.
+	 * @param string            $chart_type Chart type.
+	 * @param string            $chart_style Chart style.
 	 * @return string
-	 *@throws Exception On API query failure.
+	 * @throws Exception On API query failure.
 	 *
 	 * @since 1.0.1
 	 */
-	protected function get_chart(Client $client, Location $location, DateTimeInterface $datetime, string $chart_type, string $chart_style ): string
-	{
+	protected function get_chart( Client $client, Location $location, DateTimeInterface $datetime, string $chart_type, string $chart_style ): string {
 
 		$method = new Chart( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
@@ -234,19 +235,18 @@ class KundliController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{ // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 
-		$datetime    = $this->get_post_input( 'datetime');
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$datetime    = $this->get_post_input( 'datetime' );
+		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
-		$datetime    = new DateTimeImmutable( $datetime, $tz );
-		$advanced    = 'advanced' === $result_type;
+		$datetime = new DateTimeImmutable( $datetime, $tz );
+		$advanced = 'advanced' === $result_type;
 
 		$kundli_result = $this->get_kundli_details( $client, $location, $datetime, $advanced, $lang );
 
@@ -262,9 +262,9 @@ class KundliController implements ReportControllerInterface {
 		return $this->render(
 			'result/kundli',
 			[
-				'result'  => $kundli_result,
-				'options' => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $kundli_result,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}
@@ -275,8 +275,7 @@ class KundliController implements ReportControllerInterface {
 	 * @param AdvancedKundli $result Kundli result.
 	 * @return array
 	 */
-	public function getAdvancedInfo(AdvancedKundli $result ): array
-	{
+	public function getAdvancedInfo( AdvancedKundli $result ): array {
 		$mangal_dosha                  = $result->getMangalDosha();
 		$yoga_details                  = $result->getYogaDetails();
 		$kundli_result                 = [];
@@ -319,8 +318,7 @@ class KundliController implements ReportControllerInterface {
 	 * @param array $dasha_periods dashaperiods.
 	 * @return array
 	 */
-	public function getDashaPeriodsDetails(array $dasha_periods ): array
-	{ // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	public function getDashaPeriodsDetails( array $dasha_periods ): array { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$dasha_period_result = [];
 		foreach ( $dasha_periods as $dasha_period ) {
 			$antardashas       = $dasha_period->getAntardasha();
@@ -362,8 +360,7 @@ class KundliController implements ReportControllerInterface {
 	 *
 	 * @return array<string,mixed>
 	 */
-	public function get_attribute_defaults(): array
-	{
+	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
 			'display_charts' => '',
 			'chart_style'    => 'north-indian',

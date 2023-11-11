@@ -46,14 +46,15 @@ class PoruthamController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'ml'
+		'en',
+		'ml',
 	];
 	/**
 	 * PoruthamController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -65,24 +66,23 @@ class PoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$girl_dob    = $this->get_post_input( 'girl_dob', 'now' );
-		$boy_dob     = $this->get_post_input( 'boy_dob', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$girl_dob         = $this->get_post_input( 'girl_dob', 'now' );
+		$boy_dob          = $this->get_post_input( 'boy_dob', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/porutham',
 			[
-				'options'     => $options + $this->get_options(),
-				'girl_dob'    => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
-				'boy_dob'     => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
-				'result_type' => $result_type,
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'girl_dob'         => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'          => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -96,9 +96,8 @@ class PoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
-		$tz = $this->get_timezone();
+	public function process( $options = [] ): string {
+		$tz            = $this->get_timezone();
 		$girl_tz       = $this->get_timezone( 'girl_' );
 		$boy_tz        = $this->get_timezone( 'boy_' );
 		$client        = $this->get_api_client();
@@ -108,10 +107,9 @@ class PoruthamController implements ReportControllerInterface {
 		$girl_dob    = $this->get_post_input( 'girl_dob', '' );
 		$boy_dob     = $this->get_post_input( 'boy_dob', '' );
 		$system      = $this->get_post_input( 'system', '' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
-
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$advanced = 'advanced' === $result_type;
 		$girl_dob = new DateTimeImmutable( $girl_dob, $girl_tz );
@@ -129,12 +127,12 @@ class PoruthamController implements ReportControllerInterface {
 		return $this->render(
 			'result/porutham',
 			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'girl_dob'    => $girl_dob,
-				'boy_dob'     => $boy_dob,
-				'options'     => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $compatibility_result,
+				'result_type'   => $result_type,
+				'girl_dob'      => $girl_dob,
+				'boy_dob'       => $boy_dob,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}
@@ -143,11 +141,10 @@ class PoruthamController implements ReportControllerInterface {
 	 * Get compatability result
 	 *
 	 * @param object $result API Result.
-	 * @param int $advanced Advanced Result.
+	 * @param int    $advanced Advanced Result.
 	 * @return array
 	 */
-	private function get_compatibility_result(object $result, int $advanced ): array
-	{
+	private function get_compatibility_result( object $result, int $advanced ): array {
 		$compatibility_result = [];
 
 		$girl_info           = $result->getGirlInfo();

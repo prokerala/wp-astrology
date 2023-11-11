@@ -46,9 +46,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="pk-astrology-row">
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-			<legend class="pk-astrology-form-label"><?= $translation_data['enter_girl_detail']?></legend>
+			<legend class="pk-astrology-form-label"><?php echo $translation_data['enter_girl_detail']; ?></legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['girl_nakshatra']?></label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?php echo $translation_data['girl_nakshatra']; ?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $translation_data['nakshatra_name_list'] as $nakshatra_id => $nakshatra ) : ?>
@@ -58,7 +58,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['girl_nakshatra_pada']?></label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?php echo $translation_data['girl_nakshatra_pada']; ?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="girl_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -69,9 +69,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 		<div class="pk-astrology-col-12 pk-astrology-col-md-6">
-			<legend class="pk-astrology-form-label"><?= $translation_data['enter_boy_detail']?></legend>
+			<legend class="pk-astrology-form-label"><?php echo $translation_data['enter_boy_detail']; ?></legend>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['boy_nakshatra']?></label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?php echo $translation_data['boy_nakshatra']; ?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra" class="pk-astrology-form-control">
 						<?php foreach ( $nakshatra_list as $nakshatra_id => $nakshatra ) : ?>
@@ -81,7 +81,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 			<div class="pk-astrology-form-group pk-astrology-row">
-				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?= $translation_data['boy_nakshatra_pada']?></label>
+				<label class="pk-astrology-col-sm-3 pk-astrology-col-md-6 pk-astrology-form-label"><?php echo $translation_data['boy_nakshatra_pada']; ?></label>
 				<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 					<select name="boy_nakshatra_pada" class="pk-astrology-form-control">
 						<?php for ( $idx = 1; $idx <= 4; $idx++ ) : ?>
@@ -94,21 +94,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 
-	<?php if ($report_language): ?>
+	<?php if ( $report_language ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?= $translation_data['language']?>: </label>
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?php echo $translation_data['language']; ?>: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
 				<select name="lang" id="select-lang">
-					<?php foreach ($report_language as $language): ?>
-						<option value=<?= $language?> <?= $selected_lang ===  $language ? 'selected' : ''; ?>><?= $translation_data[$language]?></option>
-					<?php endforeach;?>
+					<?php foreach ( $report_language as $language ) : ?>
+						<option value=<?php echo $language; ?> <?php echo $selected_lang === $language ? 'selected' : ''; ?>><?php echo $translation_data[ $language ]; ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-	<?php endif;?>
+	<?php endif; ?>
 
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn"><?= $translation_data['get_result']?></button>
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>

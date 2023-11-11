@@ -74,22 +74,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
-	<?php if ($enable_lang): ?>
-		<?php $selected_lang ??= 'en'; ?>
-		<div class="pk-astrology-form-group pk-astrology-row">
-			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang">Language: </label>
-			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
-				<select name="lang" id="select-lang">
-					<option value='en' <?= 'en' ===  $selected_lang ? 'selected' : ''; ?>>English</option>
-					<option value='ml' <?= 'ml' ===  $selected_lang ? 'selected' : ''; ?>>Malayalam</option>
-					<option value='ta' <?= 'ta' ===  $selected_lang ? 'selected' : ''; ?>>Tamil</option>
-					<option value='h1' <?= 'h1' ===  $selected_lang ? 'selected' : ''; ?>>Hindi</option>
-				</select>
-			</div>
-		</div>
-
-	<?php endif;?>
-
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Horoscope</button>
 		<input type="hidden" name="submit" value="1">

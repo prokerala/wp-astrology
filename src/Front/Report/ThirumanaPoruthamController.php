@@ -45,14 +45,14 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en'
+		'en',
 	];
 	/**
 	 * ThirumanaPoruthamController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -64,20 +64,19 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/thirumana-porutham',
 			[
-				'options'        => $options + $this->get_options(),
-				'result_type'    => $result_type,
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -92,8 +91,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{ // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$client = $this->get_api_client();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
@@ -108,7 +106,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 		$boy_profile  = new NakshatraProfile( $boy_nakshatra, $boy_nakshatra_pada );
 		$advanced     = 'advanced' === $result_type;
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$method = new ThirumanaPorutham( $client );
 		$result = $method->process( $girl_profile, $boy_profile, $advanced, $lang );
@@ -118,10 +116,10 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 		return $this->render(
 			'result/thirumana-porutham',
 			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
-				'selected_lang' => $lang
+				'result'        => $compatibility_result,
+				'result_type'   => $result_type,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}
@@ -131,11 +129,10 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * Get compatability result
 	 *
 	 * @param object $result API Result.
-	 * @param int $advanced Advanced Result.
+	 * @param int    $advanced Advanced Result.
 	 * @return array
 	 */
-	private function get_compatibility_result(object $result, int $advanced ): array
-	{
+	private function get_compatibility_result( object $result, int $advanced ): array {
 
 		$matches = [];
 

@@ -46,14 +46,18 @@ class PanchangController implements ReportControllerInterface {
 	use PanchangControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en', 'hi', 'ta', 'ml', 'te'
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
 	];
 	/**
 	 * PanchangController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -65,22 +69,21 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/panchang',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'result_type' => $result_type,
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 
 			]
@@ -95,14 +98,13 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
+	public function process( $options = [] ): string {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 
-		$datetime    = $this->get_post_input( 'datetime');
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
+		$datetime    = $this->get_post_input( 'datetime' );
+		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
 		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;
@@ -110,42 +112,20 @@ class PanchangController implements ReportControllerInterface {
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
 
-		$lang = $this->get_post_language('lang', self::REPORT_LANGUAGES, $options['form_language']);
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		$result = $method->process( $location, $datetime, $advanced, $lang );
 
-		$panchang_result = [
-			'sunrise'  => $result->getSunrise(),
-			'sunset'   => $result->getSunset(),
-			'moonrise' => $result->getMoonrise(),
-			'moonset'  => $result->getMoonset(),
-			'vaara'    => $result->getVaara(),
-		];
-
-		$panchang              = [];
-		$panchang['Nakshatra'] = $result->getNakshatra();
-		$panchang['Tithi']     = $result->getTithi();
-		$panchang['Karana']    = $result->getKarana();
-		$panchang['Yoga']      = $result->getYoga();
-
-		$panchang_details = $this->getPanchangDetails( $panchang );
-		$panchang_result  = array_merge( $panchang_result, $panchang_details );
-
-		$data['basic_info'] = $panchang_result;
-
-		if ( $advanced ) {
-			$data['auspicious_period']   = $this->getAdvancedInfo( $result->getAuspiciousPeriod() );
-			$data['inauspicious_period'] = $this->getAdvancedInfo( $result->getInauspiciousPeriod() );
-		}
+		$data = $this->process_result( $result, $advanced );
 
 		return $this->render(
 			'result/panchang',
 			[
-				'result'      => $data,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
+				'result'        => $data,
+				'result_type'   => $result_type,
+				'options'       => $this->get_options(),
 				'selected_lang' => $lang,
-				'title' => 'Panchang Details',
+				'title'         => 'Panchang Details',
 
 			]
 		);

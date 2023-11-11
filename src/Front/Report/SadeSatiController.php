@@ -45,14 +45,14 @@ class SadeSatiController implements ReportControllerInterface {
 	use ReportControllerTrait;
 
 	private const REPORT_LANGUAGES = [
-		'en'
+		'en',
 	];
 	/**
 	 * SadeSatiController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct(array $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
@@ -64,22 +64,21 @@ class SadeSatiController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string
-	{
-		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?: $this->get_post_input( 'result_type', 'basic' );
-		$form_language = $this->get_form_language($options['form_language'], self::REPORT_LANGUAGES);
-		$report_language = $this->filter_report_language($options['report_language'], self::REPORT_LANGUAGES);
-		$translation_data = $this->get_localisation_data($form_language);
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/sade-sati',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'result_type' => $result_type,
-				'selected_lang' => $form_language,
-				'report_language' => $report_language,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -93,8 +92,7 @@ class SadeSatiController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string
-	{
+	public function process( $options = [] ): string {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
@@ -139,6 +137,5 @@ class SadeSatiController implements ReportControllerInterface {
 				'options'     => $this->get_options(),
 			]
 		);
-
 	}
 }

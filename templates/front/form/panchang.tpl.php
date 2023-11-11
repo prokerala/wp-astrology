@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn"><?= $translation_data['get_result']?></button>
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; // phpcs:ignore WordPress.Security.EscapeOutput ?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>
