@@ -84,6 +84,7 @@ final class Front {
 		add_shortcode( 'astrology', [ $this, 'render' ] );
 		add_shortcode( 'astrology-form', [ $this, 'render_form' ] );
 		add_shortcode( 'astrology-result', [ $this, 'render_result' ] );
+
 	}
 
 	/**
@@ -118,6 +119,7 @@ final class Front {
 	 * @return string
 	 */
 	public function render_result( $atts = [] ) {
+
 		return $this->report_controller->render_result( $atts );
 	}
 

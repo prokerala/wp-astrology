@@ -151,7 +151,7 @@ class ReportController {
 		try {
 			$controller = $this->get_controller( $atts['report'] ?? '' );
 
-			if ( ! $controller->can_render_result() ) {
+			if ( ! $controller->can_render_result( $atts ) ) {
 				return '';
 			}
 

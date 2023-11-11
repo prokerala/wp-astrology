@@ -128,7 +128,7 @@ trait ReportControllerTrait {
 	 */
 	protected function get_input_ayanamsa() {
 		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
-			return '';
+			return 1;
 		}
 
 		return isset( $_POST['ayanamsa'] ) ? (int) $_POST['ayanamsa'] : 1;
@@ -185,7 +185,9 @@ trait ReportControllerTrait {
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();
 
-		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory ) : new FileGetContents( $response_factory );
+		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory , [
+			'verify' => false,
+		]) : new FileGetContents( $response_factory );
 		$http_client = new Browser( $client, $request_factory );
 
 		$client_id     = $this->options['client_id'];
@@ -234,9 +236,11 @@ trait ReportControllerTrait {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @param array $atts Short code attributes.
+	 *
 	 * @return bool
 	 */
-	public function can_render_result() {
+	public function can_render_result( $atts ) {
 		return (
 			! isset( $_SERVER['REQUEST_METHOD'] )
 			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -280,7 +284,6 @@ trait ReportControllerTrait {
 		if ( isset( $_POST[ $name ] ) ) {
 			$lang = sanitize_text_field( wp_unslash( (string) $_POST[ $name ] ) );
 		}
-
 		if ( '' === $lang && in_array( $form_language, $report_languages, true ) ) {
 			$lang = $form_language;
 		} elseif ( ! in_array( $lang, $report_languages, true ) ) {
