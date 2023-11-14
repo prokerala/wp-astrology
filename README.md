@@ -52,7 +52,6 @@ Where `REPORT_NAME` must be one of following
 - `Chart`
 - `Choghadiya`
 - `DailyPrediction`
-- `DailyPanchang`
 - `InauspiciousPeriod`
 - `KaalSarpDosha`
 - `Kundli`
@@ -95,9 +94,9 @@ Where `REPORT_NAME` must be one of following
 
 - **`date`**
 
-   By default, the `DailyPrediction` and `DailyPanchang` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+   By default, the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
 
-      [astrology report="DailyPanchang" date="tomorrow"]
+      [astrology report="DailyPrediction" date="tomorrow"]
 
 - **`coordinate`**
 
@@ -119,7 +118,7 @@ You can use the following attributes to localize the form / result.  View availa
 
   You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
 
-        [astrology report="Kundli" form_language="en,hi,ml"]
+        [astrology report="Kundli" report_language="en,hi,ml"]
 
 
 ### Frequently Asked Questions
