@@ -30,6 +30,7 @@
 namespace Prokerala\WP\Astrology\Front\Report;
 
 use DateTimeImmutable;
+use Prokerala\Api\Astrology\Result\Horoscope\Papasamyam;
 use Prokerala\Api\Astrology\Service\PapaSamyamCheck;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -129,12 +130,15 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$papa_samyam_check_result['girlPapasamyam'] = $this->getPapasamyam( $result->getGirlPapasamyam() );
 		$papa_samyam_check_result['boyPapasamyam']  = $this->getPapasamyam( $result->getBoyPapasamyam() );
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/papasamyam-check',
 			[
-				'result'        => $papa_samyam_check_result,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $papa_samyam_check_result,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -142,10 +146,10 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	/**
 	 * Papasamyam details
 	 *
-	 * @param array<string,mixed> $papasamyam papasamyam data.
+	 * @param Papasamyam $papasamyam papasamyam data.
 	 * @return array
 	 */
-	public function getPapasamyam( array $papasamyam ): array {
+	public function getPapasamyam( Papasamyam $papasamyam ): array {
 		$papa_samyam_result                = [];
 		$papa_samyam_result['total_point'] = $papasamyam->getTotalPoints();
 		$papa_samyam                       = $papasamyam->getPapaSamyam();

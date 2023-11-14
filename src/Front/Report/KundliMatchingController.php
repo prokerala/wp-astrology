@@ -119,15 +119,18 @@ class KundliMatchingController implements ReportControllerInterface {
 
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/kundli-matching',
 			[
-				'result'        => $compatibility_result,
-				'result_type'   => $result_type,
-				'girl_dob'      => $girl_dob,
-				'boy_dob'       => $boy_dob,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $compatibility_result,
+				'result_type'      => $result_type,
+				'girl_dob'         => $girl_dob,
+				'boy_dob'          => $boy_dob,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

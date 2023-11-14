@@ -117,18 +117,34 @@ class BirthDetailsController implements ReportControllerInterface {
 		$data['soorya_rasi']  = $result->getSooryaRasi();
 		$data['zodiac']       = $result->getZodiac();
 
-		$nakshatra_info_list = [ 'Deity', 'Ganam', 'Symbol', 'AnimalSign', 'Nadi', 'Color', 'BestDirection', 'Syllables', 'BirthStone', 'Gender', 'Planet', 'EnemyYoni' ];
-		foreach ( $nakshatra_info_list as $info ) {
-			$function                         = 'get' . $info;
-			$data['additional_info'][ $info ] = $additional_info->{$function}();
+		$nakshatra_info_list = [
+			'deity'          => 'Deity',
+			'ganam'          => 'Ganam',
+			'symbol'         => 'Symbol',
+			'animal_sign'    => 'AnimalSign',
+			'nadi'           => 'Nadi',
+			'color'          => 'Color',
+			'best_direction' => 'BestDirection',
+			'syllables'      => 'Syllables',
+			'birthStone'     => 'BirthStone',
+			'gender'         => 'Gender',
+			'planet'         => 'Planet',
+			'enemy_yoni'     => 'EnemyYoni',
+		];
+		foreach ( $nakshatra_info_list as $key => $info ) {
+			$function                        = 'get' . $info;
+			$data['additional_info'][ $key ] = $additional_info->{$function}();
 		}
+
+		$translation_data = $this->get_localisation_data( $lang );
 
 		return $this->render(
 			'result/birth-details',
 			[
-				'result'        => $data,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $data,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

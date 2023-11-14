@@ -42,15 +42,15 @@ $alert_class = [
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h3>Birth Details</h3>
+		<h3><?php echo $translation_data['birth_details']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<tr class="pk-astrology-bg-secondary pk-astrology-text-center">
 				<th>#</th>
-				<th>Details of Girl</th>
-				<th>Details of Boy</th>
+				<th><?php echo $translation_data['details_of_girl']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['details_of_boy']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 			</tr>
 			<tr>
-				<th>Date Of Birth</th>
+				<th><?php echo $translation_data['place_of_birth']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				<td><?php echo $girl_dob->format( 'F d, Y' );  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 				<td><?php echo $boy_dob->format( 'F d, Y' );  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 			</tr>
@@ -64,13 +64,13 @@ $alert_class = [
 						?>
 						<?php if ( 'lord' === $item ) : ?>
 							<tr>
-								<td><b><?php echo $item;  // phpcs:ignore WordPress.Security.EscapeOutput ?></b></td>
+								<td><b><?php echo $translation_data[ $item ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></b></td>
 								<td><?php echo "{$item_vale['vedicName']} ({$item_vale['name']})";  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 								<td><?php echo "{$result['boyInfo'][$idx][$item]['vedicName']} ({$result['boyInfo'][$idx][$item]['name']})";  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 							</tr>
 						<?php else : ?>
 							<tr>
-								<td><b><?php echo $item;  // phpcs:ignore WordPress.Security.EscapeOutput ?></b></td>
+								<td><b><?php echo $translation_data[ $item ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></b></td>
 								<td><?php echo $item_vale;  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 								<td><?php echo $result['boyInfo'][ $idx ][ $item ];  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 							</tr>
@@ -82,27 +82,23 @@ $alert_class = [
 		<div class="pk-astrology-alert pk-astrology-alert-info pk-astrology-text-center <?php echo $alert_class[ $result['message']['type'] ]; // phpcs:ignore WordPress.Security.EscapeOutput ?>">
 			<?php echo $result['message']['description'];  // phpcs:ignore WordPress.Security.EscapeOutput ?> (<?php echo $result['totalPoints'];  // phpcs:ignore WordPress.Security.EscapeOutput ?> / 10)
 		</div>
-		<h3 class="pk-astrology-text-center">10 Poruthams and Your Compatibility</h3>
+		<h3 class="pk-astrology-text-center"><?php echo $translation_data['place_of_birth']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<tr class="pk-astrology-bg-secondary pk-astrology-text-center">
 				<th>#</th>
-				<th>Porutham</th>
+				<th><?php echo $translation_data['porutham']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				<?php if ( 'advanced' === $result_type ) : ?>
-					<th>Status</th>
+					<th><?php echo $translation_data['status']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				<?php endif; ?>
-				<th class="pk-astrology-text-center">Obtained Point</th>
+				<th class="pk-astrology-text-center"><?php echo $translation_data['obtained_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 			</tr>
 			<?php $idx = 1; ?>
 			<?php foreach ( $result['matches'] as $data ) : ?>
 				<tr><td><?php echo $idx++; ?></td><td><?php echo $data['name'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 					<?php if ( 'advanced' === $result_type ) : ?>
 						<td>
-							<?php
-							echo 'Good' === $data['poruthamStatus'] ? '<span class="pk-astrology-text-success">Good</span>' :
-								( 'Satisfactory' === $data['poruthamStatus'] ? '<span class="pk-astrology-text-warning">Satisfactory</span>' :
-									'<span class="pk-astrology-text-danger">Not Satisfactory</span>' )
-							?>
-									</td>
+							<?php echo $translation_data['good'] === $data['poruthamStatus'] ? "<span class='pk-astrology-text-success'>{$translation_data['good']}</span>" : ( $translation_data['satisfactory'] === $data['poruthamStatus'] ? "<span class='pk-astrology-text-warning'>{$translation_data['satisfactory']}</span>" : "<span class='pk-astrology-text-danger'>{$translation_data['not_satisfactory']}</span>" ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						</td>
 						<td class="pk-astrology-text-center"><?php echo $data['points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 					<?php else : ?>
 						<td class="pk-astrology-text-center"><?php echo $data['hasPorutham'] ? 1 : 0; ?></td>
@@ -110,13 +106,13 @@ $alert_class = [
 				</tr>
 			<?php endforeach; ?>
 			<tr class="pk-astrology-text-center">
-				<th colspan="<?php echo 'advanced' === $result_type ? 3 : 2; ?>">Total Points:</th>
+				<th colspan="<?php echo 'advanced' === $result_type ? 3 : 2; ?>"><?php echo $translation_data['total_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				<th><?php echo $result['totalPoints']; ?> / <?php echo $result['maximumPoints'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 			</tr>
 		</table>
 
 		<?php if ( 'advanced' === $result_type ) : ?>
-			<h3>Interpretation of 10 porutham</h3>
+			<h3><?php echo $translation_data['interpretation_of_10_porutham']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 			<?php foreach ( $result['matches'] as $key => $data ) : ?>
 				<h3><?php echo $data['name'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 				<p><?php echo $data['description'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>

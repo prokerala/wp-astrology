@@ -185,9 +185,12 @@ trait ReportControllerTrait {
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();
 
-		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory , [
-			'verify' => false,
-		]) : new FileGetContents( $response_factory );
+		$client      = function_exists( 'curl_init' ) ? new Curl(
+			$response_factory,
+			[
+				'verify' => false,
+			]
+		) : new FileGetContents( $response_factory );
 		$http_client = new Browser( $client, $request_factory );
 
 		$client_id     = $this->options['client_id'];
@@ -240,7 +243,7 @@ trait ReportControllerTrait {
 	 *
 	 * @return bool
 	 */
-	public function can_render_result( $atts ) {
+	public function can_render_result( $atts ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return (
 			! isset( $_SERVER['REQUEST_METHOD'] )
 			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized

@@ -39,12 +39,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-col-12">
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr class="pk-astrology-bg-secondary">
-					<th colspan="4" class="pk-astrology-text-center"><?php echo $type ? 'Day' : 'Night'; ?> Choghadiya</th>
+					<th colspan="4" class="pk-astrology-text-center"><?php echo $type ? $translation_data['day_choghadiya'] : $translation_data['night_choghadiya']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				</tr>
-				<tr><th>Name</th><th>Type</th><th>Start</th><th>End</th></tr>
+				<tr>
+					<th><?php echo $translation_data['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['type']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['start']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['end']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				</tr>
 
 				<?php foreach ( $choghadiya as $data ) : ?>
-					<tr class="<?php echo 'Good' === $data['type'] ? 'pk-astrology-table-warning' : ( 'Inauspicious' === $data['type'] ? 'pk-astrology-table-danger' : 'pk-astrology-table-success' ); ?>">
+					<tr class="<?php echo $translation_data['good'] === $data['type'] ? 'pk-astrology-table-warning' : ( $translation_data['inauspicious'] === $data['type'] ? 'pk-astrology-table-danger' : 'pk-astrology-table-success' ); ?>">
 						<td><?php echo $data['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?><br><i><?php echo $data['vela'] ? $data['vela'] : ''; // phpcs:ignore WordPress.Security.EscapeOutput ?></i></td>
 						<td><?php echo $data['type']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 						<td><?php echo $data['start']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td>

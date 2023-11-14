@@ -131,12 +131,15 @@ class PlanetPositionController implements ReportControllerInterface {
 			];
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/planet-position',
 			[
-				'result'        => $planet_position_result,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $planet_position_result,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

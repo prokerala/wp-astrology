@@ -128,12 +128,15 @@ class AuspiciousPeriodController implements ReportControllerInterface {
 			}
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/auspicious-period',
 			[
-				'result'        => $data,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $data,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

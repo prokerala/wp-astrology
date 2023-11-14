@@ -62,7 +62,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['pob']; // phpcs:ignore WordPress.Security.EscapeOutput ?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='g-location'>
-					<input type='text' id="g-autocomplete" name="girl_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" value="" required="required" data-location_input_prefix="girl"/>
+					<input type='text' id="g-autocomplete" name="girl_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="<?php echo $translation_data['place_of_birth']; // phpcs:ignore WordPress.Security.EscapeOutput ?>" value="" required="required" data-location_input_prefix="girl"/>
 				</div>
 			</div>
 		</div>
@@ -79,7 +79,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['pob']; // phpcs:ignore WordPress.Security.EscapeOutput ?>:</label>
 			<div class="pk-astrology-col-md-8">
 				<div id='b-location'>
-					<input type='text' id="b-coordinates" name="boy_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Place of birth" required="required" data-location_input_prefix="boy"/>
+					<input type='text' id="b-coordinates" name="boy_location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="<?php echo $translation_data['place_of_birth']; // phpcs:ignore WordPress.Security.EscapeOutput ?>" required="required" data-location_input_prefix="boy"/>
 				</div>
 			</div>
 		</div>

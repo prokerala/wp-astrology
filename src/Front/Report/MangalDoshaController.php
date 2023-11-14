@@ -122,13 +122,16 @@ class MangalDoshaController implements ReportControllerInterface {
 			$mangal_dosha_result['remedies']   = $result->getRemedies();
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/mangal-dosha',
 			[
-				'result'        => $mangal_dosha_result,
-				'result_type'   => $result_type,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $mangal_dosha_result,
+				'result_type'      => $result_type,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

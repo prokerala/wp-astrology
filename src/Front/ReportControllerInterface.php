@@ -66,14 +66,14 @@ interface ReportControllerInterface {
 	 */
 	public function get_attribute_defaults();
 
-    /**
-     * Check whether result can be rendered for current request.
-     *
-     * @since 1.2.0
-     *
-     * @param array $atts Short code attributes.
-     *
-     * @return bool
-     */
-    public function can_render_result( $atts );
+	/**
+	 * Check whether result can be rendered for current request.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param array $atts Short code attributes.
+	 *
+	 * @return bool
+	 */
+	public function can_render_result( $atts );
 }

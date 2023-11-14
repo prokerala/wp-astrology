@@ -36,13 +36,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h2 class="pk-astrology-text-center">Mangal Dosha Result</h2>
+		<h2 class="pk-astrology-text-center"><?php echo $translation_data['mangal_dosha_result']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
 		<div class="pk-astrology-alert pk-astrology-text-center <?php echo $result['has_mangal_dosha'] ? 'pk-astrology-alert-danger' : 'pk-astrology-alert-success'; ?>" >
 			<?php echo $result['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</div>
 		<?php if ( 'advanced' === $result_type ) : ?>
 			<?php if ( $result['has_exception'] ) : ?>
-				<h3>Exceptions</h3>
+				<h3><?php echo $translation_data['exceptions']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 				<ul>
 					<?php foreach ( $result['exceptions'] as $exceptions ) : ?>
 						<li><?php echo $exceptions; // phpcs:ignore WordPress.Security.EscapeOutput ?></li>
@@ -50,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</ul>
 			<?php endif; ?>
 			<?php if ( $result['remedies'] ) : ?>
-				<h3>Remedies</h3>
+				<h3><?php echo $translation_data['remedies']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 				<ul>
 					<?php foreach ( $result['remedies'] as $remedies ) : ?>
 						<li><?php echo $remedies; // phpcs:ignore WordPress.Security.EscapeOutput ?></li>

@@ -103,13 +103,14 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ): string {
-		$tz       = $this->get_timezone();
-		$client   = $this->get_api_client();
+	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+
+		$tz     = $this->get_timezone();
+		$client = $this->get_api_client();
 
 		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 
-		$method   = new Panchang( $client );
+		$method = new Panchang( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
 
@@ -130,12 +131,12 @@ class PanchangController implements ReportControllerInterface {
 		return $this->render(
 			'result/panchang',
 			[
-				'result'        => $data,
-				'result_type'   => $result_type,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $data,
+				'result_type'      => $result_type,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,
-				'title'         => isset($options['date']) ? 'daily_panchang' : 'panchang_details',
+				'title'            => isset( $options['date'] ) ? 'daily_panchang' : 'panchang_details',
 
 			]
 		);
@@ -167,35 +168,31 @@ class PanchangController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
-				'date'       => '',
-				'coordinate' => '',
-			];
+			'date'       => '',
+			'coordinate' => '',
+		];
 	}
 
 	/**
-	 * Fetch result from cache
+	 * Fetch result from cache.
 	 *
+	 * @param Panchang     $method Panchang Method.
+	 * @param bool         $advanced Result Type.
+	 * @param string       $lang Result language.
+	 * @param array        $options Array of required attributes.
+	 * @param DateTimeZone $tz Timezone variables.
+	 *
+	 * @return BasicPanchang|bool|AdvancedPanchang|array
+	 * @throws Exception If something went wrong.
 	 * @since 1.2.0
-	 *
-	 *
-	 * @param Panchang $method Panchang Method
-	 * @param bool $advanced
-	 * @param string $lang
-	 * @param array $options
-	 * @param DateTimeZone $tz
-	 *
-	 * @return BasicPanchang|AdvancedPanchang
-	 * @throws Exception
-	 *
 	 */
-	private function cache_fetch_result( $method, $advanced, $lang, $options, $tz )
-	{
+	private function cache_fetch_result( $method, $advanced, $lang, $options, $tz ): BasicPanchang|bool|AdvancedPanchang|array {
 
-		$datetime = new DateTimeImmutable( $options['date'], $tz );
-		$location = $this->get_location_from_shortcode( $options['coordinate'], $tz );
+		$datetime    = new DateTimeImmutable( $options['date'], $tz );
+		$location    = $this->get_location_from_shortcode( $options['coordinate'], $tz );
 		$result_type = $advanced ? 'advanced' : 'basic';
-		$key = "astrology_daily_prediction_{$result_type}_{$lang}_{$options['date']}";
-		$result = $this->load_cached_panchang_data( $key );
+		$key         = "astrology_daily_prediction_{$result_type}_{$lang}_{$options['date']}";
+		$result      = $this->load_cached_panchang_data( $key );
 
 		if ( empty( $result ) ) {
 			$result = $method->process( $location, $datetime, $advanced, $lang );
@@ -313,7 +310,7 @@ class PanchangController implements ReportControllerInterface {
 	 * @return array
 	 */
 	public function get_panchang_details( array $panchang ): array { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
-		$data_list       = [ 'Nakshatra', 'Tithi', 'Karana', 'Yoga' ];
+		$data_list       = [ 'nakshatra', 'tithi', 'karana', 'yoga' ];
 		$panchang_result = [];
 
 		foreach ( $data_list as $key ) {
@@ -324,9 +321,9 @@ class PanchangController implements ReportControllerInterface {
 					'start' => $data->getStart(),
 					'end'   => $data->getEnd(),
 				];
-				if ( 'Nakshatra' === $key ) {
+				if ( 'nakshatra' === $key ) {
 					$panchang_result[ $key ][ $idx ]['nakshatra_lord'] = $data->getLord();
-				} elseif ( 'Tithi' === $key ) {
+				} elseif ( 'tithi' === $key ) {
 					$panchang_result[ $key ][ $idx ]['paksha'] = $data->getPaksha();
 				}
 			}
@@ -346,8 +343,8 @@ class PanchangController implements ReportControllerInterface {
 	 *
 	 * @return array
 	 */
-	private function process_result( BasicPanchang|AdvancedPanchang $result, bool $advanced ): array
-	{ // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	private function process_result( BasicPanchang|AdvancedPanchang $result, bool $advanced ): array {
+	 // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$panchang_result = [
 			'sunrise'  => $result->getSunrise(),
 			'sunset'   => $result->getSunset(),
@@ -357,10 +354,10 @@ class PanchangController implements ReportControllerInterface {
 		];
 
 		$panchang              = [];
-		$panchang['Nakshatra'] = $result->getNakshatra();
-		$panchang['Tithi']     = $result->getTithi();
-		$panchang['Karana']    = $result->getKarana();
-		$panchang['Yoga']      = $result->getYoga();
+		$panchang['nakshatra'] = $result->getNakshatra();
+		$panchang['tithi']     = $result->getTithi();
+		$panchang['karana']    = $result->getKarana();
+		$panchang['yoga']      = $result->getYoga();
 
 		$panchang_details = $this->get_panchang_details( $panchang );
 		$panchang_result  = array_merge( $panchang_result, $panchang_details );
@@ -375,8 +372,18 @@ class PanchangController implements ReportControllerInterface {
 		return $data;
 	}
 
-	private function fetch_result( $method, $advanced, $lang, $tz )
-	{
+	/**
+	 * Format result to display in template.
+	 *
+	 * @param Panchang     $method Panchang Method.
+	 * @param bool         $advanced Result Type.
+	 * @param string       $lang Result language.
+	 * @param DateTimeZone $tz Timezone variables.
+	 * @return AdvancedPanchang|BasicPanchang
+	 * @throws Exception If something went wrong.
+	 * @since 1.2.0
+	 */
+	private function fetch_result( $method, $advanced, $lang, $tz ) {
 		$location = $this->get_location( $tz );
 		$datetime = new DateTimeImmutable( $this->get_post_input( 'datetime' ), $tz );
 		return $method->process( $location, $datetime, $advanced, $lang );

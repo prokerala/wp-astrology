@@ -259,12 +259,15 @@ class KundliController implements ReportControllerInterface {
 			];
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/kundli',
 			[
-				'result'        => $kundli_result,
-				'options'       => $this->get_options(),
-				'selected_lang' => $lang,
+				'result'           => $kundli_result,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
