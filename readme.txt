@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.3
-Stable tag: 1.1.4
+Stable tag: 1.2.0
 Requires PHP: 7.2.0+
 License: GPLV2+
 
@@ -121,6 +121,30 @@ Where `REPORT_NAME` must be one of following
 
    By default the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
 
+      [astrology report="DailyPrediction" date="tomorrow"]
+
+- `coordinate`
+
+  By default, the `DailyPanchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
+
+      [astrology report="DailyPanchang" coordinate="23.179300,75.784912"]
+
+*Localization*
+
+You can use the following attributes to localize the form / result.  View available languages for each report from  https://api.prokerala.com/docs#tag/Daily-Panchang
+
+- `form_language`
+
+  You can set the `form_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to set localization for forms.
+
+        [astrology report="Kundli" form_language="en"]
+
+- `report_language`
+
+  You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
+
+        [astrology report="Kundli" report_language="en,hi,ml"]
+
 == Frequently Asked Questions ==
 
 = Do I need an account to use this plugin? =
@@ -133,6 +157,10 @@ No, you can start using the plugin with our free subscription.
 
 == Changelog ==
 
+= 1.2.0 =
+* Added localizaton support
+* Added support for Daily Panchang
+ 
 = 1.1.4 =
 * Fix form date input changing to current date on result page
 * Fix layout issue with short prediction content
