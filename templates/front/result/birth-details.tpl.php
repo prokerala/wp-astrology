@@ -36,18 +36,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-		<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><td colspan="2" class="pk-astrology-text-center">Nakshatra Details</td></tr>
-		<tr><td>Nakshatra</td><td><?php echo $result['nakshatra']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Nakshatra Pada</td><td><?php echo $result['nakshatra']->getPada(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Nakshatra Lord</td><td><?php echo $result['nakshatra']->getLord(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Chandra Rasi</td><td><?php echo $result['chandra_rasi']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Chandra Rasi Lord</td><td><?php echo $result['chandra_rasi']->getLord() . '(' . $result['chandra_rasi']->getLord()->getVedicName() . ')'; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Soorya Rasi</td><td><?php echo $result['soorya_rasi']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Soorya Rasi Lord</td><td><?php echo $result['soorya_rasi']->getLord() . '(' . $result['soorya_rasi']->getLord()->getVedicName() . ')'; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr><td>Zodiac</td><td><?php echo $result['zodiac']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
-		<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><td colspan="2" class="pk-astrology-text-center">Additional Info</td></tr>
+		<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><td colspan="2" class="pk-astrology-text-center"><?php echo $translation_data['nakshatra_details']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['nakshatra']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['nakshatra']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['nakshatra_pada']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['nakshatra']->getPada(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['nakshatra']->getLord(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['chandra_rasi']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['chandra_rasi']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['chandra_rasi_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['chandra_rasi']->getLord() . '(' . $result['chandra_rasi']->getLord()->getVedicName() . ')'; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['soorya_rasi']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['soorya_rasi']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['soorya_rasi_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['soorya_rasi']->getLord() . '(' . $result['soorya_rasi']->getLord()->getVedicName() . ')'; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr><td><?php echo $translation_data['zodiac']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $result['zodiac']->getName(); // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+		<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><td colspan="2" class="pk-astrology-text-center"><?php echo $translation_data['additional_info']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
 		<?php foreach ( $result['additional_info'] as $key => $data ) : ?>
-			<tr><td><?php echo $key; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $data; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
+			<tr><td><?php echo $translation_data[ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td><?php echo $data; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
 		<?php endforeach; ?>
 	</table>
 </div>

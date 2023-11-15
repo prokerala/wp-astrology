@@ -128,7 +128,7 @@ trait ReportControllerTrait {
 	 */
 	protected function get_input_ayanamsa() {
 		if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
-			return '';
+			return 1;
 		}
 
 		return isset( $_POST['ayanamsa'] ) ? (int) $_POST['ayanamsa'] : 1;
@@ -185,7 +185,12 @@ trait ReportControllerTrait {
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();
 
-		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory ) : new FileGetContents( $response_factory );
+		$client      = function_exists( 'curl_init' ) ? new Curl(
+			$response_factory,
+			[
+				'verify' => false,
+			]
+		) : new FileGetContents( $response_factory );
 		$http_client = new Browser( $client, $request_factory );
 
 		$client_id     = $this->options['client_id'];
@@ -221,9 +226,11 @@ trait ReportControllerTrait {
 	 */
 	public function get_attribute_defaults() {
 		return [
-			'form_action' => null,
-			'report'      => '',
-			'result_type' => '',
+			'form_action'     => null,
+			'report'          => '',
+			'result_type'     => '',
+			'form_language'   => '',
+			'report_language' => '',
 		];
 	}
 
@@ -232,9 +239,11 @@ trait ReportControllerTrait {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @param array $atts Short code attributes.
+	 *
 	 * @return bool
 	 */
-	public function can_render_result() {
+	public function can_render_result( $atts ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		return (
 			! isset( $_SERVER['REQUEST_METHOD'] )
 			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -259,6 +268,75 @@ trait ReportControllerTrait {
 
 		return sanitize_text_field( wp_unslash( (string) $_POST[ $name ] ) );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+	}
+
+	/**
+	 * Get sanitized and verified input language value from POST request body.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $name Input parameter name.
+	 * @param array  $report_languages Report result languages.
+	 * @param string $form_language Form language.
+	 *
+	 * @return string
+	 */
+	private function get_post_language( $name, $report_languages, $form_language ) {// phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$lang = '';
+		if ( isset( $_POST[ $name ] ) ) {
+			$lang = sanitize_text_field( wp_unslash( (string) $_POST[ $name ] ) );
+		}
+		if ( '' === $lang && in_array( $form_language, $report_languages, true ) ) {
+			$lang = $form_language;
+		} elseif ( ! in_array( $lang, $report_languages, true ) ) {
+			$lang = 'en';
+		}
+
+		return $lang;
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+	}
+
+	/**
+	 * Get localisation data.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $la Value for form language.
+	 *
+	 * @return array
+	 */
+	public function get_localisation_data( $la ) {
+		$dir = __DIR__ . "/../../../locale/{$la}.php";
+		return include $dir;
+	}
+
+	/**
+	 * Get form language data.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $la Value for form language.
+	 * @param array  $report_languages  Available languages for each report.
+	 *
+	 * @return string
+	 */
+	public function get_form_language( $la, $report_languages ) {
+		return in_array( $la, $report_languages, true ) ? $la : 'en';
+	}
+	/**
+	 * Filter Report language from available.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $la Value for form language.
+	 * @param array  $available_languages  Available languages for each report.
+	 *
+	 * @return array
+	 */
+	private function filter_report_language( string $la, array $available_languages ) {
+		$report_languages = explode( ',', $la );
+		return array_filter( $report_languages, fn ( $val ) => in_array( trim( $val ), $available_languages, true ) );
 	}
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

@@ -42,6 +42,13 @@ class PlanetPositionController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
+	];
 	/**
 	 * PlanetPosition constructor
 	 *
@@ -60,13 +67,20 @@ class PlanetPositionController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/planet-position',
 			[
-				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -90,7 +104,10 @@ class PlanetPositionController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new PlanetPosition( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result = $method->process( $location, $datetime );
+
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
+
+		$result = $method->process( $location, $datetime, null, $lang );
 
 		$planet_position_result = [];
 
@@ -114,11 +131,15 @@ class PlanetPositionController implements ReportControllerInterface {
 			];
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/planet-position',
 			[
-				'result'  => $planet_position_result,
-				'options' => $this->get_options(),
+				'result'           => $planet_position_result,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

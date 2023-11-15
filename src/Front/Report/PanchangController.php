@@ -29,6 +29,12 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use DateTimeZone;
+use Exception;
+use Prokerala\Api\Astrology\Location;
+use Prokerala\Api\Astrology\Result\Panchang\AdvancedPanchang;
+use Prokerala\Api\Astrology\Result\Panchang\Panchang as BasicPanchang;
 use Prokerala\Api\Astrology\Service\Panchang;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -40,35 +46,51 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
  */
 class PanchangController implements ReportControllerInterface {
 
-	use ReportControllerTrait;
+	use ReportControllerTrait {
+		get_attribute_defaults as getCommonAttributeDefaults;
+	}
 
+	private const REPORT_LANGUAGES = [
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
+	];
 	/**
 	 * PanchangController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render panchang form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
-		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/panchang',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'result_type' => $result_type,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -76,58 +98,187 @@ class PanchangController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
-		$tz       = $this->get_timezone();
-		$client   = $this->get_api_client();
-		$location = $this->get_location( $tz );
+	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 
-		$datetime    = $this->get_post_input( 'datetime', '' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+		$tz     = $this->get_timezone();
+		$client = $this->get_api_client();
 
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
-		$advanced = 'advanced' === $result_type;
-		$method   = new Panchang( $client );
+		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+
+		$method = new Panchang( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$result = $method->process( $location, $datetime, $advanced );
 
-		$panchang_result = [
-			'sunrise'  => $result->getSunrise(),
-			'sunset'   => $result->getSunset(),
-			'moonrise' => $result->getMoonrise(),
-			'moonset'  => $result->getMoonset(),
-			'vaara'    => $result->getVaara(),
-		];
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
-		$panchang              = [];
-		$panchang['Nakshatra'] = $result->getNakshatra();
-		$panchang['Tithi']     = $result->getTithi();
-		$panchang['Karana']    = $result->getKarana();
-		$panchang['Yoga']      = $result->getYoga();
+		$advanced = 'advanced' === $result_type;
 
-		$panchang_details = $this->getPanchangDetails( $panchang );
-		$panchang_result  = array_merge( $panchang_result, $panchang_details );
-
-		$data['basic_info'] = $panchang_result;
-
-		if ( $advanced ) {
-			$data['auspicious_period']   = $this->getAdvancedInfo( $result->getAuspiciousPeriod() );
-			$data['inauspicious_period'] = $this->getAdvancedInfo( $result->getInauspiciousPeriod() );
+		if ( $options['date'] ) {
+			$result = $this->cache_fetch_result( $method, $advanced, $lang, $options, $tz );
+		} else {
+			$result = $this->fetch_result( $method, $advanced, $lang, $tz );
 		}
+
+		$data = $this->process_result( $result, $advanced );
+
+		$translation_data = $this->get_localisation_data( $lang );
 
 		return $this->render(
 			'result/panchang',
 			[
-				'result'      => $data,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
+				'result'           => $data,
+				'result_type'      => $result_type,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
+				'title'            => isset( $options['date'] ) ? 'daily_panchang' : 'panchang_details',
+
 			]
 		);
+	}
+
+	/**
+	 * Check whether result can be rendered for current request.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param array $atts Short code attributes.
+	 *
+	 * @return bool
+	 */
+	public function can_render_result( $atts ) {
+		return (
+			isset( $atts['date'] )
+			|| ! isset( $_SERVER['REQUEST_METHOD'] )
+			|| 'POST' === wp_unslash( $_SERVER['REQUEST_METHOD'] ) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		);
+	}
+
+	/**
+	 * Get default values for supported attributes.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function get_attribute_defaults(): array {
+		return $this->getCommonAttributeDefaults() + [
+			'date'       => '',
+			'coordinate' => '',
+		];
+	}
+
+	/**
+	 * Fetch result from cache.
+	 *
+	 * @param Panchang     $method Panchang Method.
+	 * @param bool         $advanced Result Type.
+	 * @param string       $lang Result language.
+	 * @param array        $options Array of required attributes.
+	 * @param DateTimeZone $tz Timezone variables.
+	 *
+	 * @return BasicPanchang|bool|AdvancedPanchang|array
+	 * @throws Exception If something went wrong.
+	 * @since 1.2.0
+	 */
+	private function cache_fetch_result( $method, $advanced, $lang, $options, $tz ): BasicPanchang|bool|AdvancedPanchang|array {
+
+		$datetime    = new DateTimeImmutable( $options['date'], $tz );
+		$location    = $this->get_location_from_shortcode( $options['coordinate'], $tz );
+		$result_type = $advanced ? 'advanced' : 'basic';
+		$key         = "astrology_daily_prediction_{$result_type}_{$lang}_{$options['date']}";
+		$result      = $this->load_cached_panchang_data( $key );
+
+		if ( empty( $result ) ) {
+			$result = $method->process( $location, $datetime, $advanced, $lang );
+			$this->cache_panchang_data( $key, $result );
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Create location object from short code.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string       $coordinates Render options.
+	 * @param DateTimeZone $tz Timezone.
+	 *
+	 * @return Location
+	 */
+	protected function get_location_from_shortcode( string $coordinates, DateTimeZone $tz ): Location {
+		$default = [ 23.179300, 75.784912 ];
+
+		if ( empty( $coordinates ) ) {
+			[$latitude, $longitude] = $default;
+		} else {
+			[$latitude, $longitude] = array_map( 'floatval', explode( ',', $coordinates ) );
+
+			if ( ! $this->in_range( $latitude, -90, 90, true ) || ! $this->in_range( $longitude, -180, 180, true ) ) {
+				[$latitude, $longitude] = $default;
+			}
+		}
+
+		return new Location( (float) $latitude, (float) $longitude, 0, $tz );
+	}
+
+	/**
+	 * Try to load the panchang data from cache.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $key Cache key.
+	 *
+	 * @return array|false
+	 */
+	private function load_cached_panchang_data( string $key ) {
+		return get_transient( $key )['panchang'];
+	}
+
+	/**
+	 * Try to load the panchang data from cache.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string                         $key Cache key.
+	 * @param BasicPanchang|AdvancedPanchang $result .
+	 *
+	 * @return void
+	 */
+	private function cache_panchang_data( string $key, BasicPanchang|AdvancedPanchang $result ): void {
+		$data['panchang'] = $result;
+
+		$now = new \DateTimeImmutable( 'now' );
+
+		set_transient( $key . '_' . $now->format( 'Y_m_d' ), $data, 86400 );
+	}
+
+	/**
+	 * Determines if $number is between $min and $max.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param  string  $number     The number from shortcode.
+	 * @param  integer $min        The minimum value in the range.
+	 * @param  integer $max        The maximum value in the range.
+	 * @param  boolean $inclusive  Whether the range should be inclusive or not.
+	 *
+	 * @return boolean             Whether the number was in the range.
+	 */
+	private function in_range( $number, $min, $max, $inclusive = false ) {
+		if ( $number && is_float( $number ) ) {
+			return $inclusive
+				? ( $number >= $min && $number <= $max )
+				: ( $number > $min && $number < $max );
+		}
+
+		return false;
 	}
 
 	/**
@@ -136,7 +287,7 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array<string,mixed> $muhurat muhuratdetails.
 	 * @return array
 	 */
-	public function getAdvancedInfo( $muhurat ) {
+	public function get_advanced_info( array $muhurat ): array { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$muhurat_details = [];
 		foreach ( $muhurat as $data ) {
 			$field   = $data->getName();
@@ -158,8 +309,8 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array<string,mixed> $panchang panchang data.
 	 * @return array
 	 */
-	public function getPanchangDetails( $panchang ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
-		$data_list       = [ 'Nakshatra', 'Tithi', 'Karana', 'Yoga' ];
+	public function get_panchang_details( array $panchang ): array { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+		$data_list       = [ 'nakshatra', 'tithi', 'karana', 'yoga' ];
 		$panchang_result = [];
 
 		foreach ( $data_list as $key ) {
@@ -170,14 +321,71 @@ class PanchangController implements ReportControllerInterface {
 					'start' => $data->getStart(),
 					'end'   => $data->getEnd(),
 				];
-				if ( 'Nakshatra' === $key ) {
+				if ( 'nakshatra' === $key ) {
 					$panchang_result[ $key ][ $idx ]['nakshatra_lord'] = $data->getLord();
-				} elseif ( 'Tithi' === $key ) {
+				} elseif ( 'tithi' === $key ) {
 					$panchang_result[ $key ][ $idx ]['paksha'] = $data->getPaksha();
 				}
 			}
 		}
 
 		return $panchang_result;
+	}
+
+
+	/**
+	 * Format result to display in template.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param BasicPanchang|AdvancedPanchang $result Result data to be processed.
+	 * @param bool                           $advanced Result type.
+	 *
+	 * @return array
+	 */
+	private function process_result( BasicPanchang|AdvancedPanchang $result, bool $advanced ): array {
+	 // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+		$panchang_result = [
+			'sunrise'  => $result->getSunrise(),
+			'sunset'   => $result->getSunset(),
+			'moonrise' => $result->getMoonrise(),
+			'moonset'  => $result->getMoonset(),
+			'vaara'    => $result->getVaara(),
+		];
+
+		$panchang              = [];
+		$panchang['nakshatra'] = $result->getNakshatra();
+		$panchang['tithi']     = $result->getTithi();
+		$panchang['karana']    = $result->getKarana();
+		$panchang['yoga']      = $result->getYoga();
+
+		$panchang_details = $this->get_panchang_details( $panchang );
+		$panchang_result  = array_merge( $panchang_result, $panchang_details );
+
+		$data['basic_info'] = $panchang_result;
+
+		if ( $advanced ) {
+			$data['auspicious_period']   = $this->get_advanced_info( $result->getAuspiciousPeriod() );
+			$data['inauspicious_period'] = $this->get_advanced_info( $result->getInauspiciousPeriod() );
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Format result to display in template.
+	 *
+	 * @param Panchang     $method Panchang Method.
+	 * @param bool         $advanced Result Type.
+	 * @param string       $lang Result language.
+	 * @param DateTimeZone $tz Timezone variables.
+	 * @return AdvancedPanchang|BasicPanchang
+	 * @throws Exception If something went wrong.
+	 * @since 1.2.0
+	 */
+	private function fetch_result( $method, $advanced, $lang, $tz ) {
+		$location = $this->get_location( $tz );
+		$datetime = new DateTimeImmutable( $this->get_post_input( 'datetime' ), $tz );
+		return $method->process( $location, $datetime, $advanced, $lang );
 	}
 }

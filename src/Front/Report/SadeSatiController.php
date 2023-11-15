@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Exception;
 use Prokerala\Api\Astrology\Service\SadeSati;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -42,33 +44,42 @@ class SadeSatiController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en',
+	];
 	/**
 	 * SadeSatiController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render sade-sati form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
-		$datetime    = $this->get_post_input( 'datetime', 'now' );
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+	public function render_form( $options = [] ): string {
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/sade-sati',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'result_type' => $result_type,
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -76,12 +87,12 @@ class SadeSatiController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string {
 		$tz       = $this->get_timezone();
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
@@ -91,7 +102,7 @@ class SadeSatiController implements ReportControllerInterface {
 		$result_type = $this->get_post_input( 'result_type', '' );
 
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
-		$datetime = new \DateTimeImmutable( $datetime, $tz );
+		$datetime = new DateTimeImmutable( $datetime, $tz );
 		$advanced = 'advanced' === $result_type;
 		$method   = new SadeSati( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );

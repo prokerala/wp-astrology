@@ -36,30 +36,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <?php if ( empty( $options['ayanamsa'] ) ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
-		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label ">Ayanamsa</label>
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label "><?php echo $translation_data['ayanamsa']; // phpcs:ignore WordPress.Security.EscapeOutput ?></label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 			<select name="ayanamsa" class="pk-astrology-form-control">
-				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>>Lahiri</option>
-				<option value="3" <?php echo '3' === (string) $ayanamsa ? 'selected' : ''; ?>>Raman</option>
-				<option value="5" <?php echo '5' === (string) $ayanamsa ? 'selected' : ''; ?>>KP</option>
+				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>><?php echo $translation_data['lahiri']; // phpcs:ignore WordPress.Security.EscapeOutput ?></option>
+				<option value="3" <?php echo '3' === (string) $ayanamsa ? 'selected' : ''; ?>><?php echo $translation_data['raman']; // phpcs:ignore WordPress.Security.EscapeOutput ?></option>
+				<option value="5" <?php echo '5' === (string) $ayanamsa ? 'selected' : ''; ?>><?php echo $translation_data['kp']; // phpcs:ignore WordPress.Security.EscapeOutput ?></option>
 			</select>
 		</div>
 	</div>
 <?php else : ?>
-	<input type="hidden" name="ayanamsa" value="<?php echo (int) $options['ayanamsa']; ?>">
+	<input type="hidden" name="ayanamsa" value="<?php echo (int) $options['ayanamsa']; // phpcs:ignore WordPress.Security.EscapeOutput ?>">
 <?php endif; ?>
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Date: </label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['date']; // phpcs:ignore WordPress.Security.EscapeOutput ?>: </label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
 		<input type='datetime-local' name="datetime" class="pk-astrology-form-control" required="required" value="<?php echo $datetime->format( 'Y-m-d\Th:i' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>"/>
 	</div>
 </div>
 
 <div class="pk-astrology-form-group pk-astrology-row">
-	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label">Place Of Birth:</label>
+	<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['pob']; // phpcs:ignore WordPress.Security.EscapeOutput ?>:</label>
 	<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8">
-		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="Enter Location" value="" required>
+		<input type="text" name="location" autocomplete="off" class="pk-astrology-form-control prokerala-location-input" placeholder="<?php echo $translation_data['enter_location']; // phpcs:ignore WordPress.Security.EscapeOutput ?>" value="" required>
 	</div>
 </div>
 
+<?php if ( $report_language ) : ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?php echo $translation_data['language']; // phpcs:ignore WordPress.Security.EscapeOutput ?>: </label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
+			<select name="lang" id="select-lang">
+				<?php foreach ( $report_language as $language ) : ?>
+					<option value=<?php echo $language; ?> <?php echo $selected_lang === $language ? 'selected' : ''; ?>><?php echo $translation_data[ $language ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+	</div>
+<?php endif; ?>
 <div id="form-hidden-fields"></div>

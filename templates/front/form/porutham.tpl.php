@@ -47,18 +47,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php $this->render( __DIR__ . '/horoscope-matching-form.tpl.php' ); ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
 
-			<label class="pk-astrology-col-md-4 pk-astrology-form-label">System</label>
 			<div class="pk-astrology-col-md-8">
-				<select name="system" class="pk-astrology-form-control">
-					<option value="kerala" <?php echo 'kerala' === $system ? 'selected' : ''; ?>>Kerala</option>
-					<option value="tamil" <?php echo 'tamil' === $system ? 'selected' : ''; ?>>Tamil</option>
-				</select>
+
 			</div>
 	</div>
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['system']; ?></label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">
+			<select name="system" >
+				<option value="kerala" <?php echo 'kerala' === $system ? 'selected' : ''; ?>><?php echo $translation_data['kerala']; ?></option>
+				<option value="tamil" <?php echo 'tamil' === $system ? 'selected' : ''; ?>><?php echo $translation_data['tamil']; ?></option>
+			</select>
+		</div>
+	</div>
 
+	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>

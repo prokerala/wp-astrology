@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php $this->render( __DIR__ . '/horoscope-form.tpl.php' ); ?>
 
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>

@@ -36,12 +36,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h2 class="pk-astrology-text-center">Papasamyam Details</h2>
+		<h2 class="pk-astrology-text-center"><?php echo $translation_data['papasamyam_details']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead>
-			<tr class="pk-astrology-bg-secondary"><th rowspan="2">Papa Points</th><th colspan="2">From Ascendant</th><th colspan="2">From Moon</th><th colspan="2">From Venus
-				</th></tr>
-			<tr class="pk-astrology-bg-secondary"><th>Position</th><th>Papam</th><th>Position</th><th>Papam</th><th>Position</th><th>Papam</th></tr>
+			<tr class="pk-astrology-bg-secondary">
+				<th rowspan="2"><?php echo $translation_data['papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th colspan="2"><?php echo $translation_data['from_ascendant']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th colspan="2"><?php echo $translation_data['from_moon']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th colspan="2"><?php echo $translation_data['from_venus']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+			</tr>
+			<tr class="pk-astrology-bg-secondary">
+				<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th></tr>
 			</thead>
 			<?php $ar_papa_planets = [ 'Mars', 'Saturn', 'Sun', 'Rahu' ]; ?>
 			<?php $ar_papa_from_planets = [ 'Ascendant', 'Moon', 'Venus' ]; ?>
@@ -53,7 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php endforeach; ?>
 				</tr>
 			<?php endforeach; ?>
-			<tr><th colspan="7" class="pk-astrology-text-center">Total Papa Points : <?php echo $result['total_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
+			<tr><th colspan="7" class="pk-astrology-text-center"><?php echo $translation_data['total_papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : <?php echo $result['total_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
 		</table>
 	<?php endif; ?>
 </div>

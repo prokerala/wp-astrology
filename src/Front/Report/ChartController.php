@@ -44,6 +44,13 @@ class ChartController implements ReportControllerInterface {
 		get_attribute_defaults as getCommonAttributeDefaults;
 	}
 
+	private const REPORT_LANGUAGES = [
+		'en',
+		'hi',
+		'ta',
+		'ml',
+		'te',
+	];
 	/**
 	 * ChartController constructor
 	 *
@@ -62,16 +69,22 @@ class ChartController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/chart',
 			[
-				'options'     => $options + $this->get_options(),
-				'datetime'    => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'chart_type'  => 'rasi',
-				'chart_style' => 'north-indian',
-				'chart_types' => [
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'chart_type'       => 'rasi',
+				'chart_style'      => 'north-indian',
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
+				'chart_types'      => [
 					'rasi',
 					'navamsa',
 					'lagna',
@@ -118,7 +131,9 @@ class ChartController implements ReportControllerInterface {
 		$datetime = new \DateTimeImmutable( $datetime, $tz );
 		$method   = new Chart( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
-		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style );
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
+
+		$result['chart']      = $method->process( $location, $datetime, $chart_type, $chart_style, $lang );
 		$result['chart_type'] = $chart_type;
 
 		return $this->render(

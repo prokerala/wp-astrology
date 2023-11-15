@@ -74,7 +74,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
-
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn">Get Horoscope</button>
 		<input type="hidden" name="submit" value="1">

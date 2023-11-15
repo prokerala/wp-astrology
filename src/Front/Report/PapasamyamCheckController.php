@@ -29,6 +29,8 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use DateTimeImmutable;
+use Prokerala\Api\Astrology\Result\Horoscope\Papasamyam;
 use Prokerala\Api\Astrology\Service\PapaSamyamCheck;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -43,6 +45,12 @@ class PapasamyamCheckController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en',
+		'hi',
+		'ta',
+		'ml',
+	];
 	/**
 	 * PapasamyamCheckController constructor
 	 *
@@ -53,23 +61,29 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render papasamyamcheck form.
+	 * Render Papasamyam Check form.
 	 *
 	 * @throws \Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
-		$girl_dob = $this->get_post_input( 'girl_dob', 'now' );
-		$boy_dob  = $this->get_post_input( 'boy_dob', 'now' );
+	public function render_form( $options = [] ): string {
+		$girl_dob         = $this->get_post_input( 'girl_dob', 'now' );
+		$boy_dob          = $this->get_post_input( 'boy_dob', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/papasamyam-check',
 			[
-				'options'  => $options + $this->get_options(),
-				'girl_dob' => new \DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
-				'boy_dob'  => new \DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'options'          => $options + $this->get_options(),
+				'girl_dob'         => new DateTimeImmutable( $girl_dob, $this->get_timezone( 'girl_' ) ),
+				'boy_dob'          => new DateTimeImmutable( $boy_dob, $this->get_timezone( 'boy_' ) ),
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -82,7 +96,7 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ): string {
 
 		$girl_tz       = $this->get_timezone( 'girl_' );
 		$boy_tz        = $this->get_timezone( 'boy_' );
@@ -95,15 +109,17 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$boy_dob  = isset( $_POST['boy_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['boy_dob'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
-		$girl_dob = new \DateTimeImmutable( $girl_dob, $girl_tz );
-		$boy_dob  = new \DateTimeImmutable( $boy_dob, $boy_tz );
+		$girl_dob = new DateTimeImmutable( $girl_dob, $girl_tz );
+		$boy_dob  = new DateTimeImmutable( $boy_dob, $boy_tz );
 
 		$girl_profile = new Profile( $girl_location, $girl_dob );
 		$boy_profile  = new Profile( $boy_location, $boy_dob );
 		$method       = new PapaSamyamCheck( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 
-		$result = $method->process( $girl_profile, $boy_profile );
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
+
+		$result = $method->process( $girl_profile, $boy_profile, $lang );
 
 		$message                             = $result->getMessage();
 		$papa_samyam_check_result['message'] = [
@@ -114,11 +130,15 @@ class PapasamyamCheckController implements ReportControllerInterface {
 		$papa_samyam_check_result['girlPapasamyam'] = $this->getPapasamyam( $result->getGirlPapasamyam() );
 		$papa_samyam_check_result['boyPapasamyam']  = $this->getPapasamyam( $result->getBoyPapasamyam() );
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/papasamyam-check',
 			[
-				'result'  => $papa_samyam_check_result,
-				'options' => $this->get_options(),
+				'result'           => $papa_samyam_check_result,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -126,10 +146,10 @@ class PapasamyamCheckController implements ReportControllerInterface {
 	/**
 	 * Papasamyam details
 	 *
-	 * @param array<string,mixed> $papasamyam papasamyam data.
+	 * @param Papasamyam $papasamyam papasamyam data.
 	 * @return array
 	 */
-	public function getPapasamyam( $papasamyam ) {
+	public function getPapasamyam( Papasamyam $papasamyam ): array {
 		$papa_samyam_result                = [];
 		$papa_samyam_result['total_point'] = $papasamyam->getTotalPoints();
 		$papa_samyam                       = $papasamyam->getPapaSamyam();

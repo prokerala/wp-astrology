@@ -36,33 +36,33 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h2 class="pk-astrology-text-center">Panchang Details</h2>
+		<h2 class="pk-astrology-text-center"><?php echo $translation_data[ $title ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
 		<div class="pk-astrology-panchang-details">
 			<?php foreach ( $result['basic_info'] as $key => $data ) : ?>
 
-				<?php if ( in_array( $key, [ 'Nakshatra', 'Tithi', 'Karana', 'Yoga' ], true ) ) : ?>
+				<?php if ( in_array( $key, [ 'nakshatra', 'tithi', 'karana', 'yoga' ], true ) ) : ?>
 					<hr>
-					<span class="pk-astrology-block"><b><?php echo ucwords( $key ); // phpcs:ignore WordPress.Security.EscapeOutput ?></b></span>
+					<span class="pk-astrology-block"><b><?php echo $translation_data[ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></b></span>
 					<?php foreach ( $data as $idx => $value ) : ?>
 						<span class="pk-astrology-block"><?php echo $value['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 
-							<?php if ( 'Nakshatra' === $key ) : ?>
+							<?php if ( 'nakshatra' === $key ) : ?>
 								(Lord: <?php echo $value['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?>)
 							<?php endif; ?>
 							: <?php echo $value['start']->format( 'h:i A' ) . ' - ' . $value['end']->format( 'h:i A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 					<?php endforeach; ?>
 
 				<?php elseif ( 'vaara' === $key ) : ?>
-					<span class="pk-astrology-block"><b><?php echo ucwords( $key ); // phpcs:ignore WordPress.Security.EscapeOutput ?></b> : <?php echo $data; // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+					<span class="pk-astrology-block"><b><?php echo $translation_data[ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></b> : <?php echo $data; // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 				<?php else : ?>
-					<span class="pk-astrology-block"><b><?php echo ucwords( $key ); // phpcs:ignore WordPress.Security.EscapeOutput ?></b> : <?php echo $data->format( 'h:i A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
+					<span class="pk-astrology-block"><b><?php echo $translation_data[ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></b> : <?php echo $data->format( 'h:i A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 				<?php endif; ?>
 			<?php endforeach ?>
 
 			<?php if ( 'advanced' === $result_type ) : ?>
 				<hr>
 				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr class="pk-astrology-alert-success pk-astrology-text-center"><td colspan="2">Auspicious Timing</td></tr>
+					<tr class="pk-astrology-alert-success pk-astrology-text-center"><td colspan="2"><?php echo $translation_data['auspicious_timing']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
 					<?php foreach ( $result['auspicious_period'] as $muhurat_name => $muhurat_details ) : ?>
 						<tr>
 							<td><?php echo ucwords( $muhurat_name ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td>
@@ -73,7 +73,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</td>
 						</tr>
 					<?php endforeach; ?>
-					<tr class="pk-astrology-alert-danger pk-astrology-text-center"><td colspan="2">Inauspicious Timing</td></tr>
+					<tr class="pk-astrology-alert-danger pk-astrology-text-center"><td colspan="2"><?php echo $translation_data['inauspicious_timing']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td></tr>
 					<?php foreach ( $result['inauspicious_period'] as $muhurat_name => $muhurat_details ) : ?>
 						<tr>
 							<td><?php echo ucwords( $muhurat_name ); // phpcs:ignore WordPress.Security.EscapeOutput ?></td><td>

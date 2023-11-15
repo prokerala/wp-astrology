@@ -118,6 +118,7 @@ final class Front {
 	 * @return string
 	 */
 	public function render_result( $atts = [] ) {
+
 		return $this->report_controller->render_result( $atts );
 	}
 

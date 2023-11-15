@@ -35,15 +35,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="pk-astrology-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
-	<h2 class="pk-astrology-text-center">Auspicious Timing</h2>
+	<h2 class="pk-astrology-text-center"><?php echo $translation_data['auspicious_timing']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
 	<table class="pk-astrology-table pk-astrology-table-responsive-sm pk-astrology-text-center">
-		<tr class="pk-astrology-bg-secondary"><th>Auspicious Yogas</th><th>Time</th></tr>
+		<tr class="pk-astrology-bg-secondary"><th><?php echo $translation_data['auspicious_yogas']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th><th><?php echo $translation_data['time']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th></tr>
 		<?php foreach ( $result as $key => $data ) : ?>
 			<tr>
 				<td><?php echo $data['name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 				<td>
 					<?php foreach ( $data['period'] as $value ) : ?>
-						<?php echo $value['start']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?> to <?php echo $value['end']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <br>
+						<?php echo $value['start']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?> - <?php echo $value['end']->format( 'h:i:A' ); // phpcs:ignore WordPress.Security.EscapeOutput ?> <br>
 					<?php endforeach; ?>
 				</td>
 			</tr>

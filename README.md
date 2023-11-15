@@ -87,13 +87,39 @@ Where `REPORT_NAME` must be one of following
 
         [astrology report="Kundli" chart_style="south-indian"]
 
+
 - **`sign`**
 
-   By default the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+   By default, the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
 
 - **`date`**
 
-   By default the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+   By default, the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+
+      [astrology report="DailyPrediction" date="tomorrow"]
+
+- **`coordinate`**
+
+  By default, the `DailyPanchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
+
+      [astrology report="DailyPanchang" coordinate="23.179300,75.784912"]
+
+##### Localization
+
+You can use the following attributes to localize the form / result.  View available languages for each report from  https://api.prokerala.com/docs#tag/Daily-Panchang
+
+- **`form_language`**
+
+  You can set the `form_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to set localization for forms.
+
+        [astrology report="Kundli" form_language="en"]
+
+- **`report_language`**
+
+  You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
+
+        [astrology report="Kundli" report_language="en,hi,ml"]
+
 
 ### Frequently Asked Questions
 

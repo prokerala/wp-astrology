@@ -127,9 +127,11 @@ class DailyPredictionController implements ReportControllerInterface {
 	 *
 	 * @since 1.1.0
 	 *
+	 * @param array $atts Short code attributes.
+	 *
 	 * @return bool
 	 */
-	public function can_render_result() {
+	public function can_render_result( $atts ) {
 		return true;
 	}
 

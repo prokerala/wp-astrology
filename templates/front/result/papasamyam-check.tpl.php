@@ -38,16 +38,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php if ( ! empty( $result ) ) : ?>
 		<?php $ar_papa_planets = [ 'Mars', 'Saturn', 'Sun', 'Rahu' ]; ?>
 		<?php $ar_papa_from_planets = [ 'Ascendant', 'Moon', 'Venus' ]; ?>
-		<h2 class="pk-astrology-text-center">Papasamyam Details</h2>
-		<h3>Girl Papa Points</h3>
+		<h2 class="pk-astrology-text-center"><?php echo $translation_data['papasamyam_details']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
+		<h3><?php echo $translation_data['girl_papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead class="pk-astrology-bg-secondary">
-			<tr><th rowspan="2">Girl Papa Points</th><th colspan="2">From Ascendant</th>
-				<th colspan="2">From Moon</th><th colspan="2">From Venus</th>
-			</tr>
-			<tr><th>Position</th><th>Papam</th><th>Position</th>
-				<th>Papam</th><th>Position</th><th>Papam</th>
-			</tr>
+				<tr>
+					<th rowspan="2"><?php echo $translation_data['papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_ascendant']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_moon']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_venus']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				</tr>
+				<tr>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				</tr>
 			</thead>
 			<?php foreach ( $ar_papa_planets as $papa_planet => $papa_planet_name ) : ?>
 				<tr><th><?php echo $papa_planet_name; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
@@ -58,17 +66,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</tr>
 			<?php endforeach; ?>
 
-			<tr><th colspan="7" class="pk-astrology-text-center">Total Papa Points : <?php echo $result['girlPapasamyam']['total_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
+			<tr><th colspan="7" class="pk-astrology-text-center"><?php echo $translation_data['total_papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : <?php echo $result['girlPapasamyam']['total_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
 		</table>
-		<h3>Boy Papa Points</h3>
+		<h3><?php echo $translation_data['boy_papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead class="pk-astrology-bg-secondary">
-			<tr><th rowspan="2">Boy Papa Points</th><th colspan="2">From Ascendant</th>
-				<th colspan="2">From Moon</th><th colspan="2">From Venus</th>
-			</tr>
-			<tr><th>Position</th><th>Papam</th><th>Position</th>
-				<th>Papam</th><th>Position</th><th>Papam</th>
-			</tr>
+				<tr>
+					<th rowspan="2"><?php echo $translation_data['papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_ascendant']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_moon']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th colspan="2"><?php echo $translation_data['from_venus']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				</tr>
+				<tr>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['papam']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				</tr>
 			</thead>
 			<?php foreach ( $ar_papa_planets as $papa_planet => $papa_planet_name ) : ?>
 				<tr><th><?php echo $papa_planet_name; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
@@ -78,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php endforeach; ?>
 				</tr>
 			<?php endforeach; ?>
-			<tr><th colspan="7" class="pk-astrology-text-center">Total Papa Points : <?php echo $result['boyPapasamyam']['total_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
+			<tr><th colspan="7" class="pk-astrology-text-center"><?php echo $translation_data['total_papa_points']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : <?php echo $result['boyPapasamyam']['total_point']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th> </tr>
 		</table>
 		<div class="pk-astrology-alert  pk-astrology-text-center
 			<?php
@@ -86,7 +102,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			( 'Satisfactory' === $result['message']['type'] ? 'pk-astrology-alert-warning' : 'pk-astrology-alert-danger' )
 			?>
 			" role="alert">
-			Papasamyam for this couple is <b><?php echo $result['message']['type']; // phpcs:ignore WordPress.Security.EscapeOutput ?></b><br>
+			<?php echo $translation_data['papasamyam_for_this_couple_is']; // phpcs:ignore WordPress.Security.EscapeOutput ?> <b><?php echo $result['message']['type']; // phpcs:ignore WordPress.Security.EscapeOutput ?></b><br>
 			<?php echo $result['message']['description']; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 		</div>
 	<?php endif; ?>

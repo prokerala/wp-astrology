@@ -29,6 +29,7 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
+use Exception;
 use Prokerala\Api\Astrology\NakshatraProfile;
 use Prokerala\Api\Astrology\Service\ThirumanaPorutham;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
@@ -43,67 +44,41 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
-	/**
-	 * NakhatraList
-	 */
-
-	const NAKSHATA_LIST = [
-		'Ashwini',
-		'Bharani',
-		'Krithika',
-		'Rohini',
-		'Mrigashirsha',
-		'Ardra',
-		'Punarvasu',
-		'Pushya',
-		'Ashlesha',
-		'Magha',
-		'Purva Phalguni',
-		'Uttara Phalguni',
-		'Hasta',
-		'Chitra',
-		'Swati',
-		'Vishaka',
-		'Anuradha',
-		'Jyeshta',
-		'Moola',
-		'Purva Ashadha',
-		'Uttara Ashadha',
-		'Shravana',
-		'Dhanishta',
-		'Shatabhisha',
-		'Purva Bhadrapada',
-		'Uttara Bhadrapada',
-		'Revati',
+	private const REPORT_LANGUAGES = [
+		'en',
 	];
-
-
 	/**
 	 * ThirumanaPoruthamController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
-	public function __construct( $options ) {
+	public function __construct( array $options ) {
 		$this->set_options( $options );
 	}
 
 	/**
 	 * Render ThirumanaPorutham form.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
-		$result_type = $options['result_type'] ?? $this->get_post_input( 'result_type', 'basic' );
+	public function render_form( $options = [] ): string {
+		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/thirumana-porutham',
 			[
-				'options'        => $options + $this->get_options(),
-				'nakshatra_list' => self::NAKSHATA_LIST,
-				'result_type'    => $result_type,
+				'options'          => $options + $this->get_options(),
+				'result_type'      => $result_type,
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
+
 			]
 		);
 	}
@@ -111,12 +86,12 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	/**
 	 * Process result and render result.
 	 *
-	 * @throws \Exception On render failure.
+	 * @throws Exception On render failure.
 	 *
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$client = $this->get_api_client();
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
@@ -131,17 +106,20 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 		$boy_profile  = new NakshatraProfile( $boy_nakshatra, $boy_nakshatra_pada );
 		$advanced     = 'advanced' === $result_type;
 
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
+
 		$method = new ThirumanaPorutham( $client );
-		$result = $method->process( $girl_profile, $boy_profile, $advanced );
+		$result = $method->process( $girl_profile, $boy_profile, $advanced, $lang );
 
 		$compatibility_result = $this->get_compatibility_result( $result, $advanced );
 
 		return $this->render(
 			'result/thirumana-porutham',
 			[
-				'result'      => $compatibility_result,
-				'result_type' => $result_type,
-				'options'     => $this->get_options(),
+				'result'        => $compatibility_result,
+				'result_type'   => $result_type,
+				'options'       => $this->get_options(),
+				'selected_lang' => $lang,
 			]
 		);
 	}
@@ -154,7 +132,7 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * @param int    $advanced Advanced Result.
 	 * @return array
 	 */
-	private function get_compatibility_result( $result, $advanced ) {
+	private function get_compatibility_result( object $result, int $advanced ): array {
 
 		$matches = [];
 

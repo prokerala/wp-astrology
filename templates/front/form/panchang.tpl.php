@@ -47,8 +47,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php $this->render( __DIR__ . '/panchang-form.tpl.php' ); ?>
 	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
 
+
 	<div class="pk-astrology-text-right">
-		<button type="submit" class="pk-astrology-btn">Get Result</button>
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; // phpcs:ignore WordPress.Security.EscapeOutput ?></button>
 		<input type="hidden" name="submit" value="1">
 	</div>
 </form>

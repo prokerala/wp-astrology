@@ -42,6 +42,10 @@ class ChoghadiyaController implements ReportControllerInterface {
 
 	use ReportControllerTrait;
 
+	private const REPORT_LANGUAGES = [
+		'en',
+		'hi',
+	];
 	/**
 	 * ChoghadiyaController constructor
 	 *
@@ -60,13 +64,19 @@ class ChoghadiyaController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function render_form( $options = [] ) {
-		$datetime = $this->get_post_input( 'datetime', 'now' );
+		$datetime         = $this->get_post_input( 'datetime', 'now' );
+		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
+		$translation_data = $this->get_localisation_data( $form_language );
 
 		return $this->render(
 			'form/choghadiya',
 			[
-				'options'  => $options + $this->get_options(),
-				'datetime' => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'options'          => $options + $this->get_options(),
+				'datetime'         => new \DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'selected_lang'    => $form_language,
+				'report_language'  => $report_language,
+				'translation_data' => $translation_data,
 			]
 		);
 	}
@@ -91,7 +101,9 @@ class ChoghadiyaController implements ReportControllerInterface {
 		$method   = new Choghadiya( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 		$method->setTimeZone( $tz );
-		$result = $method->process( $location, $datetime );
+		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
+
+		$result = $method->process( $location, $datetime, $lang );
 
 		$data = [];
 		foreach ( $result->getMuhurat() as $muhurat ) {
@@ -106,11 +118,15 @@ class ChoghadiyaController implements ReportControllerInterface {
 			];
 		}
 
+		$translation_data = $this->get_localisation_data( $lang );
+
 		return $this->render(
 			'result/choghadiya',
 			[
-				'result'  => $data,
-				'options' => $this->get_options(),
+				'result'           => $data,
+				'options'          => $this->get_options(),
+				'selected_lang'    => $lang,
+				'translation_data' => $translation_data,
 			]
 		);
 	}

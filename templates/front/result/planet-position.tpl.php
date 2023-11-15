@@ -36,15 +36,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 	<?php if ( ! empty( $result ) ) : ?>
-		<h3 class="pk-astrology-text-center">Planet Positions</h3>
+		<h3 class="pk-astrology-text-center"><?php echo $translation_data['planet_positions']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 			<thead class="pk-astrology-bg-secondary">
 				<tr>
-				<th>Planets</th>
-				<th>Position</th>
-				<th>Degree</th>
-				<th>Rasi</th>
-				<th>Rasi Lord</th>
+				<th><?php echo $translation_data['planets']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['degree']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['rasi_name']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+				<th><?php echo $translation_data['rasi_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				</tr>
 			</thead>
 			<?php foreach ( $result as $planet ) : ?>
