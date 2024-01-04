@@ -157,6 +157,9 @@ No, you can start using the plugin with our free subscription.
 
 == Changelog ==
 
+= 1.2.1 =
+* Fix Syntax error on PHP 7.x
+
 = 1.2.0 =
 * Added localizaton support
 * Added support for Daily Panchang

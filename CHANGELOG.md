@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.2.1] - 2024-01-04
+### Fixed
+- Fix Syntax error on PHP 7.x
+
 ## [1.2.0] - 2023-11-15
 ### Added
 - Added localization support
@@ -49,6 +53,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.2.1]: https://github.com/prokerala/wp-astrology/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/prokerala/wp-astrology/compare/v1.1.4...v1.2.0
 [1.1.4]: https://github.com/prokerala/wp-astrology/compare/v1.1.3...v1.1.4
 [1.1.3]: https://github.com/prokerala/wp-astrology/compare/v1.1.2...v1.1.3
