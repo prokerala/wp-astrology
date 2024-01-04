@@ -21,8 +21,8 @@ jobs:
       run: rm -rf vendor-bin/
     - name: Build
       run: |
-        npm ci
-        npm run build
+        yarn install --frozen-lockfile
+        yarn run build
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable

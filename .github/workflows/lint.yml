@@ -37,6 +37,6 @@ jobs:
       uses: actions/checkout@v2
     - name: Lint assets
       run: |
-        npm ci
-        npm run lint
+        yarn install
+        yarn run lint
 
