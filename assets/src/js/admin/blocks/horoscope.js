@@ -23,23 +23,23 @@ const signs = [
 	{ value: 'pisces', label: 'Pisces' },
 ];
 
-export default function DailyPredictionOptions(attributes, setOptions) {
+export default function DailyPredictionOptions( attributes, setOptions ) {
 	/* eslint-disable camelcase */
 	const { day, sign } = attributes.options;
 
 	return (
 		<div>
 			<SelectControl
-				label={__('Date')}
-				value={day || 'today'}
-				onChange={(val) => setOptions({ day: val })}
-				options={days}
+				label={ __( 'Date' ) }
+				value={ day || 'today' }
+				onChange={ ( val ) => setOptions( { day: val } ) }
+				options={ days }
 			/>
 			<SelectControl
-				label={__('Sign')}
-				value={sign}
-				onChange={(val) => setOptions({ sign: val })}
-				options={signs}
+				label={ __( 'Sign' ) }
+				value={ sign }
+				onChange={ ( val ) => setOptions( { sign: val } ) }
+				options={ signs }
 			/>
 		</div>
 	);

@@ -4,7 +4,7 @@ module.exports = {
 		browser: true,
 		es6: true,
 	},
-	extends: ['plugin:@wordpress/eslint-plugin/recommended'],
+	extends: [ 'plugin:@wordpress/eslint-plugin/recommended' ],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaFeatures: {
@@ -26,6 +26,6 @@ module.exports = {
 				skipComments: true,
 			},
 		],
-		'max-depth': ['error', 2],
+		'max-depth': [ 'error', 2 ],
 	},
 };

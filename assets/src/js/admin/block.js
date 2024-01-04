@@ -20,61 +20,61 @@ const DETAILED_REPORTS = [
 	'ThirumanaPorutham',
 ];
 
-function AddAdvancedOption(attributes, setAttributes) {
+function AddAdvancedOption( attributes, setAttributes ) {
 	const { resultType } = attributes;
 
 	return (
 		<SelectControl
-			label={__('Result Type')}
-			value={resultType}
-			onChange={(val) => setAttributes({ resultType: val })}
-			options={[
+			label={ __( 'Result Type' ) }
+			value={ resultType }
+			onChange={ ( val ) => setAttributes( { resultType: val } ) }
+			options={ [
 				{ value: '', label: '' },
 				{ value: 'basic', label: 'Basic' },
 				{ value: 'advanced', label: 'Advanced' },
-			]}
+			] }
 		/>
 	);
 }
 
-function ReportOptions(props) {
+function ReportOptions( props ) {
 	const { attributes } = props;
 	const { onChange } = props;
 
 	const { report } = props;
 
 	const { options } = attributes;
-	const setOption = (val) =>
-		onChange({ options: Object.assign({}, options, val) });
+	const setOption = ( val ) =>
+		onChange( { options: Object.assign( {}, options, val ) } );
 
-	if ('Chart' === report) {
-		return ChartOptions(attributes, setOption);
+	if ( 'Chart' === report ) {
+		return ChartOptions( attributes, setOption );
 	}
 
-	if ('Kundli' === report) {
+	if ( 'Kundli' === report ) {
 		return [
-			KundliOptions(attributes, setOption),
-			AddAdvancedOption(attributes, onChange),
+			KundliOptions( attributes, setOption ),
+			AddAdvancedOption( attributes, onChange ),
 		];
 	}
 
-	if ('DailyPrediction' === report) {
-		return DailyPredictionOptions(attributes, setOption);
+	if ( 'DailyPrediction' === report ) {
+		return DailyPredictionOptions( attributes, setOption );
 	}
 
-	if ('Numerology' === report) {
-		return NumerologyOptions(attributes, setOption);
+	if ( 'Numerology' === report ) {
+		return NumerologyOptions( attributes, setOption );
 	}
 
-	const hasDetailed = DETAILED_REPORTS.includes(report);
-	if (hasDetailed) {
-		return AddAdvancedOption(attributes, onChange);
+	const hasDetailed = DETAILED_REPORTS.includes( report );
+	if ( hasDetailed ) {
+		return AddAdvancedOption( attributes, onChange );
 	}
 
 	return null;
 }
 
-registerBlockType('astrology/report', {
+registerBlockType( 'astrology/report', {
 	title: 'Astrology Report',
 	icon: 'star-filled',
 	category: 'design',
@@ -94,16 +94,16 @@ registerBlockType('astrology/report', {
 	},
 	example: {},
 	// eslint-disable-next-line max-lines-per-function
-	edit({ attributes, setAttributes, className }) {
+	edit( { attributes, setAttributes, className } ) {
 		const { report } = attributes;
 
 		return (
-			<div className={className}>
+			<div className={ className }>
 				<InspectorControls>
 					<SelectControl
-						label={__('Report')}
-						value={report}
-						onChange={(val) => setAttributes({ report: val })}
+						label={ __( 'Report' ) }
+						value={ report }
+						onChange={ ( val ) => setAttributes( { report: val } ) }
 					>
 						<optgroup label="Daily Panchang">
 							<option value="AuspiciousPeriod">
@@ -155,15 +155,15 @@ registerBlockType('astrology/report', {
 					</SelectControl>
 
 					<ReportOptions
-						report={report}
-						attributes={attributes}
-						onChange={setAttributes}
+						report={ report }
+						attributes={ attributes }
+						onChange={ setAttributes }
 					/>
 				</InspectorControls>
 
 				<ServerSideRender
 					block="astrology/report"
-					attributes={attributes}
+					attributes={ attributes }
 				/>
 			</div>
 		);
@@ -171,4 +171,4 @@ registerBlockType('astrology/report', {
 	save() {
 		return null;
 	},
-});
+} );

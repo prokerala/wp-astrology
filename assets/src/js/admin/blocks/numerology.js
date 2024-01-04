@@ -52,23 +52,25 @@ const calculators = {
 	],
 };
 
-export default function NumerologyOptions(attributes, setOptions) {
+export default function NumerologyOptions( attributes, setOptions ) {
 	/* eslint-disable camelcase */
 	const { calculator, system } = attributes.options;
 
 	return (
 		<div>
 			<SelectControl
-				label={__('System')}
-				value={system}
-				onChange={(val) => setOptions({ system: val, calculator: '' })}
-				options={systems}
+				label={ __( 'System' ) }
+				value={ system }
+				onChange={ ( val ) =>
+					setOptions( { system: val, calculator: '' } )
+				}
+				options={ systems }
 			/>
 			<SelectControl
-				label={__('Calculator')}
-				value={calculator}
-				onChange={(val) => setOptions({ calculator: val })}
-				options={calculators[system]}
+				label={ __( 'Calculator' ) }
+				value={ calculator }
+				onChange={ ( val ) => setOptions( { calculator: val } ) }
+				options={ calculators[ system ] }
 			/>
 		</div>
 	);
