@@ -90,6 +90,8 @@ class NatalChartController implements ReportControllerInterface {
 		$translation_data = $this->get_localisation_data( $form_language );
 		$filter = explode(',', $options['filter']);
 		$aspectFilter = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : '';
+		$houseSystem = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
+
 
 		return $this->render(
 			'form/natal-chart',
@@ -97,6 +99,7 @@ class NatalChartController implements ReportControllerInterface {
 				'options'          => $options + $this->get_options(),
 				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'aspectFilter'     => in_array('planet-positions', $filter) ? false : $aspectFilter,
+				'houseSystem'      => $houseSystem,
 				'selected_lang'    => $form_language,
 				'report_language'  => $report_language,
 				'translation_data' => $translation_data,

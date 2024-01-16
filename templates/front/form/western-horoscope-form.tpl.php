@@ -36,14 +36,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 <div>
-	<div class="pk-astrology-form-group row">
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Birth Date: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<input type='datetime-local' name="datetime" class="pk-astrology-form-control pk-astrology-form-control-lg" required="required" value="<?= $datetime->format('Y-m-d\TH:i')?>"/>
 		</div>
 	</div>
 
-	<div class="pk-astrology-form-group row">
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left"></label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<div class="pk-astrology-form-check pk-astrology-form-check-inline">
@@ -53,14 +53,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 
-	<div class="pk-astrology-form-group row">
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left ">Birth Place:</label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<input type='text' id="fin-location" name="location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Place of birth" value="" required>
 		</div>
 	</div>
 
-	<div class="pk-astrology-form-group row">
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="house-system">House System: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<select name="house_system" id="house-system">
@@ -76,44 +76,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	</div>
 	<?php if (isset($transit) && $transit): ?>
-		<div class="pk-astrology-form-group row">
+		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Transit Date Time: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 				<input type='datetime-local' name="transit_datetime" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" required="required" value="<?= $transitDatetime->format('Y-m-d\TH:i')?>"/>
 			</div>
 		</div>
-		<div class="pk-astrology-form-group row">
+		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left ">Transit Location:</label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Transit Location" value="" data-location_input_prefix="current" required>
 			</div>
 		</div>
 	<?php elseif (isset($progression) && $progression): ?>
-		<div class="form-group row">
-			<label class="col-sm-3 col-md-4 col-form-label text-md-right text-xs-left">Progression Year: </label>
-			<div class="col-sm-9 col-md-6 ">
-				<input type="number" name="progression_year" class="form-control form-control-lg rounded-1" placeholder="Enter Progression Year" value="<?= $progressionYear?>" required>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Progression Year: </label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?= $progressionYear?>" required>
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-3 col-md-4 col-form-label text-md-right text-xs-left ">Progressed Location:</label>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left ">Progressed Location:</label>
 			<div class="col-sm-9 col-md-6 ">
-				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="form-control form-control-lg rounded-1 prokerala-location-input" placeholder="Progressed Location" data-location_input_prefix="current_" value="" required>
+				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Progressed Location" data-location_input_prefix="current" value="" required>
 			</div>
 		</div>
 	<?php elseif (isset($solarReturn) && $solarReturn): ?>
-		<div class="form-group row">
-			<label class="col-sm-3 col-md-4 col-form-label text-md-right text-xs-left">Solar Return Year: </label>
-			<div class="col-sm-9 col-md-6 ">
-				<input type="number" name="solar_return_year" class="form-control form-control-lg rounded-1" placeholder="Enter Solar Return Year" value="<?= $solarYear?>" required>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Solar Return Year: </label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?= $solarReturnYear?>" required>
 			</div>
 		</div>
 
-		<div class="form-group row">
-			<label class="col-sm-3 col-md-4 col-form-label text-md-right text-xs-left ">Transit Location:</label>
-			<div class="col-sm-9 col-md-6 ">
-				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="form-control form-control-lg rounded-1 prokerala-location-input" placeholder="Transit Location" value="" data-location_input_prefix="current_" required>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left ">Transit Location:</label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Transit Location" value="" data-location_input_prefix="current_" required>
 			</div>
 		</div>
 	<?php endif; ?>

@@ -31,18 +31,18 @@ namespace Prokerala\WP\Astrology\Front\Report;
 
 use DateTimeImmutable;
 use Exception;
-use Prokerala\Api\Astrology\Western\Service\Charts\TransitChart;
-use Prokerala\Api\Astrology\Western\Service\AspectCharts\TransitChart as TransitAspectChart;
-use Prokerala\Api\Astrology\Western\Service\PlanetPositions\TransitChart as TransitPlanetPositions;
+use Prokerala\Api\Astrology\Western\Service\Charts\ProgressionChart;
+use Prokerala\Api\Astrology\Western\Service\AspectCharts\ProgressionChart as ProgressionAspectChart;
+use Prokerala\Api\Astrology\Western\Service\PlanetPositions\ProgressionChart as ProgressionPlanetPositions;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Transit Chart Form Controller.
+ * Progression Chart Form Controller.
  *
  * @since   1.0.0
  */
-class TransitChartController implements ReportControllerInterface {
+class ProgressionChartController implements ReportControllerInterface {
 
 	use ReportControllerTrait {
 		get_attribute_defaults as getCommonAttributeDefaults;
@@ -52,7 +52,7 @@ class TransitChartController implements ReportControllerInterface {
 		'en',
 	];
 	/**
-	 * TransitChartController constructor
+	 * ProgressionChartController constructor
 	 *
 	 * @param array<string,string> $options Plugin options.
 	 */
@@ -76,7 +76,7 @@ class TransitChartController implements ReportControllerInterface {
 	}
 
 	/**
-	 * Render Transit Chart form.
+	 * Render Progression Chart form.
 	 *
 	 * @throws Exception On render failure.
 	 *
@@ -93,12 +93,11 @@ class TransitChartController implements ReportControllerInterface {
 		$houseSystem = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
 
 		return $this->render(
-			'form/transit-chart',
+			'form/progression-chart',
 			[
 				'options'          => $options + $this->get_options(),
-				'datetime'         => (new DateTimeImmutable( $datetime, $this->get_timezone() ))->modify('-10 years'),
-				'transitDatetime'  => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'transit'   	   => true,
+				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'progression' 	   => true,
 				'aspectFilter'     => in_array('planet-positions', $filter) ? false : $aspectFilter,
 				'houseSystem'      => $houseSystem,
 				'selected_lang'    => $form_language,
@@ -117,46 +116,48 @@ class TransitChartController implements ReportControllerInterface {
 	 * @return string
 	 */
 	public function process( $options = [] ) {
-		$tz       		 = $this->get_timezone();
-		$client   		 = $this->get_api_client();
-		$location 		 = $this->get_location( $tz );
-		$transitTz       = $this->get_timezone('current_');
-		$transitLocation = $this->get_location( $transitTz, 'current_' );
+		$tz       		 	 = $this->get_timezone();
+		$client   		 	 = $this->get_api_client();
+		$location 		 	 = $this->get_location( $tz );
+		$progressionLocation = $this->get_location( $tz, 'current_' );
 
 		$filter = explode(',', $options['filter']);
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
-		$transitDatetime = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : '';
+
+		$progressionYear = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '';
 
 		$houseSystem = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
 		$orb = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : '';
+
 		$birthTimeUnknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
 		$rectificationChart = isset( $_POST['birth_time_rectification'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_rectification'] ) ) : '';
+
 		$aspectFilter = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$datetime = new DateTimeImmutable( $datetime, $tz );
-		$transitDatetime = new DateTimeImmutable( $transitDatetime, $tz );
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
 		if (in_array('chart', $filter)) {
-			$method = new TransitChart($client);
-			$chart = $method->process($location, $datetime, $transitLocation, $transitDatetime, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
+			$method = new ProgressionChart($client);
+			$chart = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
 		}
 		if (in_array('aspect-chart', $filter)) {
-			$method = new TransitAspectChart( $client );
-			$aspectChart = $method->process($location, $datetime, $transitLocation, $transitDatetime, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
+			$method = new ProgressionAspectChart( $client );
+			$aspectChart = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
 		}
 		if (in_array('planet-positions', $filter)) {
-			$method = new TransitPlanetPositions( $client );
-			$result = $method->process($location, $datetime, $transitLocation, $transitDatetime, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart);
+			$method = new ProgressionPlanetPositions( $client );
+			$result = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart);
 		}
+
 		$translation_data = $this->get_localisation_data( $lang );
 
 		return $this->render(
-			'result/transit-chart',
+			'result/progression-chart',
 			[
 				'chart'            => $chart ?? null,
 				'aspectChart'      => $aspectChart ?? null,
