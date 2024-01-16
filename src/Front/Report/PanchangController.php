@@ -186,7 +186,7 @@ class PanchangController implements ReportControllerInterface {
 	 * @throws Exception If something went wrong.
 	 * @since 1.2.0
 	 */
-	private function cache_fetch_result( $method, $advanced, $lang, $options, $tz ): BasicPanchang|bool|AdvancedPanchang|array {
+	private function cache_fetch_result( $method, $advanced, $lang, $options, $tz ) {
 
 		$datetime    = new DateTimeImmutable( $options['date'], $tz );
 		$location    = $this->get_location_from_shortcode( $options['coordinate'], $tz );
@@ -251,7 +251,7 @@ class PanchangController implements ReportControllerInterface {
 	 *
 	 * @return void
 	 */
-	private function cache_panchang_data( string $key, BasicPanchang|AdvancedPanchang $result ): void {
+	private function cache_panchang_data( string $key, $result ): void {
 		$data['panchang'] = $result;
 
 		$now = new \DateTimeImmutable( 'now' );
@@ -343,7 +343,7 @@ class PanchangController implements ReportControllerInterface {
 	 *
 	 * @return array
 	 */
-	private function process_result( BasicPanchang|AdvancedPanchang $result, bool $advanced ): array {
+	private function process_result( $result, bool $advanced ): array {
 	 // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$panchang_result = [
 			'sunrise'  => $result->getSunrise(),

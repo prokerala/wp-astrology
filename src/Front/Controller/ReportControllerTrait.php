@@ -336,7 +336,10 @@ trait ReportControllerTrait {
 	 */
 	private function filter_report_language( string $la, array $available_languages ) {
 		$report_languages = explode( ',', $la );
-		return array_filter( $report_languages, fn ( $val ) => in_array( trim( $val ), $available_languages, true ) );
+
+		return array_filter( $report_languages, function ($val) use ($available_languages) {
+			return in_array( trim( $val ), $available_languages, true );
+		} );
 	}
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing
