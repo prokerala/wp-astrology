@@ -193,7 +193,7 @@ class NumerologyController implements ReportControllerInterface {
 		$date = new \DateTimeImmutable( $date, $tz );
 
 		[ $calculator_name, $calculator_class, $param_type ] = self::CALCULATORS[ $system ][ $calculator ];
-		$method = new $calculator_class($client);
+		$method = new $calculator_class( $client );
 
 		if ( self::DATE === $param_type ) {
 			$result = $method->process( $date );

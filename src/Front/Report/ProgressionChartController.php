@@ -69,10 +69,10 @@ class ProgressionChartController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
-				'date'       => '',
-				'filter' 	 => 'chart',
-				'coordinate' => '',
-			];
+			'date'       => '',
+			'filter'     => 'chart',
+			'coordinate' => '',
+		];
 	}
 
 	/**
@@ -83,26 +83,36 @@ class ProgressionChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) {
+	public function render_form( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$datetime         = $this->get_post_input( 'datetime', 'now' );
 		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
 		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
 		$translation_data = $this->get_localisation_data( $form_language );
-		$filter = explode(',', $options['filter']);
-		$aspectFilter = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : '';
-		$houseSystem = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
+		$filter           = explode( ',', $options['filter'] );
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$aspect_filter       = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : 'major';
+		$house_system        = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : 'placidus';
+		$orb                 = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : 'default';
+		$progression_year    = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '2024';
+		$rectification_chart = isset( $_POST['birth_time_rectification'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_rectification'] ) ) : 'flat-chart';
+		$birth_time_unknown  = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return $this->render(
 			'form/progression-chart',
 			[
-				'options'          => $options + $this->get_options(),
-				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'progression' 	   => true,
-				'aspectFilter'     => in_array('planet-positions', $filter) ? false : $aspectFilter,
-				'houseSystem'      => $houseSystem,
-				'selected_lang'    => $form_language,
-				'report_language'  => $report_language,
-				'translation_data' => $translation_data,
+				'options'             => $options + $this->get_options(),
+				'datetime'            => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+				'progression'         => true,
+				'aspect_filter'       => in_array( 'planet-positions', $filter, true ) ? null : $aspect_filter,
+				'house_system'        => $house_system,
+				'rectification_chart' => $rectification_chart,
+				'birth_time_unknown'  => $birth_time_unknown,
+				'orb'                 => $orb,
+				'progression_year'    => $progression_year,
+				'selected_lang'       => $form_language,
+				'report_language'     => $report_language,
+				'translation_data'    => $translation_data,
 			]
 		);
 	}
@@ -115,43 +125,43 @@ class ProgressionChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
-		$tz       		 	 = $this->get_timezone();
-		$client   		 	 = $this->get_api_client();
-		$location 		 	 = $this->get_location( $tz );
-		$progressionLocation = $this->get_location( $tz, 'current_' );
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+		$tz                   = $this->get_timezone();
+		$client               = $this->get_api_client();
+		$location             = $this->get_location( $tz );
+		$progression_location = $this->get_location( $tz, 'current_' );
 
-		$filter = explode(',', $options['filter']);
+		$filter = explode( ',', $options['filter'] );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 
-		$progressionYear = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '';
+		$progression_year = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '';
 
-		$houseSystem = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
-		$orb = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : '';
+		$house_system = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
+		$orb          = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : '';
 
-		$birthTimeUnknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$rectificationChart = isset( $_POST['birth_time_rectification'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_rectification'] ) ) : '';
+		$birth_time_unknown  = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
+		$rectification_chart = isset( $_POST['birth_time_rectification'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_rectification'] ) ) : '';
 
-		$aspectFilter = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : '';
+		$aspect_filter = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$datetime = new DateTimeImmutable( $datetime, $tz );
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
-		if (in_array('chart', $filter)) {
-			$method = new ProgressionChart($client);
-			$chart = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
+		if ( in_array( 'chart', $filter, true ) ) {
+			$method = new ProgressionChart( $client );
+			$chart  = $method->process( $location, $datetime, $progression_location, $progression_year, $house_system, $orb, $birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if (in_array('aspect-chart', $filter)) {
-			$method = new ProgressionAspectChart( $client );
-			$aspectChart = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart, $aspectFilter);
+		if ( in_array( 'aspect-chart', $filter, true ) ) {
+			$method       = new ProgressionAspectChart( $client );
+			$aspect_chart = $method->process( $location, $datetime, $progression_location, $progression_year, $house_system, $orb, $birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if (in_array('planet-positions', $filter)) {
+		if ( in_array( 'planet-positions', $filter, true ) ) {
 			$method = new ProgressionPlanetPositions( $client );
-			$result = $method->process($location, $datetime, $progressionLocation, $progressionYear, $houseSystem, $orb, $birthTimeUnknown, $rectificationChart);
+			$result = $method->process( $location, $datetime, $progression_location, $progression_year, $house_system, $orb, $birth_time_unknown, $rectification_chart );
 		}
 
 		$translation_data = $this->get_localisation_data( $lang );
@@ -160,8 +170,8 @@ class ProgressionChartController implements ReportControllerInterface {
 			'result/progression-chart',
 			[
 				'chart'            => $chart ?? null,
-				'aspectChart'      => $aspectChart ?? null,
-				'result'		   => $result ?? null,
+				'aspect_chart'     => $aspect_chart ?? null,
+				'result'           => $result ?? null,
 				'options'          => $this->get_options(),
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,

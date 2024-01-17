@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Birth Date: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-			<input type='datetime-local' name="datetime" class="pk-astrology-form-control pk-astrology-form-control-lg" required="required" value="<?= $datetime->format('Y-m-d\TH:i')?>"/>
+			<input type='datetime-local' name="datetime" class="pk-astrology-form-control pk-astrology-form-control-lg" required="required" value="<?php echo $datetime->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"/>
 		</div>
 	</div>
 
@@ -47,7 +47,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left"></label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<div class="pk-astrology-form-check pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="checkbox" name="birth_time_unknown" id="birth_time_unknown" <?= isset($birthTimeUnknown) && $birthTimeUnknown ? 'checked' : ''?>>
+				<input class="pk-astrology-form-check-input" type="checkbox" name="birth_time_unknown" id="birth_time_unknown" <?php echo isset( $birth_time_unknown ) && $birth_time_unknown ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="birth_time_unknown">Check if exact birth time is unknown</label>
 			</div>
 		</div>
@@ -64,22 +64,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="house-system">House System: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<select name="house_system" id="house-system">
-				<option value="placidus" <?= 'placidus' === $houseSystem ? 'selected' : ''?>>Placidus</option>
-				<option value="koch" <?= 'koch' === $houseSystem ? 'selected' : ''?>>Koch</option>
-				<option value="whole-sign" <?= 'whole-sign' === $houseSystem ? 'selected' : ''?>>Whole Sign</option>
-				<option value="equal-house" <?= 'equal-house' === $houseSystem ? 'selected' : ''?>>Equal House</option>
-				<option value="m-house" <?= 'm-house' === $houseSystem ? 'selected' : ''?>>M House</option>
-				<option value="porphyrius" <?= 'porphyrius' === $houseSystem ? 'selected' : ''?>>Porphyrius</option>
-				<option value="regiomontanus" <?= 'regiomontanus' === $houseSystem ? 'selected' : ''?>>Regiomontanus</option>
-				<option value="campanus" <?= 'campanus' === $houseSystem ? 'selected' : ''?>>Campanus</option>
+				<option value="placidus" <?php echo 'placidus' === $house_system ? 'selected' : ''; ?>>Placidus</option>
+				<option value="koch" <?php echo 'koch' === $house_system ? 'selected' : ''; ?>>Koch</option>
+				<option value="whole-sign" <?php echo 'whole-sign' === $house_system ? 'selected' : ''; ?>>Whole Sign</option>
+				<option value="equal-house" <?php echo 'equal-house' === $house_system ? 'selected' : ''; ?>>Equal House</option>
+				<option value="m-house" <?php echo 'm-house' === $house_system ? 'selected' : ''; ?>>M House</option>
+				<option value="porphyrius" <?php echo 'porphyrius' === $house_system ? 'selected' : ''; ?>>Porphyrius</option>
+				<option value="regiomontanus" <?php echo 'regiomontanus' === $house_system ? 'selected' : ''; ?>>Regiomontanus</option>
+				<option value="campanus" <?php echo 'campanus' === $house_system ? 'selected' : ''; ?>>Campanus</option>
 			</select>
 		</div>
 	</div>
-	<?php if (isset($transit) && $transit): ?>
+	<?php if ( isset( $transit ) && $transit ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Transit Date Time: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type='datetime-local' name="transit_datetime" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" required="required" value="<?= $transitDatetime->format('Y-m-d\TH:i')?>"/>
+				<input type='datetime-local' name="transit_datetime" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" required="required" value="<?php echo $transit_datetime->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"/>
 			</div>
 		</div>
 		<div class="pk-astrology-form-group pk-astrology-row">
@@ -88,11 +88,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Transit Location" value="" data-location_input_prefix="current" required>
 			</div>
 		</div>
-	<?php elseif (isset($progression) && $progression): ?>
+	<?php elseif ( isset( $progression ) && $progression ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Progression Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?= $progressionYear?>" required>
+				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?php echo $progression_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 
@@ -102,11 +102,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Progressed Location" data-location_input_prefix="current" value="" required>
 			</div>
 		</div>
-	<?php elseif (isset($solarReturn) && $solarReturn): ?>
+	<?php elseif ( isset( $solar_return ) && $solar_return ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Solar Return Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?= $solarReturnYear?>" required>
+				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?php echo $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 
@@ -118,43 +118,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
-	<?php if (false === $aspectFilter): ?>
-	<div class="pk-astrology-form-group row">
+	<?php if ( null !== $aspect_filter ) : ?>
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="aspect-filter">Aspect Filter: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<select name="aspect_filter" id="aspect-filter">
-				<option value="major" <?= 'major' === $aspectFilter ? 'selected' : ''?>>Show major aspects</option>
-				<option value="all" <?= 'all' === $aspectFilter ? 'selected' : ''?>>Show all aspects</option>
-				<option value="minor" <?= 'minor' === $aspectFilter ? 'selected' : ''?>>Show minor aspects only</option>
+				<option value="major" <?php echo 'major' === $aspect_filter ? 'selected' : ''; ?>>Show major aspects</option>
+				<option value="all" <?php echo 'all' === $aspect_filter ? 'selected' : ''; ?>>Show all aspects</option>
+				<option value="minor" <?php echo 'minor' === $aspect_filter ? 'selected' : ''; ?>>Show minor aspects only</option>
 			</select>
 		</div>
 	</div>
 	<?php endif; ?>
 
 
-	<div class="pk-astrology-form-group row">
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="aspect-filter">Orb: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<div class="pk-astrology-form-check pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="orb" id="orb1" value="default" <?='default' === $orb ? 'checked' : ''?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="orb" id="orb1" value="default" <?php echo 'default' === $orb ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="orb1">Default</label>
 			</div>
 			<div class="pk-astrology-form-check pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="orb" id="orb2" value="exact" <?='exact' === $orb ? 'checked' : ''?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="orb" id="orb2" value="exact" <?php echo 'exact' === $orb ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="orb2">Exact</label>
 			</div>
 		</div>
 	</div>
 
-	<div class="pk-astrology-form-group row d-none" id="birth_time_rectification_tab">
+	<div class="pk-astrology-form-group pk-astrology-row d-none" id="birth_time_rectification_tab">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="aspect-filter">Birth Time Rectification Chart: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<div class="pk-astrology-form-check form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="birth_time_rectification" id="birth_time_rectification1" value="flat-chart" <?='flat-chart' === $rectificationChart ? 'checked' : ''?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="birth_time_rectification" id="birth_time_rectification1" value="flat-chart" <?php echo 'flat-chart' === $rectification_chart ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="birth_time_rectification1">Flat Chart</label>
 			</div>
 			<div class="pk-astrology-form-check pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="birth_time_rectification" id="birth_time_rectification2" value="true-sunrise-chart" <?='true-sunrise-chart' === $rectificationChart ? 'checked' : ''?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="birth_time_rectification" id="birth_time_rectification2" value="true-sunrise-chart" <?php echo 'true-sunrise-chart' === $rectification_chart ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="birth_time_rectification2">True Sunrise Chart</label>
 			</div>
 		</div>
@@ -168,7 +168,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	(function () {
 		const $birthTimeUnknownCheckbox = document.getElementById('birth_time_unknown');
 		const $birthTimeRectificationTab = document.getElementById('birth_time_rectification_tab');
-
+		if ($birthTimeUnknownCheckbox.checked) {
+			$birthTimeRectificationTab.classList.remove('d-none');
+		}
 		$birthTimeUnknownCheckbox.addEventListener('click', (e) => {
 			if(e.target.checked){
 				$birthTimeRectificationTab.classList.remove('d-none');

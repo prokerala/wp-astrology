@@ -185,12 +185,7 @@ trait ReportControllerTrait {
 		$response_factory = new ResponseFactory();
 		$stream_factory   = new StreamFactory();
 
-		$client      = function_exists( 'curl_init' ) ? new Curl(
-			$response_factory,
-			[
-				'verify' => false,
-			]
-		) : new FileGetContents( $response_factory );
+		$client      = function_exists( 'curl_init' ) ? new Curl( $response_factory ) : new FileGetContents( $response_factory );
 		$http_client = new Browser( $client, $request_factory );
 
 		$client_id     = $this->options['client_id'];
@@ -337,9 +332,12 @@ trait ReportControllerTrait {
 	private function filter_report_language( string $la, array $available_languages ) {
 		$report_languages = explode( ',', $la );
 
-		return array_filter( $report_languages, function ($val) use ($available_languages) {
-			return in_array( trim( $val ), $available_languages, true );
-		} );
+		return array_filter(
+			$report_languages,
+			function ( $val ) use ( $available_languages ) {
+				return in_array( trim( $val ), $available_languages, true );
+			}
+		);
 	}
 }
 // phpcs:enable WordPress.Security.NonceVerification.Missing

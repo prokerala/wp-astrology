@@ -37,61 +37,59 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="main-content">
 
 	<div class="container prokerala-api--container">
-		<?php if (null !== $chart): ?>
+		<?php if ( null !== $chart ) : ?>
 
-			<h3 class="text-center">Synastry Chart</h3>
+			<h3 class="pk-astrology-text-center">Synastry Chart</h3>
 			<div id="chart" class="d-flex justify-content-center">
-				<?= str_replace('<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 700 700" ', $chart); ?>
+				<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 700 700" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 
 		<?php endif; ?>
 
-		<?php if (null !== $aspectChart): ?>
+		<?php if ( null !== $aspect_chart ) : ?>
 
-			<h3 class="text-center">Synastry Aspect Chart</h3>
+			<h3 class="pk-astrology-text-center">Synastry Aspect Chart</h3>
 			<div id="chart" class="d-flex justify-content-center">
-				<?= str_replace('<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 500 500" ', $aspectChart); ?>
+				<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 500 500" ', $aspect_chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</div>
 
 		<?php endif; ?>
 
-		<?php if (null !== $result): ?>
+		<?php if ( null !== $result ) : ?>
 
 			<!--            House table-->
-			<h3 class="text-center">Synastry Planet Aspect</h3>
-				<table class="table table-bordered">
+			<h3 class="pk-astrology-text-center">Synastry Planet Aspect</h3>
+				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 					<tr>
 						<th>Primary Planet</th>
 						<th>Aspect</th>
 						<th>Secondary Planet</th>
 						<th>Orb</th>
 					</tr>
-					<tr><th class="text-center" colspan="4">Major Aspects</th></tr>
+					<tr><th class="pk-astrology-text-center" colspan="4">Major Aspects</th></tr>
 
-					<?php foreach($result->getAspects() as $aspect): ?>
-						<?php if(!in_array($aspect->getAspect()->getName(), ['Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine'])): ?>
-							<?php continue; ?>
+					<?php foreach ( $result->getAspects() as $aspect ) : ?>
+						<?php if ( in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
+							<tr>
+								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo $aspect->getAspect()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo $aspect->getPlanetTwo()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo round( $aspect->getOrb(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+							</tr>
 						<?php endif; ?>
-						<tr>
-							<td><?=$aspect->getPlanetOne()->getName()?></td>
-							<td><?=$aspect->getAspect()->getName()?></td>
-							<td><?=$aspect->getPlanetTwo()->getName()?></td>
-							<td><?=round($aspect->getOrb(), 2)?></td>
-						</tr>
 					<?php endforeach; ?>
 
-					<tr><th class="text-center" colspan="4">Minor Aspects</th></tr>
+					<tr><th class="pk-astrology-text-center" colspan="4">Minor Aspects</th></tr>
 
-					<?php foreach($result->getAspects() as $aspect): ?>
-						<?php if(in_array($aspect->getAspect()->getName(), ['Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine'])): ?>
-							<?php continue; ?>
+					<?php foreach ( $result->getAspects() as $aspect ) : ?>
+						<?php if ( ! in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
+							<tr>
+								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo $aspect->getAspect()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo $aspect->getPlanetTwo()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+								<td><?php echo round( $aspect->getOrb(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+							</tr>
 						<?php endif; ?>
-						<tr>
-							<td><?=$aspect->getPlanetOne()->getName()?></td>
-							<td><?=$aspect->getAspect()->getName()?></td>
-							<td><?=$aspect->getPlanetTwo()->getName()?></td>
-							<td><?=round($aspect->getOrb(), 2)?></td>
-						</tr>
 					<?php endforeach; ?>
 				</table>
 		<?php endif; ?>
