@@ -81,7 +81,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<?php foreach ( $result->getTransitDetails()->getPlanetPositions() as $planet_position ) : ?>
-					<?php if ( $planet_position->isRetrograde() || ! in_array( $planet_position->getId(), [ 103, 104 ], true ) ) : ?>
+					<?php if ( $planet_position->isRetrograde() && ! in_array( $planet_position->getId(), [ 103, 104 ], true ) ) : ?>
 						<tr>
 							<td><?php echo $planet_position->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 						</tr>
