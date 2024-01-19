@@ -105,7 +105,7 @@ class SynastryChartController implements ReportControllerInterface {
 				'primary_birth_time'           => ( new DateTimeImmutable( $datetime, $this->get_timezone() ) )->modify( '-25 years' ),
 				'secondary_birth_time'         => ( new DateTimeImmutable( $datetime, $this->get_timezone() ) )->modify( '-20 years' ),
 				'synastry'                     => true,
-				'aspect_filter'                => in_array( 'planet-positions', $filter, true ) ? null : $aspect_filter,
+				'aspect_filter'                => ( in_array( 'planet-positions', $filter, true ) || in_array( 'planet-aspects', $filter, true ) ) ? null : $aspect_filter,
 				'house_system'                 => $house_system,
 				'primary_birth_time_unknown'   => $primary_birth_time_unknown,
 				'secondary_birth_time_unknown' => $secondary_birth_time_unknown,
@@ -137,7 +137,9 @@ class SynastryChartController implements ReportControllerInterface {
 		$secondary_birth_location = $this->get_location( $secondary_tz, 'partner_b_' );
 
 		$filter = explode( ',', $options['filter'] );
-
+		if ( in_array( 'all', $filter, true ) ) {
+			$filter = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
+		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$primary_birth_time   = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
 		$secondary_birth_time = isset( $_POST['partner_b_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_dob'] ) ) : '';
@@ -167,9 +169,9 @@ class SynastryChartController implements ReportControllerInterface {
 			$method       = new SynastryAspectChart( $client );
 			$aspect_chart = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $house_system, $chart_type, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if ( in_array( 'planet-positions', $filter, true ) ) {
-			$method = new SynastryPlanetPositions( $client );
-			$result = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $house_system, $chart_type, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart );
+		if ( in_array( 'planet-aspects', $filter, true ) ) {
+			$method         = new SynastryPlanetPositions( $client );
+			$planet_aspects = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $house_system, $chart_type, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart );
 		}
 
 		$translation_data = $this->get_localisation_data( $lang );
@@ -179,7 +181,7 @@ class SynastryChartController implements ReportControllerInterface {
 			[
 				'chart'            => $chart ?? null,
 				'aspect_chart'     => $aspect_chart ?? null,
-				'result'           => $result ?? null,
+				'planet_aspects'   => $planet_aspects ?? null,
 				'options'          => $this->get_options(),
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,

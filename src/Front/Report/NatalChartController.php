@@ -102,7 +102,7 @@ class NatalChartController implements ReportControllerInterface {
 			[
 				'options'             => $options + $this->get_options(),
 				'datetime'            => new DateTimeImmutable( $datetime, $this->get_timezone() ),
-				'aspect_filter'       => in_array( 'planet-positions', $filter, true ) ? null : $aspect_filter,
+				'aspect_filter'       => ( in_array( 'planet-positions', $filter, true ) || in_array( 'planet-aspects', $filter, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
 				'rectification_chart' => $rectification_chart,
 				'birth_time_unknown'  => $birth_time_unknown,
@@ -128,6 +128,9 @@ class NatalChartController implements ReportControllerInterface {
 		$location = $this->get_location( $tz );
 
 		$filter = explode( ',', $options['filter'] );
+		if ( in_array( 'all', $filter, true ) ) {
+			$filter = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
+		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime            = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 		$house_system        = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : '';
@@ -140,6 +143,9 @@ class NatalChartController implements ReportControllerInterface {
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
+		$planet_positions = in_array( 'planet-positions', $filter, true );
+		$planet_aspects   = in_array( 'planet-aspects', $filter, true );
+
 		if ( in_array( 'chart', $filter, true ) ) {
 			$method = new NatalChart( $client );
 			$chart  = $method->process( $location, $datetime, $house_system, $orb, $birth_time_unknown, $rectification_chart, $aspect_filter );
@@ -148,10 +154,11 @@ class NatalChartController implements ReportControllerInterface {
 			$method       = new NatalAspectChart( $client );
 			$aspect_chart = $method->process( $location, $datetime, $house_system, $orb, $birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if ( in_array( 'planet-positions', $filter, true ) ) {
+		if ( $planet_positions || $planet_aspects ) {
 			$method = new NatalPlanetPositions( $client );
 			$result = $method->process( $location, $datetime, $house_system, $orb, $birth_time_unknown, $rectification_chart );
 		}
+
 		$translation_data = $this->get_localisation_data( $lang );
 
 		return $this->render(
@@ -160,6 +167,8 @@ class NatalChartController implements ReportControllerInterface {
 				'chart'            => $chart ?? null,
 				'aspect_chart'     => $aspect_chart ?? null,
 				'result'           => $result ?? null,
+				'planet_positions' => $planet_positions,
+				'planet_aspects'   => $planet_aspects,
 				'options'          => $this->get_options(),
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,

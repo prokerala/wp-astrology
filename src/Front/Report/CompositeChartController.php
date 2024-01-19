@@ -106,7 +106,7 @@ class CompositeChartController implements ReportControllerInterface {
 				'secondary_birth_time'         => ( new DateTimeImmutable( $datetime, $this->get_timezone() ) )->modify( '-25 years' ),
 				'transit_datetime'             => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'composite'                    => true,
-				'aspect_filter'                => in_array( 'planet-positions', $filter, true ) ? null : $aspect_filter,
+				'aspect_filter'                => ( in_array( 'planet-positions', $filter, true ) || in_array( 'planet-aspects', $filter, true ) ) ? null : $aspect_filter,
 				'rectification_chart'          => $rectification_chart,
 				'primary_birth_time_unknown'   => $primary_birth_time_unknown,
 				'secondary_birth_time_unknown' => $secondary_birth_time_unknown,
@@ -139,7 +139,9 @@ class CompositeChartController implements ReportControllerInterface {
 		$secondary_birth_location = $this->get_location( $secondary_tz, 'partner_b_' );
 
 		$filter = explode( ',', $options['filter'] );
-
+		if ( in_array( 'all', $filter, true ) ) {
+			$filter = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
+		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$transit_datetime     = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : '';
 		$primary_birth_time   = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
@@ -161,6 +163,9 @@ class CompositeChartController implements ReportControllerInterface {
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
+		$planet_positions = in_array( 'planet-positions', $filter, true );
+		$planet_aspects   = in_array( 'planet-aspects', $filter, true );
+
 		if ( in_array( 'chart', $filter, true ) ) {
 			$method = new CompositeChart( $client );
 			$chart  = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $current_location, $transit_datetime, $house_system, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart, $aspect_filter );
@@ -169,7 +174,7 @@ class CompositeChartController implements ReportControllerInterface {
 			$method       = new CompositeAspectChart( $client );
 			$aspect_chart = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $current_location, $transit_datetime, $house_system, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if ( in_array( 'planet-positions', $filter, true ) ) {
+		if ( $planet_positions || $planet_aspects ) {
 			$method = new CompositePlanetPositions( $client );
 			$result = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $current_location, $transit_datetime, $house_system, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart );
 		}
@@ -182,6 +187,8 @@ class CompositeChartController implements ReportControllerInterface {
 				'chart'            => $chart ?? null,
 				'aspect_chart'     => $aspect_chart ?? null,
 				'result'           => $result ?? null,
+				'planet_positions' => $planet_positions,
+				'planet_aspects'   => $planet_aspects,
 				'options'          => $this->get_options(),
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,

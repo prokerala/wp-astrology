@@ -55,10 +55,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 		<?php endif; ?>
 
-		<?php if ( null !== $result ) : ?>
+		<?php if ( null !== $planet_aspects ) : ?>
 
+			<h3 class="pk-astrology-text-center mt-5">List of Aspects</h3>
+
+			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+				<tr>
+					<th>Major Aspects</th>
+					<td>Opposition, Conjunction, Sextile, Square, Trine</td>
+				</tr>
+				<tr>
+					<th>Minor Aspects</th>
+					<td>Semi Sextile, Semi Square, BiQuintile, Quincunx, Sesquiquadrate</td>
+				</tr>
+			</table>
 			<!--            House table-->
-			<h3 class="pk-astrology-text-center">Synastry Planet Aspect</h3>
+			<h3 class="pk-astrology-text-center mt-5">Synastry Planet Aspects</h3>
 				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 					<tr>
 						<th>Primary Planet</th>
@@ -66,9 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<th>Secondary Planet</th>
 						<th>Orb</th>
 					</tr>
-					<tr><th class="pk-astrology-text-center" colspan="4">Major Aspects</th></tr>
-
-					<?php foreach ( $result->getAspects() as $aspect ) : ?>
+					<?php foreach ( $planet_aspects->getAspects() as $aspect ) : ?>
 						<?php if ( in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
 							<tr>
 								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
@@ -78,10 +88,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							</tr>
 						<?php endif; ?>
 					<?php endforeach; ?>
-
-					<tr><th class="pk-astrology-text-center" colspan="4">Minor Aspects</th></tr>
-
-					<?php foreach ( $result->getAspects() as $aspect ) : ?>
+					<?php foreach ( $planet_aspects->getAspects() as $aspect ) : ?>
 						<?php if ( ! in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
 							<tr>
 								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>

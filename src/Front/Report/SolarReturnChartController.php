@@ -104,7 +104,7 @@ class SolarReturnChartController implements ReportControllerInterface {
 				'options'             => $options + $this->get_options(),
 				'datetime'            => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'solar_return'        => true,
-				'aspect_filter'       => in_array( 'planet-positions', $filter, true ) ? null : $aspect_filter,
+				'aspect_filter'       => ( in_array( 'planet-positions', $filter, true ) || in_array( 'planet-aspects', $filter, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
 				'rectification_chart' => $rectification_chart,
 				'birth_time_unknown'  => $birth_time_unknown,
@@ -132,7 +132,9 @@ class SolarReturnChartController implements ReportControllerInterface {
 		$progression_location = $this->get_location( $tz, 'current_' );
 
 		$filter = explode( ',', $options['filter'] );
-
+		if ( in_array( 'all', $filter, true ) ) {
+			$filter = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
+		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$datetime = isset( $_POST['datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['datetime'] ) ) : '';
 
@@ -151,6 +153,9 @@ class SolarReturnChartController implements ReportControllerInterface {
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
+		$planet_positions = in_array( 'planet-positions', $filter, true );
+		$planet_aspects   = in_array( 'planet-aspects', $filter, true );
+
 		if ( in_array( 'chart', $filter, true ) ) {
 			$method = new SolarReturnChart( $client );
 			$chart  = $method->process( $location, $datetime, $progression_location, $solar_return_year, $house_system, $orb, $birth_time_unknown, $birth_time_rectification, $aspect_filter );
@@ -159,7 +164,7 @@ class SolarReturnChartController implements ReportControllerInterface {
 			$method       = new SolarReturnAspectChart( $client );
 			$aspect_chart = $method->process( $location, $datetime, $progression_location, $solar_return_year, $house_system, $orb, $birth_time_unknown, $birth_time_rectification, $aspect_filter );
 		}
-		if ( in_array( 'planet-positions', $filter, true ) ) {
+		if ( $planet_positions || $planet_aspects ) {
 			$method = new SolarReturnPlanetPositions( $client );
 			$result = $method->process( $location, $datetime, $progression_location, $solar_return_year, $house_system, $orb, $birth_time_unknown, $birth_time_rectification );
 		}
@@ -172,6 +177,8 @@ class SolarReturnChartController implements ReportControllerInterface {
 				'chart'            => $chart ?? null,
 				'aspect_chart'     => $aspect_chart ?? null,
 				'result'           => $result ?? null,
+				'planet_positions' => $planet_positions,
+				'planet_aspects'   => $planet_aspects,
 				'options'          => $this->get_options(),
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,

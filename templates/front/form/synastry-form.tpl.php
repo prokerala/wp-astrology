@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<div class="row">
+<div class="pk-astrology-row">
 	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 		<legend class="pk-astrology-col-form-label pk-astrology-text-black pk-astrology-py-4 pk-astrology-text-xlarge">Enter Primary Profile</legend>
 		<div class="pk-astrology-form-group pk-astrology-row">
@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type='datetime-local' name="partner_a_dob" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1"  required="required" value="<?php echo $primary_birth_time->format( 'Y-m-d\TH:i' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>"/>
 			</div>
 		</div>
-		<div class="pk-astrology-form-group row pk-astrology-text-small">
+		<div class="pk-astrology-form-group pk-astrology-row pk-astrology-text-small">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label  pk-astrology-text-md-right pk-astrology-text-xs-left"></label>
 			<div class="pk-astrology-col-md-8 pk-astrology-pl-md-0">
 				<div class="pk-astrology-form-check pk-astrology-form-check-inline">

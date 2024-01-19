@@ -92,7 +92,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Progression Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?php echo $progression_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
+				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?php echo $progression_year ? (int) $datetime->format( 'Y' ) + 1 : $progression_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 
@@ -106,7 +106,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Solar Return Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?php echo $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
+				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?php echo '' === $solar_return_year ? (int) $datetime->format( 'Y' ) + 1 : $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 
