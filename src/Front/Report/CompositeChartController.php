@@ -69,9 +69,9 @@ class CompositeChartController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
-			'date'       => '',
-			'filter'     => 'chart',
-			'coordinate' => '',
+			'date'            => '',
+			'display_options' => 'chart',
+			'coordinate'      => '',
 		];
 	}
 
@@ -88,7 +88,7 @@ class CompositeChartController implements ReportControllerInterface {
 		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
 		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
 		$translation_data = $this->get_localisation_data( $form_language );
-		$filter           = explode( ',', $options['filter'] );
+		$display_options  = explode( ',', $options['display_options'] );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$aspect_filter                = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : 'major';
 		$house_system                 = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : 'placidus';
@@ -106,7 +106,7 @@ class CompositeChartController implements ReportControllerInterface {
 				'secondary_birth_time'         => ( new DateTimeImmutable( $datetime, $this->get_timezone() ) )->modify( '-25 years' ),
 				'transit_datetime'             => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'composite'                    => true,
-				'aspect_filter'                => ( in_array( 'planet-positions', $filter, true ) || in_array( 'planet-aspects', $filter, true ) ) ? null : $aspect_filter,
+				'aspect_filter'                => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'rectification_chart'          => $rectification_chart,
 				'primary_birth_time_unknown'   => $primary_birth_time_unknown,
 				'secondary_birth_time_unknown' => $secondary_birth_time_unknown,
@@ -138,9 +138,9 @@ class CompositeChartController implements ReportControllerInterface {
 		$secondary_tz             = $this->get_timezone( 'partner_b_' );
 		$secondary_birth_location = $this->get_location( $secondary_tz, 'partner_b_' );
 
-		$filter = explode( ',', $options['filter'] );
-		if ( in_array( 'all', $filter, true ) ) {
-			$filter = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
+		$display_options = explode( ',', $options['display_options'] );
+		if ( in_array( 'all', $display_options, true ) ) {
+			$display_options = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
 		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$transit_datetime     = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : '';
@@ -163,14 +163,14 @@ class CompositeChartController implements ReportControllerInterface {
 
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 
-		$planet_positions = in_array( 'planet-positions', $filter, true );
-		$planet_aspects   = in_array( 'planet-aspects', $filter, true );
+		$planet_positions = in_array( 'planet-positions', $display_options, true );
+		$planet_aspects   = in_array( 'planet-aspects', $display_options, true );
 
-		if ( in_array( 'chart', $filter, true ) ) {
+		if ( in_array( 'chart', $display_options, true ) ) {
 			$method = new CompositeChart( $client );
 			$chart  = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $current_location, $transit_datetime, $house_system, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
-		if ( in_array( 'aspect-chart', $filter, true ) ) {
+		if ( in_array( 'aspect-chart', $display_options, true ) ) {
 			$method       = new CompositeAspectChart( $client );
 			$aspect_chart = $method->process( $primary_birth_location, $primary_birth_time, $secondary_birth_location, $secondary_birth_time, $current_location, $transit_datetime, $house_system, $orb, $primary_birth_time_unknown, $secondary_birth_time_unknown, $rectification_chart, $aspect_filter );
 		}
