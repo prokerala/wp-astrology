@@ -92,54 +92,84 @@ Where `REPORT_NAME` must be one of following
 - `Porutham`
 - `SadeSati`
 - `ThirumanaPorutham`
+- `WesternChart`
 
 *Shortcode attributes*
 
-- `display_charts`
-
-   The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
-
-        [astrology report="Kundli" display_charts="lagna,rasi"]
-
-- `result_type`
+- **`result_type`**
 
    In calculators that support `basic` and `advanced` results, the result type can be forced using the `result_type` attribute. Settings this attribute will remove the corresponding input fields from the form.
 
         [astrology report="Kundli" result_type="advanced"]
 
-- `chart_style`
+   **Available for**
+   - Kundli
+   - Panchang
 
-   You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
+#### Report Specific Options
+
+#### Chart
+
+- **`chart_style`**
+
+  You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
 
         [astrology report="Kundli" chart_style="south-indian"]
 
-- `sign`
+##### Kundli
 
-   By default the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+- **`display_charts`**
 
-- `date`
+  The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
 
-   By default the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+        [astrology report="Kundli" display_charts="lagna,rasi"]
+
+##### DailyPrediction
+
+- **`sign`**
+
+   By default, the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+
+- **`date`**
+
+   By default, the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
 
       [astrology report="DailyPrediction" date="tomorrow"]
 
-- `coordinate`
+##### Panchang
+- **`coordinate`**
 
-  By default, the `DailyPanchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
+  By default, the `Panchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
 
-      [astrology report="DailyPanchang" coordinate="23.179300,75.784912"]
+      [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912"]
 
-*Localization*
+##### WesternChart
+
+- **`report_type`**
+
+  By default, the `WesternChart` report displays the natal chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `natal-chart`, `transit-chart`, `progression-chart`, `solar-return-chart`, `synastry-chart`, and `composite-chart`.
+
+      [astrology report="WesternChart" report_type="natal-chart" ]
+
+- **`display_options`**
+
+  By default, the `WesternChart` report displays the chart. The default behaviour can be modified by setting the `display_options` attribute. Allowed values are `chart`, `aspect-chart`, `planet-positions`,  `planet-aspects` and `all`. You can specify multiple types by separating them with comma, or use the special `all` value to display everything.
+
+      [astrology report="WesternChart" report_type="natal-chart" display_options="chart,aspect-chart,planet-positions,planet-aspects"]
+
+      [astrology report="WesternChart" report_type="natal-chart" display_options="all"]
+
+##### Localization
 
 You can use the following attributes to localize the form / result.  View available languages for each report from  https://api.prokerala.com/docs#tag/Daily-Panchang
 
-- `form_language`
+- **`form_language`**
 
   You can set the `form_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to set localization for forms.
 
         [astrology report="Kundli" form_language="en"]
 
-- `report_language`
+- **`report_language`**
 
   You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
 
