@@ -75,7 +75,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</select>
 		</div>
 	</div>
-	<?php if ( isset( $transit ) && $transit ) : ?>
+	<?php if ( isset( $transit_datetime ) ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Transit Date Time: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
@@ -88,11 +88,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Transit Location" value="" data-location_input_prefix="current" required>
 			</div>
 		</div>
-	<?php elseif ( isset( $progression ) && $progression ) : ?>
+	<?php elseif ( isset( $progression_year ) ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Progression Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?php echo $progression_year ? (int) $datetime->format( 'Y' ) + 1 : $progression_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
+				<input type="number" name="progression_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Progression Year" value="<?php echo $progression_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 
@@ -102,11 +102,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<input type='text' id="fin-current-location" name="current_location" autocomplete="off" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1 prokerala-location-input" placeholder="Progressed Location" data-location_input_prefix="current" value="" required>
 			</div>
 		</div>
-	<?php elseif ( isset( $solar_return ) && $solar_return ) : ?>
+	<?php elseif ( isset( $solar_return_year ) ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Solar Return Year: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
-				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?php echo '' === $solar_return_year ? (int) $datetime->format( 'Y' ) + 1 : $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
+				<input type="number" name="solar_return_year" class="pk-astrology-form-control pk-astrology-form-control-lg pk-astrology-rounded-1" placeholder="Enter Solar Return Year" value="<?php echo $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" required>
 			</div>
 		</div>
 

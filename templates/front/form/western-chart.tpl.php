@@ -44,7 +44,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 <form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST" <?php echo isset( $options['form_action'] ) ? " action=\"{$options['form_action']}\"" : ''; ?>>
 
-	<?php $this->render( __DIR__ . '/synastry-form.tpl.php' ); ?>
+	<?php if ( in_array( $options['report_type'], [ 'composite-chart', 'synastry-chart' ], true ) ) : ?>
+		<?php $this->render( __DIR__ . '/western-matching-form.tpl.php' ); ?>
+	<?php else : ?>
+		<?php $this->render( __DIR__ . '/western-form.tpl.php' ); ?>
+	<?php endif; ?>
 
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>

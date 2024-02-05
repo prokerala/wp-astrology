@@ -90,7 +90,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div>
 
 <div>
-	<?php if ( isset( $composite ) && $composite ) : ?>
+	<?php if ( isset( $transit_datetime ) ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Transit Date:</label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
@@ -107,7 +107,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</div>
 	<?php endif; ?>
 
-	<?php if ( isset( $synastry ) && $synastry ) : ?>
+	<?php if ( isset( $chart_type ) ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">
 			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-col-form-label pk-astrology-text-md-right pk-astrology-text-xs-left">Synastry Chart Type: </label>
 			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
