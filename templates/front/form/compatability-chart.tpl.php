@@ -1,6 +1,6 @@
 <?php
 /**
- * Natal Chart result.
+ * Chart input form template.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2022 Ennexa Technologies Private Limited
@@ -27,21 +27,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// phpcs:disable VariableAnalysis, WordPress.WP.GlobalVariablesOverride.Prohibited
+// phpcs:disable VariableAnalysis, WordPress.Security.EscapeOutput.OutputNotEscaped
 
 // Exit if accessed directly.
+use Prokerala\WP\Astrology\Templating\Context;
+
+/**
+ * Render Context.
+ *
+ * @var Context $this
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$result_renderer = [
-	'chart'            => '/western-chart.tpl.php',
-	'aspect-chart'     => '/western-aspect-chart.tpl.php',
-	'planet-positions' => '/western-planet-position.tpl.php',
-	'planet-aspects'   => '/western-planet-aspects.tpl.php',
-];
 ?>
-<div class="container">
-	<?php foreach ( $display_options as $options ) : ?>
-		<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
-	<?php endforeach; ?>
-</div>
+<form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST" <?php echo isset( $options['form_action'] ) ? " action=\"{$options['form_action']}\"" : ''; ?>>
+
+	<?php $this->render( __DIR__ . '/western-matching-form.tpl.php' ); ?>
+
+	<div class="pk-astrology-text-right">
+		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>
+		<input type="hidden" name="submit" value="1">
+	</div>
+</form>
+<?php echo $options['attribution'] ? '<div class="pk-astrology-text-right"><em>Powered by <a href="https://www.prokerala.com/">Prokerala.com</a></em></div>' : ''; ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auspicious Period result.
+ * Composite Chart result.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2022 Ennexa Technologies Private Limited
@@ -33,134 +33,16 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$result_renderer = [
+	'chart'            => '/western-chart.tpl.php',
+	'aspect-chart'     => '/western-aspect-chart.tpl.php',
+	'planet-positions' => '/western-planet-position.tpl.php',
+	'planet-aspects'   => '/western-planet-aspects.tpl.php',
+];
 ?>
 	<div class="container">
-		<?php if ( null !== $chart ) : ?>
-
-			<h3 class="pk-astrology-text-center">Composite Chart</h3>
-			<div id="chart" class="d-flex justify-content-center">
-				<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 600 600" ', $chart );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</div>
-
-
-		<?php endif; ?>
-
-		<?php if ( null !== $aspect_chart ) : ?>
-
-			<h3 class="pk-astrology-text-center">Composite Aspect Chart</h3>
-			<div id="chart" class="d-flex justify-content-center">
-				<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 710 470" ', $aspect_chart );// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</div>
-
-		<?php endif; ?>
-
-		<?php if ( null !== $result ) : ?>
-			<?php if ( $planet_positions ) : ?>
-
-				<!--            House table-->
-				<h3 class="pk-astrology-text-center mt-5">Composite House Cusps</h3>
-				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr>
-						<th>House</th>
-						<th>Start Cusp</th>
-						<th>End Cusp</th>
-					</tr>
-					<?php foreach ( $result->getCompositeHouses() as $house ) : ?>
-						<tr>
-							<td><?php echo $house->getNumber(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $house->getStartCusp()->getLongitude(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $house->getEndCusp()->getLongitude(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</table>
-
-				<h3 class="pk-astrology-text-center mt-5">Composite Planet Position</h3>
-				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr>
-						<th>Planet</th>
-						<th>Longitude</th>
-						<th>Degree</th>
-						<th>House</th>
-						<th>Zodiac</th>
-					</tr>
-					<?php foreach ( $result->getCompositePlanetPositions() as $planet_position ) : ?>
-						<tr>
-							<td><?php echo $planet_position->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $planet_position->getLongitude(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $planet_position->getDegree(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo $planet_position->getHouseNumber(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo $planet_position->getZodiac()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</table>
-
-				<h3 class="pk-astrology-text-center mt-5">Composite Angles</h3>
-				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr>
-						<th>Angles</th>
-						<th>Longitude</th>
-						<th>Degree</th>
-						<th>House</th>
-						<th>Zodiac</th>
-					</tr>
-					<?php foreach ( $result->getCompositeAngles() as $planet_position ) : ?>
-						<tr>
-							<td><?php echo $planet_position->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $planet_position->getLongitude(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo round( $planet_position->getDegree(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo $planet_position->getHouseNumber(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							<td><?php echo $planet_position->getZodiac()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</table>
-
-			<?php endif; ?>
-			<?php if ( $planet_aspects ) : ?>
-
-				<h3 class="pk-astrology-text-center mt-5">List of Aspects</h3>
-
-				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr>
-						<th>Major Aspects</th>
-						<td>Opposition, Conjunction, Sextile, Square, Trine</td>
-					</tr>
-					<tr>
-						<th>Minor Aspects</th>
-						<td>Semi Sextile, Semi Square, BiQuintile, Quincunx, Sesquiquadrate</td>
-					</tr>
-				</table>
-
-				<h3 class="pk-astrology-text-center mt-5">Composite Planet Aspect</h3>
-				<table class="pk-astrology-table pk-astrology-table-responsive-sm">
-					<tr>
-						<th>Planet 1</th>
-						<th>Aspect</th>
-						<th>Planet 2</th>
-						<th>Orb</th>
-					</tr>
-					<?php foreach ( $result->getCompositeAspects() as $aspect ) : ?>
-						<?php if ( in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
-							<tr>
-								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo $aspect->getAspect()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo $aspect->getPlanetTwo()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo round( $aspect->getOrb(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							</tr>
-						<?php endif; ?>
-
-					<?php endforeach; ?>
-					<?php foreach ( $result->getCompositeAspects() as $aspect ) : ?>
-						<?php if ( ! in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
-							<tr>
-								<td><?php echo $aspect->getPlanetOne()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo $aspect->getAspect()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo $aspect->getPlanetTwo()->getName(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-								<td><?php echo round( $aspect->getOrb(), 2 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
-							</tr>
-						<?php endif; ?>
-
-					<?php endforeach; ?>
-				</table>
-			<?php endif; ?>
-		<?php endif; ?>
+		<?php foreach ( $display_options as $options ) : ?>
+			<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
+		<?php endforeach; ?>
 	</div>

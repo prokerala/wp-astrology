@@ -1,6 +1,6 @@
 <?php
 /**
- * Natal Chart result.
+ * Auspicious Period result.
  *
  * @package   Prokerala\WP\Astrology
  * @copyright 2022 Ennexa Technologies Private Limited
@@ -33,15 +33,12 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-$result_renderer = [
-	'chart'            => '/western-chart.tpl.php',
-	'aspect-chart'     => '/western-aspect-chart.tpl.php',
-	'planet-positions' => '/western-planet-position.tpl.php',
-	'planet-aspects'   => '/western-planet-aspects.tpl.php',
-];
 ?>
-<div class="container">
-	<?php foreach ( $display_options as $options ) : ?>
-		<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
-	<?php endforeach; ?>
-</div>
+	<h3 class="pk-astrology-text-center">Chart</h3>
+	<div class="mb-5 d-flex justify-content-center">
+		<?php if ( isset( $synastry ) || isset( $progression ) ) : ?>
+			<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 700 700" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php else : ?>
+			<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 600 600" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php endif; ?>
+	</div>
