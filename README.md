@@ -29,29 +29,13 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
   - Porutham
   - Papasamyam Check
 - Western Astrology
+  - Western Charts
   - Natal Chart
-  - Natal Aspect Chart
-  - Natal Planet Position
-  - Natal Planet Aspects
   - Transit Chart
-  - Transit Aspect Chart
-  - Transit Planet Position
-  - Transit Planet Aspects
   - Progression Chart
-  - Progression Aspect Chart
-  - Progression Planet Position
-  - Progression Planet Aspects
-  - Solar Return Chart
-  - Solar Return Aspect Chart
-  - Solar Return Planet Position
-  - Solar Return Planet Aspects
+  - Solar Chart
   - Synastry Chart
-  - Synastry Aspect Chart
-  - Synastry Planet Aspects
   - Composite Chart
-  - Composite Aspect Chart
-  - Composite Planet Position
-  - Composite Planet Aspects
 
 ## Usage
 
@@ -91,6 +75,7 @@ Where `REPORT_NAME` must be one of following
 - `SadeSati`
 - `ThirumanaPorutham`
 - `WesternChart`
+- `CompatabilityChart`
 
 #### Shortcode attributes
 
@@ -156,6 +141,24 @@ Where `REPORT_NAME` must be one of following
       [astrology report="WesternChart" report_type="natal-chart" display_options="chart,aspect-chart,planet-positions,planet-aspects"]
 
       [astrology report="WesternChart" report_type="natal-chart" display_options="all"]
+
+##### CompatabilityChart
+
+- **`report_type`**
+
+  By default, the `CompatabilityChart` report displays the synastry chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `synastry-chart`, and `composite-chart`.
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" ]
+
+- **`display_options`**
+
+  By default, the `CompatabilityChart` report displays the chart. The default behaviour can be modified by setting the `display_options` attribute. Allowed values are `chart`, `aspect-chart`, `planet-aspects`, and `all`. `planet-positions`You can specify multiple types by separating them with comma, or use the special `all` value to display everything.
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" display_options="chart,aspect-chart,planet-aspects"]
+
+      [astrology report="CompatabilityChart" report_type="composite-chart" display_options="chart,aspect-chart,planet-positions,planet-aspects"]
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" display_options="all"]
 
 ##### Localization
 

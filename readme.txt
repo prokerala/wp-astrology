@@ -43,6 +43,13 @@ Turn your Wordpress blog into a full astrology site, powered by [__Prokerala__](
  * Thirumana Porutham
  * Porutham
  * Papasamyam Check
+* Western Charts
+ * Natal Chart
+ * Transit Chart
+ * Progression Chart
+ * Solar Chart 
+ * Synastry Chart
+ * Composite Chart
 
 == Installation ==
 
@@ -93,6 +100,7 @@ Where `REPORT_NAME` must be one of following
 - `SadeSati`
 - `ThirumanaPorutham`
 - `WesternChart`
+- `CompatabilityChart`
 
 *Shortcode attributes*
 
@@ -147,7 +155,7 @@ Where `REPORT_NAME` must be one of following
 
 - **`report_type`**
 
-  By default, the `WesternChart` report displays the natal chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `natal-chart`, `transit-chart`, `progression-chart`, `solar-return-chart`, `synastry-chart`, and `composite-chart`.
+  By default, the `WesternChart` report displays the natal chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `natal-chart`, `transit-chart`, `progression-chart`, and `solar-return-chart`.
 
       [astrology report="WesternChart" report_type="natal-chart" ]
 
@@ -159,6 +167,22 @@ Where `REPORT_NAME` must be one of following
 
       [astrology report="WesternChart" report_type="natal-chart" display_options="all"]
 
+##### CompatabilityChart
+
+- **`report_type`**
+
+  By default, the `CompatabilityChart` report displays the synastry chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `synastry-chart`, and `composite-chart`.
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" display_options="all"]
+
+- **`display_options`**
+
+  By default, the `CompatabilityChart` report displays the chart. The default behaviour can be modified by setting the `display_options` attribute. Allowed values are `chart`, `aspect-chart`, `planet-aspects`, and `all`. `planet-positions`You can specify multiple types by separating them with comma, or use the special `all` value to display everything.
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" display_options="chart,aspect-chart,planet-aspects"]
+
+      [astrology report="CompatabilityChart" report_type="synastry-chart" display_options="all"]
+      
 ##### Localization
 
 You can use the following attributes to localize the form / result.  View available languages for each report from  https://api.prokerala.com/docs#tag/Daily-Panchang
