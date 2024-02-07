@@ -213,11 +213,14 @@ No, you can start using the plugin with our free subscription.
 
 == Changelog ==
 
+= 1.3.0 =
+* Added support for western charts
+
 = 1.2.1 =
 * Fix Syntax error on PHP 7.x
 
 = 1.2.0 =
-* Added localizaton support
+* Added localization support
 * Added support for Daily Panchang
  
 = 1.1.4 =
