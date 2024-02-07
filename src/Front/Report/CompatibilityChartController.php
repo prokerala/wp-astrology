@@ -57,7 +57,7 @@ use Prokerala\WP\Astrology\Front\ReportControllerInterface;
  *
  * @since   1.3.0
  */
-class CompatabilityChartController implements ReportControllerInterface {
+class CompatibilityChartController implements ReportControllerInterface {
 
 	use ReportControllerTrait {
 		get_attribute_defaults as getCommonAttributeDefaults;
@@ -210,7 +210,9 @@ class CompatabilityChartController implements ReportControllerInterface {
 		} else {
 			$display_options = array_filter(
 				$display_options,
-				fn( $option ) => in_array( $option, [ 'chart', 'aspect-chart', 'planet-aspects' ], true )
+				function ( $option ) {
+					return in_array( $option, [ 'chart', 'aspect-chart', 'planet-aspects' ], true );
+				}
 			);
 		}
 

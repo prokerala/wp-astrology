@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<h3 class="pk-astrology-text-center">Aspect Chart</h3>
+<h3 class="pk-astrology-text-center mt-5">Aspect Chart</h3>
 <div class="mb-5 d-flex justify-content-center">
 	<?php if ( isset( $synastry ) ) : ?>
 		<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 500 500" ', $aspect_chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

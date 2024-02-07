@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<h3 class="pk-astrology-text-center">Planet Positions</h3>
+<h3 class="pk-astrology-text-center mt-5">Planet Positions</h3>
 
 <!--   Planet Position table  -->
 <table class="pk-astrology-table pk-astrology-table-responsive-sm">
