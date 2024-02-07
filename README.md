@@ -28,6 +28,14 @@ Add astrology charts and calculators powered by [Prokerala Astrology API](https:
   - Thirumana Porutham
   - Porutham
   - Papasamyam Check
+- Western Astrology
+  - Western Charts
+  - Natal Chart
+  - Transit Chart
+  - Progression Chart
+  - Solar Chart
+  - Synastry Chart
+  - Composite Chart
 
 ## Usage
 
@@ -66,14 +74,10 @@ Where `REPORT_NAME` must be one of following
 - `Porutham`
 - `SadeSati`
 - `ThirumanaPorutham`
+- `WesternChart`
+- `CompatibilityChart`
 
 #### Shortcode attributes
-
-- **`display_charts`**
-
-   The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
-
-        [astrology report="Kundli" display_charts="lagna,rasi"]
 
 - **`result_type`**
 
@@ -81,12 +85,29 @@ Where `REPORT_NAME` must be one of following
 
         [astrology report="Kundli" result_type="advanced"]
 
+   **Available for**
+   - Kundli
+   - Panchang
+
+#### Report Specific Options
+
+#### Chart
+
 - **`chart_style`**
 
-   You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
+  You can set the `chart_style` attribute to one of `north-indian`, `south-indian` or `east-indian` to force the result chart style. Setting this attribute will remove the corresponding input fields from the form.
 
         [astrology report="Kundli" chart_style="south-indian"]
 
+##### Kundli
+
+- **`display_charts`**
+
+  The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
+
+        [astrology report="Kundli" display_charts="lagna,rasi"]
+
+##### DailyPrediction
 
 - **`sign`**
 
@@ -98,11 +119,46 @@ Where `REPORT_NAME` must be one of following
 
       [astrology report="DailyPrediction" date="tomorrow"]
 
+##### Panchang
 - **`coordinate`**
 
-  By default, the `DailyPanchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
+  By default, the `Panchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
 
-      [astrology report="DailyPanchang" coordinate="23.179300,75.784912"]
+      [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912"]
+
+##### WesternChart
+
+- **`report_type`**
+
+  By default, the `WesternChart` report displays the natal chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `natal-chart`, `transit-chart`, `progression-chart`, `solar-return-chart`, `synastry-chart`, and `composite-chart`.
+
+      [astrology report="WesternChart" report_type="natal-chart" ]
+
+- **`display_options`**
+
+  By default, the `WesternChart` report displays the chart. The default behaviour can be modified by setting the `display_options` attribute. Allowed values are `chart`, `aspect-chart`, `planet-positions`,  `planet-aspects` and `all`. You can specify multiple types by separating them with comma, or use the special value `all` to display everything.
+
+      [astrology report="WesternChart" report_type="natal-chart" display_options="chart,aspect-chart,planet-positions,planet-aspects"]
+
+      [astrology report="WesternChart" report_type="natal-chart" display_options="all"]
+
+##### CompatibilityChart
+
+- **`report_type`**
+
+  By default, the `CompatibilityChart` report displays the synastry chart. The default behaviour can be modified by setting the `report_type` attribute. Allowed values are `synastry-chart`, and `composite-chart`.
+
+      [astrology report="CompatibilityChart" report_type="synastry-chart" ]
+
+- **`display_options`**
+
+  By default, the `CompatibilityChart` report displays the chart. The default behaviour can be modified by setting the `display_options` attribute. Allowed values are `chart`, `aspect-chart`, and `planet-aspects`. You can specify multiple types by separating them with comma, or use the special value `all` to display everything.
+
+      [astrology report="CompatibilityChart" report_type="synastry-chart" display_options="chart,aspect-chart,planet-aspects"]
+
+      [astrology report="CompatibilityChart" report_type="composite-chart" display_options="chart,aspect-chart,planet-positions,planet-aspects"]
+
+      [astrology report="CompatibilityChart" report_type="synastry-chart" display_options="all"]
 
 ##### Localization
 
