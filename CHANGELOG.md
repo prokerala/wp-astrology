@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.3.1] - 2024-02-07
+### Fix
+- Fix stable tag
+
 ## [1.3.0] - 2024-02-07
 ### Added
 - Added support for western charts
@@ -57,6 +61,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.3.1]: https://github.com/prokerala/wp-astrology/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/prokerala/wp-astrology/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/prokerala/wp-astrology/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/prokerala/wp-astrology/compare/v1.1.4...v1.2.0
