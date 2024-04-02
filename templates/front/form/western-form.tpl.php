@@ -61,6 +61,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 
 	<div class="pk-astrology-form-group pk-astrology-row">
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="house-system">Gender: </label>
+		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+			<select name="gender" id="Gender">
+				<option value="male" <?php echo 'male' === $gender ? 'selected' : ''; ?>>Male</option>
+				<option value="female" <?php echo 'female' === $gender ? 'selected' : ''; ?>>Female</option>
+				<option value="pnts" <?php echo 'pnts' === $gender ? 'selected' : ''; ?>>Prefer not to say</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="house-system">House System: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<select name="house_system" id="house-system">

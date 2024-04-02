@@ -66,6 +66,32 @@ class CompatibilityChartController implements ReportControllerInterface {
 	private const REPORT_LANGUAGES = [
 		'en',
 	];
+
+	private const GENDER = [
+		'male'   => 'Male',
+		'female' => 'Female',
+		'pnts'   => 'Prefer Not To Say',
+	];
+
+	private const ORB          = [
+		'default' => 'Default',
+		'exact'   => 'Exact',
+	];
+	private const HOUSE_SYSTEM = [
+		'placidus'      => 'Placidus',
+		'koch'          => 'Koch',
+		'whole-sign'    => 'Whole Sign',
+		'equal-house'   => 'Equal House',
+		'm-house'       => 'M House',
+		'porphyrius'    => 'Porphyrius',
+		'regiomontanus' => 'Regiomontanus',
+		'campanus'      => 'Campanus',
+	];
+	const CHART_TYPE           = [
+		'zodiac-contact-chart' => 'Zodiacal Contact Chart',
+		'house-contact-chart'  => 'House Contact Chart',
+	];
+
 	/**
 	 * WesternChartController constructor
 	 *
@@ -137,9 +163,10 @@ class CompatibilityChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	private function getSynastryChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	private function getSynastryChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		[
-			'datetime' => $datetime,
+			'partner_a_dob' => $partner_a_dob,
+			'partner_b_dob' => $partner_b_dob,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -151,6 +178,8 @@ class CompatibilityChartController implements ReportControllerInterface {
 		] = $this->getCommonInputValues( $options );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$primary_gender               = isset( $_POST['partner_a_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_gender'] ) ) : '';
+		$secondary_gender             = isset( $_POST['partner_b_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_gender'] ) ) : '';
 		$chart_type                   = isset( $_POST['chart_type'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['chart_type'] ) ) : 'zodiac-contact-chart';
 		$primary_birth_time_unknown   = isset( $_POST['partner_a_birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_birth_time_unknown'] ) ) : '';
 		$secondary_birth_time_unknown = isset( $_POST['partner_a_birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_birth_time_unknown'] ) ) : '';
@@ -159,8 +188,10 @@ class CompatibilityChartController implements ReportControllerInterface {
 			'form/compatability-chart',
 			[
 				'options'                      => $options + $this->get_options(),
-				'primary_birth_time'           => $datetime->modify( '-25 years' ),
-				'secondary_birth_time'         => $datetime->modify( '-20 years' ),
+				'primary_birth_time'           => $partner_a_dob,
+				'secondary_birth_time'         => $partner_b_dob,
+				'primary_gender'               => $primary_gender,
+				'secondary_gender'             => $secondary_gender,
 				'aspect_filter'                => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'                 => $house_system,
 				'primary_birth_time_unknown'   => $primary_birth_time_unknown,
@@ -190,9 +221,14 @@ class CompatibilityChartController implements ReportControllerInterface {
 
 		$secondary_tz             = $this->get_timezone( 'partner_b_' );
 		$secondary_birth_location = $this->get_location( $secondary_tz, 'partner_b_' );
+
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$primary_birth_time   = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
-		$secondary_birth_time = isset( $_POST['partner_b_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_dob'] ) ) : '';
+		$primary_gender          = isset( $_POST['partner_a_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_gender'] ) ) : '';
+		$secondary_gender        = isset( $_POST['partner_b_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_gender'] ) ) : '';
+		$primary_location_name   = isset( $_POST['partner_a_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_location'] ) ) : '';
+		$secondary_location_name = isset( $_POST['partner_b_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_location'] ) ) : '';
+		$primary_birth_time      = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
+		$secondary_birth_time    = isset( $_POST['partner_b_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_dob'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$primary_birth_time   = new DateTimeImmutable( $primary_birth_time, $primary_tz );
 		$secondary_birth_time = new DateTimeImmutable( $secondary_birth_time, $secondary_tz );
@@ -243,14 +279,23 @@ class CompatibilityChartController implements ReportControllerInterface {
 		return $this->render(
 			'result/synastry-chart',
 			[
-				'chart'            => $chart ?? null,
-				'aspect_chart'     => $aspect_chart ?? null,
-				'planet_aspects'   => $planet_aspects ?? null,
-				'synastry'         => true,
-				'options'          => $this->get_options(),
-				'selected_lang'    => $lang,
-				'translation_data' => $translation_data,
-				'display_options'  => $display_options,
+				'chart'                   => $chart ?? null,
+				'aspect_chart'            => $aspect_chart ?? null,
+				'planet_aspects'          => $planet_aspects ?? null,
+				'synastry'                => true,
+				'options'                 => $this->get_options(),
+				'selected_lang'           => $lang,
+				'translation_data'        => $translation_data,
+				'display_options'         => $display_options,
+				'primary_birth_time'      => $primary_birth_time,
+				'secondary_birth_time'    => $secondary_birth_time,
+				'primary_gender'          => self::GENDER[ $primary_gender ],
+				'secondary_gender'        => self::GENDER[ $secondary_gender ],
+				'primary_location_name'   => $primary_location_name,
+				'secondary_location_name' => $secondary_location_name,
+				'orb'                     => self::ORB[ $orb ],
+				'chart_type'              => self::CHART_TYPE[ $chart_type ],
+				'house_system'            => self::HOUSE_SYSTEM[ $house_system ],
 			]
 		);
 	}
@@ -263,9 +308,10 @@ class CompatibilityChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	private function getCompositeChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	private function getCompositeChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		[
-			'datetime' => $datetime,
+			'partner_a_dob' => $partner_a_dob,
+			'partner_b_dob' => $partner_b_dob,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -276,8 +322,10 @@ class CompatibilityChartController implements ReportControllerInterface {
 			'rectification_chart' => $rectification_chart,
 		] = $this->getCommonInputValues( $options );
 
-		$transit_datetime = $datetime;
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$transit_datetime             = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : 'now';
+		$primary_gender               = isset( $_POST['partner_a_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_gender'] ) ) : '';
+		$secondary_gender             = isset( $_POST['partner_b_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_gender'] ) ) : '';
 		$primary_birth_time_unknown   = isset( $_POST['partner_a_birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_birth_time_unknown'] ) ) : '';
 		$secondary_birth_time_unknown = isset( $_POST['partner_a_birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_birth_time_unknown'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
@@ -285,14 +333,16 @@ class CompatibilityChartController implements ReportControllerInterface {
 			'form/compatability-chart',
 			[
 				'options'                      => $options + $this->get_options(),
-				'primary_birth_time'           => $datetime->modify( '-25 years' ),
-				'secondary_birth_time'         => $datetime->modify( '-20 years' ),
+				'primary_birth_time'           => $partner_a_dob,
+				'secondary_birth_time'         => $partner_b_dob,
+				'primary_gender'               => $primary_gender,
+				'secondary_gender'             => $secondary_gender,
 				'aspect_filter'                => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'                 => $house_system,
 				'primary_birth_time_unknown'   => $primary_birth_time_unknown,
 				'secondary_birth_time_unknown' => $secondary_birth_time_unknown,
 				'rectification_chart'          => $rectification_chart,
-				'transit_datetime'             => $transit_datetime,
+				'transit_datetime'             => new DateTimeImmutable( $transit_datetime ),
 				'orb'                          => $orb,
 				'selected_lang'                => $form_language,
 				'report_language'              => $report_language,
@@ -320,8 +370,13 @@ class CompatibilityChartController implements ReportControllerInterface {
 		$transit_tz       = $this->get_timezone( 'current_' );
 		$current_location = $this->get_location( $transit_tz );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$primary_birth_time   = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
-		$secondary_birth_time = isset( $_POST['partner_b_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_dob'] ) ) : '';
+		$primary_gender          = isset( $_POST['partner_a_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_gender'] ) ) : '';
+		$secondary_gender        = isset( $_POST['partner_b_gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_gender'] ) ) : '';
+		$primary_location_name   = isset( $_POST['partner_a_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_location'] ) ) : '';
+		$secondary_location_name = isset( $_POST['partner_b_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_location'] ) ) : '';
+		$transit_location_name   = isset( $_POST['current_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['current_location'] ) ) : '';
+		$primary_birth_time      = isset( $_POST['partner_a_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_a_dob'] ) ) : '';
+		$secondary_birth_time    = isset( $_POST['partner_b_dob'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['partner_b_dob'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$primary_birth_time   = new DateTimeImmutable( $primary_birth_time, $primary_tz );
 		$secondary_birth_time = new DateTimeImmutable( $secondary_birth_time, $secondary_tz );
@@ -373,16 +428,26 @@ class CompatibilityChartController implements ReportControllerInterface {
 		return $this->render(
 			'result/composite-chart',
 			[
-				'chart'            => $chart ?? null,
-				'aspect_chart'     => $aspect_chart ?? null,
-				'planet_aspects'   => $planet_aspects ?? null,
-				'houses'           => $houses ?? null,
-				'planet_positions' => $planet_positions ?? null,
-				'angles'           => $angles ?? null,
-				'options'          => $this->get_options(),
-				'selected_lang'    => $lang,
-				'translation_data' => $translation_data,
-				'display_options'  => $display_options,
+				'chart'                   => $chart ?? null,
+				'aspect_chart'            => $aspect_chart ?? null,
+				'planet_aspects'          => $planet_aspects ?? null,
+				'houses'                  => $houses ?? null,
+				'planet_positions'        => $planet_positions ?? null,
+				'angles'                  => $angles ?? null,
+				'options'                 => $this->get_options(),
+				'selected_lang'           => $lang,
+				'translation_data'        => $translation_data,
+				'display_options'         => $display_options,
+				'primary_birth_time'      => $primary_birth_time,
+				'secondary_birth_time'    => $secondary_birth_time,
+				'primary_gender'          => self::GENDER[ $primary_gender ],
+				'secondary_gender'        => self::GENDER[ $secondary_gender ],
+				'transit_time'            => $transit_datetime,
+				'primary_location_name'   => $primary_location_name,
+				'secondary_location_name' => $secondary_location_name,
+				'transit_location_name'   => $transit_location_name,
+				'orb'                     => self::ORB[ $orb ],
+				'house_system'            => self::HOUSE_SYSTEM[ $house_system ],
 			]
 		);
 	}
@@ -397,8 +462,9 @@ class CompatibilityChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return array
 	 */
-	private function getCommonInputValues( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
-		$datetime         = $this->get_post_input( 'datetime', 'now' );
+	private function getCommonInputValues( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+		$partner_a_dob    = $this->get_post_input( 'partner_a_dob', 'now' );
+		$partner_b_dob    = $this->get_post_input( 'partner_b_dob', 'now' );
 		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
 		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
 		$translation_data = $this->get_localisation_data( $form_language );
@@ -406,6 +472,7 @@ class CompatibilityChartController implements ReportControllerInterface {
 		$display_options = explode( ',', $options['display_options'] );
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$gender              = isset( $_POST['gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['gender'] ) ) : 'pnts';
 		$aspect_filter       = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : 'major';
 		$house_system        = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : 'placidus';
 		$orb                 = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : 'default';
@@ -413,7 +480,9 @@ class CompatibilityChartController implements ReportControllerInterface {
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		return [
-			'datetime'            => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+			'partner_a_dob'       => new DateTimeImmutable( $partner_a_dob, $this->get_timezone( 'partner_a_' ) ),
+			'partner_b_dob'       => new DateTimeImmutable( $partner_b_dob, $this->get_timezone( 'partner_b_' ) ),
+			'gender'              => $gender,
 			'form_language'       => $form_language,
 			'report_language'     => $report_language,
 			'translation_data'    => $translation_data,

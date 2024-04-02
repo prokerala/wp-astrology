@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 	<h3 class="pk-astrology-text-center mt-5">Chart</h3>
 	<div class="mb-5 d-flex justify-content-center">
-		<?php if ( isset( $synastry ) || isset( $progression ) ) : ?>
+		<?php if ( isset( $synastry ) || isset( $progression ) || isset( $transit ) ) : ?>
 			<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 700 700" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php else : ?>
 			<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 600 600" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

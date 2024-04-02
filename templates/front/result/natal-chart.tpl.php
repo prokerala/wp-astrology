@@ -41,6 +41,41 @@ $result_renderer = [
 ];
 ?>
 <div class="container">
+	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+		<tbody>
+
+		<tr><th colspan="2" style="text-align:center"> Profile Details</th></tr>
+		<tr>
+			<td>Birth Date : </td>
+			<td><?php echo $datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Birth Time :</td>
+			<td>
+				<?php echo $datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo ( '1' === $datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</td>
+		</tr>
+		<tr>
+			<td>Place of Birth: </td>
+			<td><?php echo $location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Gender: </td>
+			<td><?php echo $gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>House System:</td>
+			<td><?php echo $house_system; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<?php if ( 'Default' !== $orb ) : ?>
+			<tr>
+				<td>Orb:</td>
+				<td><?php echo ucwords( $orb ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+			</tr>
+		<?php endif; ?>
+		</tbody>
+	</table>
 	<?php foreach ( $display_options as $options ) : ?>
 		<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
 	<?php endforeach; ?>

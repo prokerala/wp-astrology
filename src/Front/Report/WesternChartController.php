@@ -57,6 +57,25 @@ class WesternChartController implements ReportControllerInterface {
 		get_attribute_defaults as getCommonAttributeDefaults;
 	}
 
+	private const GENDER           = [
+		'male'   => 'Male',
+		'female' => 'Female',
+		'pnts'   => 'Prefer Not To Say',
+	];
+	private const ORB              = [
+		'default' => 'Default',
+		'exact'   => 'Exact',
+	];
+	private const HOUSE_SYSTEM     = [
+		'placidus'      => 'Placidus',
+		'koch'          => 'Koch',
+		'whole-sign'    => 'Whole Sign',
+		'equal-house'   => 'Equal House',
+		'm-house'       => 'M House',
+		'porphyrius'    => 'Porphyrius',
+		'regiomontanus' => 'Regiomontanus',
+		'campanus'      => 'Campanus',
+	];
 	private const REPORT_LANGUAGES = [
 		'en',
 	];
@@ -143,6 +162,7 @@ class WesternChartController implements ReportControllerInterface {
 	private function getNatalChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -159,7 +179,8 @@ class WesternChartController implements ReportControllerInterface {
 			'form/western-chart',
 			[
 				'options'             => $options + $this->get_options(),
-				'datetime'            => $datetime->modify( '-10 years' ),
+				'datetime'            => $datetime,
+				'gender'              => $gender,
 				'aspect_filter'       => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
 				'rectification_chart' => $rectification_chart,
@@ -183,6 +204,7 @@ class WesternChartController implements ReportControllerInterface {
 	private function getNatalChartProcess( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'display_options' => $display_options,
 			'aspect_filter' => $aspect_filter,
@@ -195,6 +217,7 @@ class WesternChartController implements ReportControllerInterface {
 		$client   = $this->get_api_client();
 		$location = $this->get_location( $tz );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$location_name      = isset( $_POST['location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['location'] ) ) : '';
 		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $form_language );
@@ -236,6 +259,11 @@ class WesternChartController implements ReportControllerInterface {
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,
 				'display_options'  => $display_options,
+				'datetime'         => $datetime,
+				'gender'           => self::GENDER[ $gender ],
+				'location_name'    => $location_name,
+				'orb'              => self::ORB[ $orb ],
+				'house_system'     => self::HOUSE_SYSTEM[ $house_system ],
 			]
 		);
 	}
@@ -251,6 +279,7 @@ class WesternChartController implements ReportControllerInterface {
 	private function getTransitChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -267,7 +296,8 @@ class WesternChartController implements ReportControllerInterface {
 			'form/western-chart',
 			[
 				'options'             => $options + $this->get_options(),
-				'datetime'            => $datetime->modify( '-10 years' ),
+				'datetime'            => $datetime->modify( '-18 years' ),
+				'gender'              => $gender,
 				'transit_datetime'    => $datetime,
 				'aspect_filter'       => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
@@ -298,6 +328,7 @@ class WesternChartController implements ReportControllerInterface {
 
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'display_options' => $display_options,
 			'aspect_filter' => $aspect_filter,
@@ -306,8 +337,10 @@ class WesternChartController implements ReportControllerInterface {
 			'rectification_chart' => $rectification_chart,
 		] = $this->getCommonInputValues( $options );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$transit_datetime   = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : '';
+		$birth_time_unknown    = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
+		$transit_datetime      = isset( $_POST['transit_datetime'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['transit_datetime'] ) ) : '';
+		$location_name         = isset( $_POST['location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['location'] ) ) : '';
+		$transit_location_name = isset( $_POST['current_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['current_location'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$transit_datetime = new DateTimeImmutable( $transit_datetime, $transit_tz );
 		$lang             = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $form_language );
@@ -338,6 +371,7 @@ class WesternChartController implements ReportControllerInterface {
 		return $this->render(
 			'result/transit-chart',
 			[
+				'transit'               => true,
 				'chart'                 => $chart ?? null,
 				'aspect_chart'          => $aspect_chart ?? null,
 				'declinations'          => $declinations ?? null,
@@ -350,6 +384,13 @@ class WesternChartController implements ReportControllerInterface {
 				'selected_lang'         => $lang,
 				'translation_data'      => $translation_data,
 				'display_options'       => $display_options,
+				'datetime'              => $datetime,
+				'gender'                => self::GENDER[ $gender ],
+				'transit_datetime'      => $transit_datetime,
+				'location_name'         => $location_name,
+				'transit_location_name' => $transit_location_name,
+				'orb'                   => self::ORB[ $orb ],
+				'house_system'          => self::HOUSE_SYSTEM[ $house_system ],
 			]
 		);
 	}
@@ -365,6 +406,7 @@ class WesternChartController implements ReportControllerInterface {
 	private function getProgressionChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -376,13 +418,14 @@ class WesternChartController implements ReportControllerInterface {
 		] = $this->getCommonInputValues( $options );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$progression_year   = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : $datetime->format( 'Y' );
+		$progression_year   = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : $datetime->modify( '1 year' )->format( 'Y' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		return $this->render(
 			'form/western-chart',
 			[
 				'options'             => $options + $this->get_options(),
-				'datetime'            => $datetime->modify( '-10 years' ),
+				'datetime'            => $datetime,
+				'gender'              => $gender,
 				'aspect_filter'       => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
 				'rectification_chart' => $rectification_chart,
@@ -413,6 +456,7 @@ class WesternChartController implements ReportControllerInterface {
 
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'display_options' => $display_options,
 			'aspect_filter' => $aspect_filter,
@@ -420,10 +464,14 @@ class WesternChartController implements ReportControllerInterface {
 			'orb' => $orb,
 			'rectification_chart' => $rectification_chart,
 		] = $this->getCommonInputValues( $options );
+
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$progression_year   = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '';
+		$location_name             = isset( $_POST['location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['location'] ) ) : '';
+		$progression_location_name = isset( $_POST['current_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['current_location'] ) ) : '';
+		$birth_time_unknown        = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
+		$progression_year          = isset( $_POST['progression_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['progression_year'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $form_language );
 
 		$is_planet_positions = in_array( 'planet-positions', $display_options, true );
@@ -471,6 +519,12 @@ class WesternChartController implements ReportControllerInterface {
 				'selected_lang'             => $lang,
 				'translation_data'          => $translation_data,
 				'display_options'           => $display_options,
+				'datetime'                  => $datetime,
+				'gender'                    => self::GENDER[ $gender ],
+				'location_name'             => $location_name,
+				'progression_location_name' => $progression_location_name,
+				'orb'                       => self::ORB[ $orb ],
+				'house_system'              => self::HOUSE_SYSTEM[ $house_system ],
 			]
 		);
 	}
@@ -486,6 +540,7 @@ class WesternChartController implements ReportControllerInterface {
 	private function getSolarReturnChartForm( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'report_language' => $report_language,
 			'translation_data' => $translation_data,
@@ -497,13 +552,14 @@ class WesternChartController implements ReportControllerInterface {
 		] = $this->getCommonInputValues( $options );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$solar_return_year  = isset( $_POST['solar_return_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['solar_return_year'] ) ) : $datetime->format( 'Y' );
+		$solar_return_year  = isset( $_POST['solar_return_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['solar_return_year'] ) ) : $datetime->modify( '+1 year' )->format( 'Y' );
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		return $this->render(
 			'form/western-chart',
 			[
 				'options'             => $options + $this->get_options(),
-				'datetime'            => $datetime->modify( '-10 years' ),
+				'datetime'            => $datetime,
+				'gender'              => $gender,
 				'aspect_filter'       => ( in_array( 'planet-positions', $display_options, true ) || in_array( 'planet-aspects', $display_options, true ) ) ? null : $aspect_filter,
 				'house_system'        => $house_system,
 				'rectification_chart' => $rectification_chart,
@@ -534,6 +590,7 @@ class WesternChartController implements ReportControllerInterface {
 
 		[
 			'datetime' => $datetime,
+			'gender' => $gender,
 			'form_language' => $form_language,
 			'display_options' => $display_options,
 			'aspect_filter' => $aspect_filter,
@@ -542,8 +599,10 @@ class WesternChartController implements ReportControllerInterface {
 			'rectification_chart' => $rectification_chart,
 		] = $this->getCommonInputValues( $options );
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$birth_time_unknown = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
-		$solar_return_year  = isset( $_POST['solar_return_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['solar_return_year'] ) ) : '';
+		$location_name         = isset( $_POST['location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['location'] ) ) : '';
+		$transit_location_name = isset( $_POST['current_location'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['current_location'] ) ) : '';
+		$birth_time_unknown    = isset( $_POST['birth_time_unknown'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['birth_time_unknown'] ) ) : '';
+		$solar_return_year     = isset( $_POST['solar_return_year'] ) ? sanitize_text_field( wp_unslash( (int) $_POST['solar_return_year'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 		$lang = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $form_language );
 
@@ -577,21 +636,28 @@ class WesternChartController implements ReportControllerInterface {
 		return $this->render(
 			'result/solar-return-chart',
 			[
-				'progression'         => true,
-				'chart'               => $chart ?? null,
-				'aspect_chart'        => $aspect_chart ?? null,
-				'declinations'        => $declinations ?? null,
-				'houses'              => $houses ?? null,
-				'angles'              => $angles ?? null,
-				'planet_positions'    => $planet_positions ?? null,
-				'planet_aspects'      => $planet_aspects ?? null,
-				'solar_natal_aspects' => $solar_natal_aspects ?? null,
-				'solar_year'          => $solar_year ?? null,
-				'solar_date'          => $solar_date ?? null,
-				'options'             => $this->get_options(),
-				'selected_lang'       => $lang,
-				'translation_data'    => $translation_data,
-				'display_options'     => $display_options,
+				'progression'           => true,
+				'chart'                 => $chart ?? null,
+				'aspect_chart'          => $aspect_chart ?? null,
+				'declinations'          => $declinations ?? null,
+				'houses'                => $houses ?? null,
+				'angles'                => $angles ?? null,
+				'planet_positions'      => $planet_positions ?? null,
+				'planet_aspects'        => $planet_aspects ?? null,
+				'solar_natal_aspects'   => $solar_natal_aspects ?? null,
+				'solar_year'            => $solar_year ?? null,
+				'solar_date'            => $solar_date ?? null,
+				'options'               => $this->get_options(),
+				'selected_lang'         => $lang,
+				'translation_data'      => $translation_data,
+				'display_options'       => $display_options,
+				'datetime'              => $datetime,
+				'gender'                => self::GENDER[ $gender ],
+				'location_name'         => $location_name,
+				'transit_location_name' => $transit_location_name,
+				'orb'                   => self::ORB[ $orb ],
+				'house_system'          => self::HOUSE_SYSTEM[ $house_system ],
+				'solar_return_year'     => $solar_return_year,
 			]
 		);
 	}
@@ -615,6 +681,7 @@ class WesternChartController implements ReportControllerInterface {
 			$display_options = [ 'chart', 'aspect-chart', 'planet-positions', 'planet-aspects' ];
 		}
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$gender              = isset( $_POST['gender'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['gender'] ) ) : '';
 		$aspect_filter       = isset( $_POST['aspect_filter'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['aspect_filter'] ) ) : 'major';
 		$house_system        = isset( $_POST['house_system'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['house_system'] ) ) : 'placidus';
 		$orb                 = isset( $_POST['orb'] ) ? sanitize_text_field( wp_unslash( (string) $_POST['orb'] ) ) : 'default';
@@ -623,6 +690,7 @@ class WesternChartController implements ReportControllerInterface {
 
 		return [
 			'datetime'            => new DateTimeImmutable( $datetime, $this->get_timezone() ),
+			'gender'              => $gender,
 			'form_language'       => $form_language,
 			'report_language'     => $report_language,
 			'translation_data'    => $translation_data,

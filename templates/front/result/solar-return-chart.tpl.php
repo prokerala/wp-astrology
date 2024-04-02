@@ -41,16 +41,62 @@ $result_renderer = [
 ];
 ?>
 <div class="container">
+
+
+	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+		<tbody>
+
+		<tr><th colspan="2" style="text-align:center"> Profile Details</th></tr>
+		<tr>
+			<td>Birth Date : </td>
+			<td><?php echo $datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Birth Time :</td>
+			<td>
+				<?php echo $datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo ( '1' === $datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			</td>
+		</tr>
+		<tr>
+			<td>Place of Birth: </td>
+			<td><?php echo $location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Gender: </td>
+			<td><?php echo $gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Solar Return Year: </td>
+			<td><?php echo $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>Place of Transit: </td>
+			<td><?php echo $transit_location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<tr>
+			<td>House System:</td>
+			<td><?php echo $house_system; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+		</tr>
+		<?php if ( 'Default' !== $orb ) : ?>
+			<tr>
+				<td>Orb:</td>
+				<td><?php echo $orb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+			</tr>
+		<?php endif; ?>
+		</tbody>
+	</table>
+
 	<?php foreach ( $display_options as $options ) : ?>
 		<?php if ( 'planet-positions' === $options ) : ?>
 			<table class="table table-bordered mt-5 mb-5">
 				<tr>
 					<th>Progression Year</th>
-					<td><?php echo $solar_year(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+					<td><?php echo $solar_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 				</tr>
 				<tr>
 					<th>Progression Date</th>
-					<td><?php echo $solar_date()->format( 'd M Y' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+					<td><?php echo $solar_date->format( 'd M Y' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 				</tr>
 			</table>
 		<?php endif; ?>
@@ -58,8 +104,8 @@ $result_renderer = [
 		<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
 
 		<?php if ( 'planet-aspects' === $options ) : ?>
-			<!--            Progression - Natal Aspects table-->
-			<h3 class="pk-astrology-text-center mt-5">Progression - Natal Aspects</h3>
+			<!--            Solar - Natal Aspects table-->
+			<h3 class="pk-astrology-text-center mt-5">Solar - Natal Aspects</h3>
 			<table class="table table-bordered">
 				<tr>
 					<th>Planet 1</th>
