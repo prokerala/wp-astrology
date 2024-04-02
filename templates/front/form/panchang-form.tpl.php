@@ -33,6 +33,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+$ayanamsa = $ayanamsa ?? 1;
 ?>
 <?php if ( empty( $options['ayanamsa'] ) ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
