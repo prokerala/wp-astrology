@@ -60,6 +60,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 		</div>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="PrimaryGender">Gender: </label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+				<select name="partner_a_gender" id="PrimaryGender">
+					<option value="male" <?php echo 'male' === $primary_gender ? 'selected' : ''; ?>>Male</option>
+					<option value="female" <?php echo 'female' === $primary_gender ? 'selected' : ''; ?>>Female</option>
+					<option value="pnts" <?php echo 'pnts' === $primary_gender ? 'selected' : ''; ?>>Prefer not to say</option>
+				</select>
+			</div>
+		</div>
 	</div>
 	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
 		<legend class="pk-astrology-col-form-label pk-astrology-text-black pk-astrology-py-4 pk-astrology-text-xlarge">Enter Secondary Profile</legend>
@@ -86,8 +96,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 			</div>
 		</div>
+		<div class="pk-astrology-form-group pk-astrology-row">
+			<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 col-form-label" for="SecondaryGender">Gender: </label>
+			<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
+				<select name="partner_b_gender" id="SecondaryGender">
+					<option value="male" <?php echo 'male' === $secondary_gender ? 'selected' : ''; ?>>Male</option>
+					<option value="female" <?php echo 'female' === $secondary_gender ? 'selected' : ''; ?>>Female</option>
+					<option value="pnts" <?php echo 'pnts' === $secondary_gender ? 'selected' : ''; ?>>Prefer not to say</option>
+				</select>
+			</div>
+		</div>
 	</div>
 </div>
+
 
 <div>
 	<?php if ( isset( $transit_datetime ) ) : ?>

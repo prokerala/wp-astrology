@@ -42,6 +42,78 @@ $result_renderer = [
 ];
 ?>
 	<div class="container">
+		<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+			<tbody>
+				<tr><th colspan="2" style="text-align: center"> Profile Details</th></tr>
+				<tr><th colspan="2"> Profile A</th></tr>
+				<tr>
+					<td>Birth Date : </td>
+					<td><?php echo $primary_birth_time->format( 'F d, Y l' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr>
+					<td>Birth Time :</td>
+					<td>
+						<?php echo $primary_birth_time->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo ( '1' === $primary_birth_time->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</td>
+				</tr>
+				<tr>
+					<td>Place of Birth: </td>
+					<td><?php echo $primary_location_name;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr>
+					<td>Gender: </td>
+					<td><?php echo $primary_gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr><th colspan="2"> Profile B</th></tr>
+				<tr>
+					<td>Birth Date : </td>
+					<td><?php echo $secondary_birth_time->format( 'F d, Y l' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr>
+					<td>Birth Time :</td>
+					<td>
+						<?php echo $secondary_birth_time->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo ( '1' === $secondary_birth_time->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</td>
+				</tr>
+				<tr>
+					<td>Place of Birth: </td>
+					<td><?php echo $secondary_location_name;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr>
+					<td>Gender: </td>
+					<td><?php echo $secondary_gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr><th colspan="2"> Transit Details</th></tr>
+				<tr>
+					<td>Transit Date : </td>
+					<td><?php echo $transit_time->format( 'F d, Y l' );  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr>
+					<td>Transit Time :</td>
+					<td>
+						<?php echo $transit_time->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo ( '1' === $transit_time->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</td>
+				</tr>
+				<tr>
+					<td>Place of Transit: </td>
+					<td><?php echo $transit_location_name;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<tr><th colspan="2"> Chart Settings</th></tr>
+				<tr>
+					<td>House System:</td>
+					<td><?php echo $house_system;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+				</tr>
+				<?php if ( 'Default' !== $orb ) : ?>
+					<tr>
+						<td>Orb:</td>
+						<td><?php echo $orb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+					</tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
 		<?php foreach ( $display_options as $options ) : ?>
 			<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
 		<?php endforeach; ?>
