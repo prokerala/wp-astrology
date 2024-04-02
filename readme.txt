@@ -2,8 +2,8 @@
 Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
-Tested up to: 6.3
-Stable tag: 1.3.1
+Tested up to: 6.4
+Stable tag: 1.3.2
 Requires PHP: 7.2.0+
 License: GPLV2+
 
@@ -212,6 +212,10 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.3.2 =
+* Added input details to western reports result
+* Fix undefined variable notice
 
 = 1.3.1 =
 * Fix stable tag
