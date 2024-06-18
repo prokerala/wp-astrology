@@ -43,44 +43,44 @@ $result_renderer = [
 <div class="container">
 
 
-	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+	<table class="pk-astrology-table">
 		<tbody>
 
 		<tr><th colspan="2" style="text-align:center"> Profile Details</th></tr>
 		<tr>
-			<td>Birth Date : </td>
+			<td><?php echo $translation_data['birth_date']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : </td>
 			<td><?php echo $datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Birth Time :</td>
+			<td><?php echo $translation_data['birth_time']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td>
 				<?php echo $datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo ( '1' === $datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</td>
 		</tr>
 		<tr>
-			<td>Place of Birth: </td>
+			<td><?php echo $translation_data['birth_place']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : </td>
 			<td><?php echo $location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Gender: </td>
+			<td><?php echo $translation_data['gender']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :  </td>
 			<td><?php echo $gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Solar Return Year: </td>
+			<td><?php echo $translation_data['solar_return_year']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $solar_return_year; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Place of Transit: </td>
+			<td><?php echo $translation_data['transit_place']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $transit_location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>House System:</td>
+			<td><?php echo $translation_data['house_system']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $house_system; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<?php if ( 'Default' !== $orb ) : ?>
 			<tr>
-				<td>Orb:</td>
+				<td><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 				<td><?php echo $orb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 			</tr>
 		<?php endif; ?>
@@ -105,7 +105,7 @@ $result_renderer = [
 
 		<?php if ( 'planet-aspects' === $options ) : ?>
 			<!--            Solar - Natal Aspects table-->
-			<h3 class="pk-astrology-text-center mt-5">Solar - Natal Aspects</h3>
+			<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall">Solar - Natal Aspects</h3>
 			<table class="table table-bordered">
 				<tr>
 					<th>Planet 1</th>

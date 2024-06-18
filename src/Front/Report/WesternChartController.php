@@ -78,6 +78,7 @@ class WesternChartController implements ReportControllerInterface {
 	];
 	private const REPORT_LANGUAGES = [
 		'en',
+		'de',
 	];
 	/**
 	 * WesternChartController constructor
@@ -112,7 +113,7 @@ class WesternChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	public function render_form( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
 		$report_type = $options['report_type'];
 
@@ -125,6 +126,8 @@ class WesternChartController implements ReportControllerInterface {
 				return $this->getProgressionChartForm( $options );
 			case 'solar-return-chart':
 				return $this->getSolarReturnChartForm( $options );
+			default:
+				return null;
 		}
 	}
 
@@ -136,7 +139,7 @@ class WesternChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$report_type = $options['report_type'];
 
 		switch ( $report_type ) {
@@ -148,6 +151,8 @@ class WesternChartController implements ReportControllerInterface {
 				return $this->getProgressionChartProcess( $options );
 			case 'solar-return-chart':
 				return $this->getSolarReturnChartProcess( $options );
+			default:
+				return null;
 		}
 	}
 

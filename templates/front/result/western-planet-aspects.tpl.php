@@ -36,27 +36,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 
 
-<h3 class="pk-astrology-text-center mt-5">List of Aspects</h3>
+<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall">List of Aspects</h3>
 
 <table class="pk-astrology-table pk-astrology-table-responsive-sm">
 	<tr>
-		<th>Major Aspects</th>
-		<td>Opposition, Conjunction, Sextile, Square, Trine</td>
+		<th><?php echo $translation_data['major_aspects']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+		<td><?php echo $translation_data['major_aspects_info']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 	</tr>
 	<tr>
-		<th>Minor Aspects</th>
-		<td>Semi Sextile, Semi Square, BiQuintile, Quincunx, Sesquiquadrate</td>
+		<th><?php echo $translation_data['minor_aspects']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+		<td><?php echo $translation_data['minor_aspects_info']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
 	</tr>
 </table>
 
 <!--            Aspect table-->
-<h3 class="pk-astrology-text-center mt-5">Planet Aspects</h3>
+<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall"><?php echo $translation_data['planet_aspects']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 <table class="pk-astrology-table pk-astrology-table-responsive-sm">
 	<tr>
-		<th>Planet 1</th>
-		<th>Aspect</th>
-		<th>Planet 2</th>
-		<th>Orb</th>
+		<th><?php echo $translation_data['planet_1']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+		<th><?php echo $translation_data['aspect']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+		<th><?php echo $translation_data['planet_2']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+		<th><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 	</tr>
 	<?php foreach ( $planet_aspects as $aspect ) : ?>
 		<?php if ( in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>
@@ -81,13 +81,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 </table>
 
 <?php if ( isset( $declinations ) ) : ?>
-	<h3 class="pk-astrology-text-center mt-5">Declination Aspects</h3>
+	<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall"><?php echo $translation_data['declination_aspects']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
 	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 		<tr>
-			<th>Planet 1</th>
-			<th>Aspect</th>
-			<th>Planet 2</th>
-			<th>Orb</th>
+			<th><?php echo $translation_data['planet_1']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+			<th><?php echo $translation_data['aspect']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+			<th><?php echo $translation_data['planet_2']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+			<th><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 		</tr>
 		<?php foreach ( $declinations as $declination ) : ?>
 			<tr>
