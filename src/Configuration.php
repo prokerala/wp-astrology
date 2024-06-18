@@ -105,7 +105,7 @@ class Configuration {
 
 		$url = "{$proto}://{$parsed['host']}";
 
-		if ( $port && ( 'http' === $proto && 80 !== $parsed['port'] || 'https' === $proto && 443 !== $port ) ) {
+		if ( $port && ( ( 'http' === $proto && 80 !== $parsed['port'] ) || ( 'https' === $proto && 443 !== $port ) ) ) {
 			$url .= ":{$port}";
 		}
 
