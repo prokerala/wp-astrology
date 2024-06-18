@@ -41,36 +41,36 @@ $result_renderer = [
 ];
 ?>
 <div class="container">
-	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+	<table class="pk-astrology-table">
 		<tbody>
 
 		<tr><th colspan="2" style="text-align:center"> Profile Details</th></tr>
 		<tr>
-			<td>Birth Date : </td>
+			<td><?php echo $translation_data['birth_date']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Birth Time :</td>
+			<td><?php echo $translation_data['birth_time']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td>
 				<?php echo $datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo ( '1' === $datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</td>
 		</tr>
 		<tr>
-			<td>Place of Birth: </td>
+			<td><?php echo $translation_data['birth_place']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Gender: </td>
+			<td><?php echo $translation_data['gender']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : </td>
 			<td><?php echo $gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>House System:</td>
+			<td><?php echo $translation_data['house_system']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $house_system; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<?php if ( 'Default' !== $orb ) : ?>
 			<tr>
-				<td>Orb:</td>
+				<td><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 				<td><?php echo ucwords( $orb ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 			</tr>
 		<?php endif; ?>

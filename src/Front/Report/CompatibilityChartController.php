@@ -65,6 +65,7 @@ class CompatibilityChartController implements ReportControllerInterface {
 
 	private const REPORT_LANGUAGES = [
 		'en',
+		'de',
 	];
 
 	private const GENDER = [
@@ -125,7 +126,7 @@ class CompatibilityChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+	public function render_form( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 
 		$report_type = $options['report_type'];
 
@@ -134,6 +135,8 @@ class CompatibilityChartController implements ReportControllerInterface {
 				return $this->getSynastryChartForm( $options );
 			case 'composite-chart':
 				return $this->getCompositeChartForm( $options );
+			default:
+				return null;
 		}
 	}
 
@@ -145,7 +148,7 @@ class CompatibilityChartController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$report_type = $options['report_type'];
 
 		switch ( $report_type ) {
@@ -153,6 +156,8 @@ class CompatibilityChartController implements ReportControllerInterface {
 				return $this->getSynastryChartProcess( $options );
 			case 'composite-chart':
 				return $this->getCompositeChartProcess( $options );
+			default:
+				return null;
 		}
 	}
 	/**

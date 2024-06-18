@@ -41,51 +41,51 @@ $result_renderer = [
 ];
 ?>
 <div class="container">
-	<table class="pk-astrology-table pk-astrology-table-responsive-sm">
+	<table class="pk-astrology-table">
 		<tbody>
 
 		<tr><th colspan="2" style="text-align:center"> Profile Details</th></tr>
 		<tr>
-			<td>Birth Date : </td>
+			<td><?php echo $translation_data['birth_date']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Birth Time :</td>
+			<td><?php echo $translation_data['birth_time']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td>
 				<?php echo $datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo ( '1' === $datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</td>
 		</tr>
 		<tr>
-			<td>Place of Birth: </td>
+			<td><?php echo $translation_data['birth_place']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Gender: </td>
+			<td><?php echo $translation_data['gender']; // phpcs:ignore WordPress.Security.EscapeOutput ?> : </td>
 			<td><?php echo $gender;  // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Transit Date : </td>
+			<td><?php echo $translation_data['transit_date']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $transit_datetime->format( 'F d, Y l' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>Transit Time :</td>
+			<td><?php echo $translation_data['transit_time']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td>
 				<?php echo $transit_datetime->format( 'g:i A T (P)' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo ( '1' === $transit_datetime->format( 'I' ) ) ? ' (DST Applied)' : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</td>
 		</tr>
 		<tr>
-			<td>Place of Transit: </td>
+			<td><?php echo $translation_data['transit_place']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $transit_location_name; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<tr>
-			<td>House System:</td>
+			<td><?php echo $translation_data['house_system']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 			<td><?php echo $house_system; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 		<?php if ( 'Default' !== $orb ) : ?>
 			<tr>
-				<td>Orb:</td>
+				<td><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?> :</td>
 				<td><?php echo $orb; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 			</tr>
 		<?php endif; ?>
@@ -95,13 +95,13 @@ $result_renderer = [
 		<?php $this->render( __DIR__ . $result_renderer[ $options ] ); ?>
 		<?php if ( 'planet-aspects' === $options ) : ?>
 			<!--            Transit - Natal Aspects table-->
-			<h3 class="pk-astrology-text-center mt-5">Transit - Natal Aspects</h3>
+			<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall">Transit - Natal Aspects</h3>
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr>
-					<th>Planet 1</th>
-					<th>Aspect</th>
-					<th>Planet 2</th>
-					<th>Orb</th>
+					<th><?php echo $translation_data['planet_1']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['aspect']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['planet_2']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+					<th><?php echo $translation_data['orb']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
 				</tr>
 				<?php foreach ( $transit_natal_aspects as $aspect ) : ?>
 					<?php if ( in_array( $aspect->getAspect()->getName(), [ 'Opposition', 'Conjunction', 'Sextile', 'Square', 'Trine' ], true ) ) : ?>

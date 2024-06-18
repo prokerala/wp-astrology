@@ -34,8 +34,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-	<h3 class="pk-astrology-text-center mt-5">Chart</h3>
-	<div class="mb-5 d-flex justify-content-center">
+	<h3 class="pk-astrology-text-center pk-astrology-pad-xsmall"><?php echo $translation_data['chart']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
+	<div class="pk-astrology-chart">
 		<?php if ( isset( $synastry ) || isset( $progression ) || isset( $transit ) ) : ?>
 			<?php echo str_replace( '<svg ', '<svg preserveAspectRatio="none" viewBox="0 0 700 700" ', $chart ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php else : ?>
