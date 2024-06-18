@@ -84,14 +84,23 @@
 }
 
 .pk-astrology-chart {
+	display: flex;
 	overflow: auto;
 }
 
-.pk-astrology-chart svg {
-	height: 500px;
+.pk-astrology-aspect-chart {
+	display: flex;
+	overflow: auto;
+}
+
+.pk-astrology-aspect-chart svg {
 	margin: auto;
-	max-width: 500px;
-	width: 500px;
+	min-width: 600px;
+}
+
+.pk-astrology-chart svg {
+	margin: auto;
+	min-width: 500px;
 }
 
 .pk-astrology-panchang-details {
