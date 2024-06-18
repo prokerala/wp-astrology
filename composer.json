@@ -27,7 +27,7 @@
     "ext-openssl": "*",
     "composer/installers": "^2.0",
     "kriswallsmith/buzz": "^1.2",
-    "prokerala/astrology-sdk": "1.1.*@dev",
+    "prokerala/astrology-sdk": "^1.3.0",
     "slim/psr7": "^1.4",
     "symfony/cache": "^4.4"
   },
