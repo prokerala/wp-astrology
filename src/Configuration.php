@@ -135,7 +135,7 @@ class Configuration {
 	 */
 	public function get_client_status() {
 		if ( is_null( $this->client_status ) ) {
-			$this->client_status = get_site_option( 'astrology_client_status', null );
+			$this->client_status = get_option( 'astrology_client_status', null );
 		}
 
 		return $this->client_status;
@@ -150,7 +150,7 @@ class Configuration {
 	 */
 	public function get_notices() {
 		if ( ! $this->notices ) {
-			$this->notices = get_site_option( 'astrology_admin_notices', [] );
+			$this->notices = get_option( 'astrology_admin_notices', [] );
 		}
 
 		return $this->notices;
@@ -220,7 +220,7 @@ class Configuration {
 	 * @return array<string,string>
 	 */
 	private function load_options() {
-		return get_site_option(
+		return get_option(
 			'astrology_plugin_options',
 			[
 				'attribution'   => '1',
