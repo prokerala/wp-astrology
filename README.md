@@ -167,14 +167,18 @@ You can use the following attributes to localize the form / result.  View availa
 - **`form_language`**
 
   You can set the `form_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to set localization for forms.
+  For western reports you can set the `form_language` attribute to one of `en`, or `de` for
 
-        [astrology report="Kundli" form_language="en"]
+      [astrology report="Kundli" form_language="en"]
+    	[astrology report="WesternChart" report_type="natal-chart" form_language="de"]
 
 - **`report_language`**
 
   You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
+  For western reports you can set the `report_language` attribute to one of `en`, or `de` for
 
-        [astrology report="Kundli" report_language="en,hi,ml"]
+      [astrology report="Kundli" report_language="en"]
+    	[astrology report="WesternChart" report_type="natal-chart" form_language="de"]
 
 
 ### Frequently Asked Questions
