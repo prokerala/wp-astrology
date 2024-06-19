@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.4
-Stable tag: 1.3.2
+Stable tag: 1.4.0
 Requires PHP: 7.2.0+
 License: GPLV2+
 
@@ -192,14 +192,18 @@ You can use the following attributes to localize the form / result.  View availa
 - **`form_language`**
 
   You can set the `form_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to set localization for forms.
+  For western reports you can set the `form_language` attribute to one of `en`, or `de` for 
 
         [astrology report="Kundli" form_language="en"]
+	  	[astrology report="WesternChart" report_type="natal-chart" form_language="de"]
 
 - **`report_language`**
 
   You can set the `report_language` attribute to one of `en`, `hi`, `ml`, `ta`, or `te` to add language select fields for forms.
+  For western reports you can set the `report_language` attribute to one of `en`, or `de` for 
 
-        [astrology report="Kundli" report_language="en,hi,ml"]
+        [astrology report="Kundli" report_language="en"]
+	  	[astrology report="WesternChart" report_type="natal-chart" form_language="de"]
 
 == Frequently Asked Questions ==
 
@@ -212,6 +216,10 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.4.0 =
+* Added german language support for western reports
+* Fix options persistence on WordPress MU installations
 
 = 1.3.2 =
 * Added input details to western reports result
