@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Requires PHP: 7.2.0+
 License: GPLV2+
 
@@ -150,6 +150,12 @@ Where `REPORT_NAME` must be one of following
   By default, the `Panchang` report will display panchang for Ujjain, Maharashtra. If required, the default behaviour can be changed by setting attribute `coordinate`.
 
       [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912"]
+         
+- **`tz`**
+
+  By default, the `Panchang` report will set timezone to UTC. If required, the default behaviour can be changed by setting attribute `tz`. The `tz` attribute accepts any valid timezone identifier supported by PHP's DateTimeZone class. Examples include `UTC`, `Europe/London`, `America/Los_Angeles`, etc.
+
+      [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912" tz="Asia/Kolkata"]
 
 ##### WesternChart
 
@@ -216,6 +222,9 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.4.1 =
+* Added new `tz` shortcode for Daily Panchang
 
 = 1.4.0 =
 * Added german language support for western reports
