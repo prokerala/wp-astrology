@@ -126,6 +126,12 @@ Where `REPORT_NAME` must be one of following
 
       [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912"]
 
+- **`tz`**
+
+  By default, the `Panchang` report will set timezone to UTC. If required, the default behaviour can be changed by setting attribute `tz`. The `tz` attribute accepts any valid timezone identifier supported by PHP's DateTimeZone class. Examples include `UTC`, `Europe/London`, `America/Los_Angeles`, etc.
+
+      [astrology report="Panchang" date="tomorrow" coordinate="23.179300,75.784912" tz="Asia/Kolkata"]
+
 ##### WesternChart
 
 - **`report_type`**

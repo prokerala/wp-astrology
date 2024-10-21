@@ -105,7 +105,7 @@ class PanchangController implements ReportControllerInterface {
 	 */
 	public function process( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 
-		$tz     = $this->get_timezone();
+		$tz     = $this->get_timezone_from_shortcode( $options );
 		$client = $this->get_api_client();
 
 		$result_type = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
@@ -170,6 +170,7 @@ class PanchangController implements ReportControllerInterface {
 		return $this->getCommonAttributeDefaults() + [
 			'date'       => '',
 			'coordinate' => '',
+			'tz'         => '',
 		];
 	}
 
@@ -238,7 +239,9 @@ class PanchangController implements ReportControllerInterface {
 	 * @return array|false
 	 */
 	private function load_cached_panchang_data( string $key ) {
-		return get_transient( $key )['panchang'];
+		$data = get_transient( $key );
+
+		return $data ? $data['panchang'] : false;
 	}
 
 	/**
@@ -386,6 +389,24 @@ class PanchangController implements ReportControllerInterface {
 	private function fetch_result( $method, $advanced, $lang, $tz ) {
 		$location = $this->get_location( $tz );
 		$datetime = new DateTimeImmutable( $this->get_post_input( 'datetime' ), $tz );
+
 		return $method->process( $location, $datetime, $advanced, $lang );
+	}
+
+	/**
+	 * Fetch timezone from shortcode if provided.
+	 *
+	 * @param array $options Render options.
+	 * @throws Exception If something went wrong.
+	 *
+	 *  @since 1.4.0
+	 */
+	private function get_timezone_from_shortcode( $options = [] ) {
+		if ( isset( $options['tz'] ) ) {
+
+			return new \DateTimeZone( sanitize_text_field( wp_unslash( $options['tz'] ) ) );
+		}
+
+		return $this->get_timezone();
 	}
 }
