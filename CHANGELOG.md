@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.4.1] - 2024-10-21
+### Added
+- Added new `tz` shortcode for Daily Panchang
+
 ## [1.4.0] - 2024-06-19
 ### Added
 - Added german language support for western reports
@@ -73,6 +77,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.4.1]: https://github.com/prokerala/wp-astrology/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/prokerala/wp-astrology/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/prokerala/wp-astrology/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/prokerala/wp-astrology/compare/v1.3.0...v1.3.1
