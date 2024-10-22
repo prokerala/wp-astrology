@@ -3,8 +3,8 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.4
-Stable tag: 1.4.1
-Requires PHP: 7.2.0+
+Stable tag: 1.4.2
+Requires PHP: 7.2.0
 License: GPLV2+
 
 Turn your Wordpress blog into a full astrology site, powered by Prokerala's astrology API.
@@ -222,6 +222,9 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.4.2 =
+* Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior.
 
 = 1.4.1 =
 * Added new `tz` shortcode for Daily Panchang
