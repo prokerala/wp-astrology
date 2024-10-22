@@ -399,10 +399,10 @@ class PanchangController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @throws Exception If something went wrong.
 	 *
-	 *  @since 1.4.0
+	 *  @since 1.4.2
 	 */
 	private function get_timezone_from_shortcode( $options = [] ) {
-		if ( isset( $options['tz'] ) ) {
+		if ( isset( $options['tz'] ) AND $options['tz'] !== '' ) {
 
 			return new \DateTimeZone( sanitize_text_field( wp_unslash( $options['tz'] ) ) );
 		}
