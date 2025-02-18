@@ -137,7 +137,6 @@ class PanchangController implements ReportControllerInterface {
 				'selected_lang'    => $lang,
 				'translation_data' => $translation_data,
 				'title'            => isset( $options['date'] ) ? 'daily_panchang' : 'panchang_details',
-
 			]
 		);
 	}
@@ -402,7 +401,7 @@ class PanchangController implements ReportControllerInterface {
 	 *  @since 1.4.2
 	 */
 	private function get_timezone_from_shortcode( $options = [] ) {
-		if ( isset( $options['tz'] ) AND $options['tz'] !== '' ) {
+		if ( isset( $options['tz'] ) && '' !== $options['tz'] ) {
 
 			return new \DateTimeZone( sanitize_text_field( wp_unslash( $options['tz'] ) ) );
 		}

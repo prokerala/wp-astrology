@@ -37,7 +37,7 @@ $ayanamsa = $ayanamsa ?? 1;
 ?>
 <?php if ( empty( $options['ayanamsa'] ) ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
-		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label "><?php echo $translation_data['ayanamsa']; // phpcs:ignore WordPress.Security.EscapeOutput ?></label>
+		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label "><?php echo $translation_data['ayanamsa']; // phpcs:ignore WordPress.Security.EscapeOutput ?>:</label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6">
 			<select name="ayanamsa" class="pk-astrology-form-control">
 				<option value="1" <?php echo '1' === (string) $ayanamsa ? 'selected' : ''; ?>><?php echo $translation_data['lahiri']; // phpcs:ignore WordPress.Security.EscapeOutput ?></option>
