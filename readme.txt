@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.4
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -222,6 +222,9 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.4.3 =
+* Resolved an issue where `ayanamsa` variable is undefined.
 
 = 1.4.2 =
 * Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior.
