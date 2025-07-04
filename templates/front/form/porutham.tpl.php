@@ -41,6 +41,8 @@ use Prokerala\WP\Astrology\Templating\Context;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$system = $system ?? 'kerala';
 ?>
 <form class="pk-astrology-theme-<?php echo $options['theme']; ?> pk-astrology-form" method="POST" <?php echo isset( $options['form_action'] ) ? " action=\"{$options['form_action']}\"" : ''; ?>>
 

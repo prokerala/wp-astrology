@@ -33,6 +33,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+$gender = $gender ?? 'male';
 ?>
 <div class="pk-astrology-row">
 	<div class="pk-astrology-col-12 pk-astrology-col-md-6">
