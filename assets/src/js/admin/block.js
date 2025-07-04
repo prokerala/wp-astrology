@@ -37,37 +37,27 @@ function AddAdvancedOption( attributes, setAttributes ) {
 	);
 }
 
-function ReportOptions( props ) {
-	const { attributes } = props;
-	const { onChange } = props;
-
-	const { report } = props;
-
+function ReportOptions( { attributes, onChange, report } ) {
 	const { options } = attributes;
+
 	const setOption = ( val ) =>
-		onChange( { options: Object.assign( {}, options, val ) } );
+		onChange( { options: { ...options, ...val } } );
 
-	if ( 'Chart' === report ) {
-		return ChartOptions( attributes, setOption );
-	}
-
-	if ( 'Kundli' === report ) {
-		return [
+	const reportHandlers = {
+		Chart: () => ChartOptions( attributes, setOption ),
+		Kundli: () => [
 			KundliOptions( attributes, setOption ),
 			AddAdvancedOption( attributes, onChange ),
-		];
+		],
+		DailyPrediction: () => DailyPredictionOptions( attributes, setOption ),
+		Numerology: () => NumerologyOptions( attributes, setOption ),
+	};
+
+	if ( reportHandlers[ report ] ) {
+		return reportHandlers[ report ]();
 	}
 
-	if ( 'DailyPrediction' === report ) {
-		return DailyPredictionOptions( attributes, setOption );
-	}
-
-	if ( 'Numerology' === report ) {
-		return NumerologyOptions( attributes, setOption );
-	}
-
-	const hasDetailed = DETAILED_REPORTS.includes( report );
-	if ( hasDetailed ) {
+	if ( DETAILED_REPORTS.includes( report ) ) {
 		return AddAdvancedOption( attributes, onChange );
 	}
 
@@ -102,8 +92,30 @@ registerBlockType( 'astrology/report', {
 				<InspectorControls>
 					<SelectControl
 						label={ __( 'Report' ) }
-						value={ report }
-						onChange={ ( val ) => setAttributes( { report: val } ) }
+						value={
+							report === 'WesternChart' &&
+							attributes.options?.report_type
+								? `WesternChart:${ attributes.options.report_type }`
+								: report
+						}
+						onChange={ ( val ) => {
+							if (
+								val.startsWith( 'WesternChart:' ) ||
+								val.startsWith( 'CompatibilityChart:' )
+							) {
+								const [ controller, reportType ] =
+									val.split( ':' );
+								setAttributes( {
+									report: controller,
+									options: {
+										...attributes.options,
+										report_type: reportType,
+									},
+								} );
+							} else {
+								setAttributes( { report: val } );
+							}
+						} }
 					>
 						<optgroup label="Daily Panchang">
 							<option value="AuspiciousPeriod">
@@ -115,7 +127,7 @@ registerBlockType( 'astrology/report', {
 							<option value="Choghadiya">Choghadiya</option>
 							<option value="Panchang">Panchang</option>
 						</optgroup>
-						<optgroup label="Horoscope">
+						<optgroup label="Horoscope (Vedic)">
 							<option value="BirthDetails">Birth Details</option>
 							<option value="Chart">Chart</option>
 							<option value="KaalSarpDosha">
@@ -128,6 +140,26 @@ registerBlockType( 'astrology/report', {
 								Planet Position
 							</option>
 							<option value="SadeSati">Sade Sati</option>
+						</optgroup>
+						<optgroup label="Horoscope (Western)">
+							<option value="WesternChart:natal-chart">
+								Natal Chart
+							</option>
+							<option value="WesternChart:transit-chart">
+								Transit Chart
+							</option>
+							<option value="WesternChart:progression-chart">
+								Progression Chart
+							</option>
+							<option value="WesternChart:solar-return-chart">
+								Solar Return Chart
+							</option>
+							<option value="CompatibilityChart:synastry-chart">
+								Synastry Chart
+							</option>
+							<option value="CompatibilityChart:composite-chart">
+								Composite Chart
+							</option>
 						</optgroup>
 						<optgroup label="Marriage Matching">
 							<option value="KundliMatching">
