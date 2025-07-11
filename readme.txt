@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -134,15 +134,43 @@ Where `REPORT_NAME` must be one of following
 
 ##### DailyPrediction
 
-- **`sign`**
-
-   By default, the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
-
 - **`date`**
 
    By default, the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
 
       [astrology report="DailyPrediction" date="tomorrow"]
+
+- **`sign`**
+
+   By default, the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
+
+      [astrology report="DailyPrediction" date="today" sign="aries"]
+
+- **`type`**
+
+  By default, the DailyPrediction report shows predictions of the `general` type. You can customize the `type` of prediction displayed by using the `type` attribute. Allowed values are `general`, `career`, `health`, and `love`.
+
+      [astrology report="DailyPrediction" date="today" sign="aries" type="career"]
+
+##### DailyLovePrediction
+
+- **`date`**
+
+  By default, the DailyLovePrediction report displays predictions for the current date. You can override this by setting the date attribute to yesterday, today, or tomorrow.
+
+      [astrology report="DailyLovePrediction" date="tomorrow"]
+
+- **`sign_one`**
+
+  By default, the DailyLovePrediction report displays predictions for `aries` as the primary partner. You can change the zodiac sign by using the `sign_one` attribute.
+
+      [astrology report="DailyLovePrediction" date="tomorrow" sign_one="aries"]
+
+- **`sign_two`**
+
+  By default, the DailyLovePrediction report displays predictions for `aries` as the secondary partner. You can change the zodiac sign using the `sign_two` attribute.
+
+      [astrology report="DailyLovePrediction" date="tomorrow" sign_one="aries" sign_two="aries"]
 
 ##### Panchang
 - **`coordinate`**
@@ -222,6 +250,10 @@ Yes, you need to signup for an account at https://api.prokerala.com to use this 
 No, you can start using the plugin with our free subscription.
 
 == Changelog ==
+
+= 1.4.5 =
+* Added new `type` shortcode for Daily Prediction
+* Added support for Daily Love Horoscope Predictions
 
 = 1.4.4 =
 * Resolved an issue where `system` variable is undefined.
