@@ -180,6 +180,9 @@ registerBlockType( 'astrology/report', {
 							<option value="DailyPrediction">
 								Daily Horoscope
 							</option>
+							<option value="DailyLovePrediction">
+								Daily Love Horoscope
+							</option>
 						</optgroup>
 						<optgroup label="Numerology">
 							<option value="Numerology">Numerology</option>

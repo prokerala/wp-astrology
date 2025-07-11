@@ -8,7 +8,7 @@ const days = [
 ];
 
 const signs = [
-	{ value: '', label: 'All Signs' },
+	{ value: 'all', label: 'All Signs' },
 	{ value: 'aries', label: 'Aries' },
 	{ value: 'taurus', label: 'Taurus' },
 	{ value: 'gemini', label: 'Gemini' },
@@ -23,10 +23,16 @@ const signs = [
 	{ value: 'pisces', label: 'Pisces' },
 ];
 
+const types = [
+	{ value: 'general', label: 'General' },
+	{ value: 'career', label: 'Career' },
+	{ value: 'health', label: 'Health' },
+	{ value: 'love', label: 'Love' },
+];
+
 export default function DailyPredictionOptions( attributes, setOptions ) {
 	/* eslint-disable camelcase */
-	const { day, sign } = attributes.options;
-
+	const { day, sign, type } = attributes.options;
 	return (
 		<div>
 			<SelectControl
@@ -40,6 +46,12 @@ export default function DailyPredictionOptions( attributes, setOptions ) {
 				value={ sign }
 				onChange={ ( val ) => setOptions( { sign: val } ) }
 				options={ signs }
+			/>
+			<SelectControl
+				label={ __( 'Type' ) }
+				value={ type }
+				onChange={ ( val ) => setOptions( { type: val } ) }
+				options={ types }
 			/>
 		</div>
 	);
