@@ -60,6 +60,7 @@ Where `REPORT_NAME` must be one of following
 - `Chart`
 - `Choghadiya`
 - `DailyPrediction`
+- `DailyLovePrediction`
 - `InauspiciousPeriod`
 - `KaalSarpDosha`
 - `Kundli`
@@ -109,15 +110,43 @@ Where `REPORT_NAME` must be one of following
 
 ##### DailyPrediction
 
+- **`date`**
+
+  By default, the DailyPrediction report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+
+      [astrology report="DailyPrediction" date="tomorrow"]
+
 - **`sign`**
 
    By default, the DailyPrediction report will display predictions for all zodiac signs. You can use limit the result to a single zodiac sign using the `sign` attribute. This may be used to create separate page for each zodiac sign or to insert advertisement between the result.
 
+      [astrology report="DailyPrediction" date="today" sign="aries"]
+
+- **`type`**
+
+  By default, the DailyPrediction report shows predictions of the `general` type. You can customize the `type` of prediction displayed by using the `type` attribute. Allowed values are `general`, `career`, `health`, and `love`.
+
+      [astrology report="DailyPrediction" date="today" sign="aries" type="career"]
+
+##### DailyLovePrediction
+
 - **`date`**
 
-   By default, the `DailyPrediction` report will display predictions for the current date. If required, the default behaviour can be changed by setting the `date` attribute to `yesterday`, `today` or `tomorrow`.
+  By default, the DailyLovePrediction report displays predictions for the current date. You can override this by setting the date attribute to yesterday, today, or tomorrow.
 
-      [astrology report="DailyPrediction" date="tomorrow"]
+      [astrology report="DailyLovePrediction" date="tomorrow"]
+
+- **`sign_one`**
+
+  By default, the DailyLovePrediction report displays predictions for `aries` as the primary partner. You can change the zodiac sign by using the `sign_one` attribute.
+
+      [astrology report="DailyLovePrediction" date="tomorrow" sign_one="aries"]
+
+- **`sign_two`**
+
+  By default, the DailyLovePrediction report displays predictions for `aries` as the secondary partner. You can change the zodiac sign using the `sign_two` attribute.
+
+      [astrology report="DailyLovePrediction" date="tomorrow" sign_one="aries" sign_two="aries"]
 
 ##### Panchang
 - **`coordinate`**
