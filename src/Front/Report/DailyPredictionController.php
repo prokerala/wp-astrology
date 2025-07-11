@@ -29,13 +29,12 @@
 
 namespace Prokerala\WP\Astrology\Front\Report;
 
-use Prokerala\Api\Astrology\Service\Chart;
-use Prokerala\Api\Horoscope\Service\DailyPrediction;
+use Prokerala\Api\Horoscope\Service\DailyPredictionAdvanced;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
 
 /**
- * Chart Form Controller.
+ * Daily Prediction Controller.
  *
  * @since   1.1.0
  */
@@ -44,21 +43,6 @@ class DailyPredictionController implements ReportControllerInterface {
 	use ReportControllerTrait {
 		get_attribute_defaults as getCommonAttributeDefaults;
 	}
-
-	const SIGNS = [
-		'aries',
-		'taurus',
-		'gemini',
-		'cancer',
-		'leo',
-		'virgo',
-		'libra',
-		'scorpio',
-		'sagittarius',
-		'capricorn',
-		'aquarius',
-		'pisces',
-	];
 
 	/**
 	 * ChartController constructor
@@ -89,15 +73,16 @@ class DailyPredictionController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function process( $options = [] ) {
+	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$tz = $this->get_timezone();
 
 		$day  = $options['day'] ? $options['day'] : $this->get_post_input( 'day' );
 		$sign = $options['sign'] ? $options['sign'] : $this->get_post_input( 'sign' );
+		$type = $options['type'] ? $options['type'] : $this->get_post_input( 'type' );
 
 		$datetime = new \DateTimeImmutable( $day, $tz );
 
-		$result = $this->load_predictions( $datetime, $sign );
+		$result = $this->load_predictions( $datetime, $sign, $type );
 
 		return $this->render(
 			'result/daily-prediction',
@@ -117,7 +102,8 @@ class DailyPredictionController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults() {
 		return $this->getCommonAttributeDefaults() + [
-			'sign' => '',
+			'type' => 'general',
+			'sign' => 'all',
 			'day'  => 'today',
 		];
 	}
@@ -138,64 +124,66 @@ class DailyPredictionController implements ReportControllerInterface {
 	/**
 	 * Load prediction for the requested day from, updating cache if the value is not yet cached.
 	 *
-	 * @since 1.1.0
+	 * @since 1.4.5
 	 *
-	 * @param \DateTimeInterface $datetime Datetime to load prediction.
+	 * @param \DateTimeImmutable $datetime Datetime to load prediction.
 	 * @param string             $sign Zodiac sign to fetch load. Empty to retrieve for all signs.
+	 * @param string             $type Prediction type to fetch load.
 	 *
 	 * @return array<string,mixed>
 	 */
-	private function load_predictions( $datetime, $sign ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
-
-		$data = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) );
+	private function load_predictions( \DateTimeImmutable $datetime, string $sign, string $type ) {
+		$data = get_transient( 'astrology_daily_prediction_' . $sign . '_' . $type . '_' . $datetime->format( 'Y_m_d' ) );
 
 		if ( ! $data ) {
 			$data = [];
 		}
 
-		$result = [];
-
-		if ( '' !== $sign ) {
-			return [
-				$sign => $data[ $sign ] ?? $this->fetch_prediction( $datetime, $sign ),
-			];
-		}
-
-		foreach ( self::SIGNS as $sign ) {
-			$result[ $sign ] = $data[ $sign ] ?? $this->fetch_prediction( $datetime, $sign );
-		}
-
-		return $result;
+		return $data ? $data : $this->fetch_prediction( $datetime, $sign, $type );
 	}
+
 
 	/**
 	 * Fetch prediction from API server.
 	 *
-	 * @since 1.1.0
+	 * @since 1.4.5
 	 *
-	 * @param \DateTimeInterface $datetime Datetime to fetch prediction.
+	 * @param \DateTimeImmutable $datetime Datetime to fetch prediction.
 	 * @param string             $sign Zodiac sign to fetch load.
+	 * @param string             $type Prediction type to fetch load.
 	 *
 	 * @return array<string,mixed>
 	 */
-	private function fetch_prediction( $datetime, string $sign ) {
-		$client            = $this->get_api_client();
-		$method            = new DailyPrediction( $client );
-		$daily_predictiton = $method->process( $datetime, $sign )->getDailyHoroscopePrediction();
+	private function fetch_prediction( \DateTimeImmutable $datetime, string $sign, string $type ) {  // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+		$client           = $this->get_api_client();
+		$method           = new DailyPredictionAdvanced( $client );
+		$daily_prediction = $method->process( $datetime, $sign, $type )->getDailyPredictions();
 
-		$data = get_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ) );
+		$data = get_transient( 'astrology_daily_prediction_' . $sign . '_' . $type . '_' . $datetime->format( 'Y_m_d' ) );
 
 		if ( ! $data ) {
 			$data = [];
 		}
 
-		$data[ $sign ] = [
-			'id'         => $daily_predictiton->getSignId(),
-			'sign'       => $daily_predictiton->getSignName(),
-			'prediction' => $daily_predictiton->getPrediction(),
-		];
-		set_transient( 'astrology_daily_prediction_' . $datetime->format( 'Y_m_d' ), $data, 259200 );
+		foreach ( $daily_prediction as $prediction ) {
+			$prediction_data = [];
+			foreach ( $prediction->getPredictions() as $p ) {
+				$prediction_data[] = [
+					'type'      => $p->getType(),
+					'text'      => $p->getPrediction(),
+					'seek'      => $p->getSeek(),
+					'challenge' => $p->getChallenge(),
+					'insight'   => $p->getInsight(),
+				];
+			}
+			$data[ $prediction->getSign()->getName() ] = [
+				'id'         => $prediction->getSign()->getId(),
+				'sign'       => $prediction->getSign()->getName(),
+				'prediction' => $prediction_data,
+			];
+		}
+		set_transient( 'astrology_daily_prediction_' . $sign . '_' . $type . '_' . $datetime->format( 'Y_m_d' ), $data, 259200 );
 
-		return $data[ $sign ];
+		return $data;
 	}
 }

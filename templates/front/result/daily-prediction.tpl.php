@@ -35,9 +35,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <div class="pk-astrology-prediction-row pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
+
 	<?php foreach ( $result as $sign => $prediction ) : ?>
 		<h3><?php echo $prediction['sign'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
-		<p><?php echo $prediction['prediction'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+		<?php foreach ( $prediction['prediction'] as $text ) : ?>
+			<p><?php echo $text['text'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+			<p><?php echo $text['seek'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+			<p><?php echo $text['challenge'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+			<p><?php echo $text['insight'];  // phpcs:ignore WordPress.Security.EscapeOutput ?></p>
+		<?php endforeach; ?>
 	<?php endforeach; ?>
 </div>
 
