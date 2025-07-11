@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.4.6] - 2025-07-11
+### Fixed
+- Resolved an issue occurred after fixing lint
+
 ## [1.4.5] - 2025-07-11
 ### Added
 - Added new `type` shortcode for Daily Prediction
@@ -96,6 +100,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.4.5]: https://github.com/prokerala/wp-astrology/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/prokerala/wp-astrology/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/prokerala/wp-astrology/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/prokerala/wp-astrology/compare/v1.4.2...v1.4.3
