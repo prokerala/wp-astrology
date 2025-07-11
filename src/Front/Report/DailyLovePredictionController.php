@@ -164,7 +164,7 @@ class DailyLovePredictionController implements ReportControllerInterface {
 	 */
 	private function load_predictions( $datetime, $sign_one, $sign_two ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 
-		$data = get_transient( $this->generateKey( $sign_one, $sign_two, $datetime ) );
+		$data = get_transient( $this->generateKey( $datetime, $sign_one, $sign_two ) );
 
 		if ( ! $data ) {
 			$data = [];
@@ -189,7 +189,7 @@ class DailyLovePredictionController implements ReportControllerInterface {
 		$method            = new DailyLovePrediction( $client );
 		$daily_predictiton = $method->process( $datetime, $sign_one, $sign_two )->getDailyLovePredictions();
 
-		$data = get_transient( $this->generateKey( $sign_one, $sign_two, $datetime ) );
+		$data = get_transient( $this->generateKey( $datetime, $sign_one, $sign_two ) );
 		if ( ! $data ) {
 			$data = [];
 		}
@@ -205,7 +205,7 @@ class DailyLovePredictionController implements ReportControllerInterface {
 			];
 		}
 
-		set_transient( $this->generateKey( $sign_one, $sign_two, $datetime ), $data, 259200 );
+		set_transient( $this->generateKey( $datetime, $sign_one, $sign_two ), $data, 259200 );
 
 		return $data;
 	}
