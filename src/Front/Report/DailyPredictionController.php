@@ -76,11 +76,11 @@ class DailyPredictionController implements ReportControllerInterface {
 	public function process( $options = [] ) { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
 		$tz = $this->get_timezone();
 
-		$day  = $options['day'] ? $options['day'] : $this->get_post_input( 'day' );
+		$date = $options['date'] ? $options['date'] : $this->get_post_input( 'date' );
 		$sign = $options['sign'] ? $options['sign'] : $this->get_post_input( 'sign' );
 		$type = $options['type'] ? $options['type'] : $this->get_post_input( 'type' );
 
-		$datetime = new \DateTimeImmutable( $day, $tz );
+		$datetime = new \DateTimeImmutable( $date, $tz );
 
 		$result = $this->load_predictions( $datetime, $sign, $type );
 
@@ -104,7 +104,7 @@ class DailyPredictionController implements ReportControllerInterface {
 		return $this->getCommonAttributeDefaults() + [
 			'type' => 'general',
 			'sign' => 'all',
-			'day'  => 'today',
+			'date' => 'today',
 		];
 	}
 
