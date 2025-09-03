@@ -3,7 +3,7 @@ Contributors: Prokerala
 Tags: astrology, prokerala
 Requires at least: 5.6
 Tested up to: 6.8
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 Requires PHP: 7.2.0
 License: GPLV2+
 
@@ -251,23 +251,26 @@ No, you can start using the plugin with our free subscription.
 
 == Changelog ==
 
+= 1.4.7 =
+* Resolved an issue caused by an incorrect attribute name
+
 = 1.4.6 =
-* Resolved an issue occurred after fixing lint 
+* Resolved an issue occurred after fixing lint
 
 = 1.4.5 =
 * Added new `type` shortcode for Daily Prediction
 * Added support for Daily Love Horoscope Predictions
 
 = 1.4.4 =
-* Resolved an issue where `system` variable is undefined.
-* Resolved an issue where `gender` variable is undefined.
-* Added western charts to astrology report block.
+* Resolved an issue where `system` variable is undefined
+* Resolved an issue where `gender` variable is undefined
+* Added western charts to astrology report block
 
 = 1.4.3 =
-* Resolved an issue where `ayanamsa` variable is undefined.
+* Resolved an issue where `ayanamsa` variable is undefined
 
 = 1.4.2 =
-* Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior.
+* Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior
 
 = 1.4.1 =
 * Added new `tz` shortcode for Daily Panchang
