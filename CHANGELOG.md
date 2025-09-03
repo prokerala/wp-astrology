@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.4.7] - 2025-09-03
+### Fixed
+- Resolved an issue caused by an incorrect attribute name
+
 ## [1.4.6] - 2025-07-11
 ### Fixed
 - Resolved an issue occurred after fixing lint
@@ -13,17 +17,17 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [1.4.4] - 2025-07-04
 ### Fixed
-- Resolved an issue where `system` variable is undefined.
-- Resolved an issue where `gender` variable is undefined.
+- Resolved an issue where `system` variable is undefined
+- Resolved an issue where `gender` variable is undefined
 - Added western charts to astrology report block
 
 ## [1.4.3] - 2025-02-18
 ### Fixed
-- Resolved an issue where `ayanamsa` variable is undefined.
+- Resolved an issue where `ayanamsa` variable is undefined
 
 ## [1.4.2] - 2024-10-22
 ### Fixed
-- Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior.
+- Resolved an issue where the `tz` option could be set as an empty string, causing unexpected behavior
 
 ## [1.4.1] - 2024-10-21
 ### Added
@@ -100,7 +104,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
-[1.4.5]: https://github.com/prokerala/wp-astrology/compare/v1.4.5...v1.4.6
+[1.4.7]: https://github.com/prokerala/wp-astrology/compare/v1.4.6...v1.4.7
+[1.4.6]: https://github.com/prokerala/wp-astrology/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/prokerala/wp-astrology/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/prokerala/wp-astrology/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/prokerala/wp-astrology/compare/v1.4.2...v1.4.3
