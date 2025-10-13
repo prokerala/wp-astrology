@@ -50,11 +50,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label"><?php echo $translation_data['result_type']; ?>: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-6 ">
 			<div class="pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type1" value="basic" <?php echo 'basic' === $result_type ? 'checked' : ''; ?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type1" value="basic" <?php echo 'basic' === $result_type_option ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="result_type1"><?php echo $translation_data['basic']; ?></label>
 			</div>
 			<div class="pk-astrology-form-check-inline">
-				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type2" value="advanced" <?php echo 'advanced' === $result_type ? 'checked' : ''; ?>>
+				<input class="pk-astrology-form-check-input" type="radio" name="result_type" id="result_type2" value="advanced" <?php echo 'advanced' === $result_type_option ? 'checked' : ''; ?>>
 				<label class="pk-astrology-form-check-label" for="result_type2"><?php echo $translation_data['advanced']; ?></label>
 			</div>
 		</div>

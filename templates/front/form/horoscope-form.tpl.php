@@ -63,7 +63,7 @@ $ayanamsa = $ayanamsa ?? 1;
 	</div>
 </div>
 
-<?php if ( $report_language ) : ?>
+<?php if ( $report_language && count( $report_language ) > 1 ) : ?>
 	<div class="pk-astrology-form-group pk-astrology-row">
 		<label class="pk-astrology-col-sm-3 pk-astrology-col-md-4 pk-astrology-form-label" for="select-lang"><?php echo $translation_data['language']; // phpcs:ignore WordPress.Security.EscapeOutput ?>: </label>
 		<div class="pk-astrology-col-sm-9 pk-astrology-col-md-8 ">

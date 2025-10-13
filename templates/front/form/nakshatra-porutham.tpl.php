@@ -92,7 +92,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</div>
 		</div>
 	</div>
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
+	<?php
+	$this->render(
+		__DIR__ . '/result-type-option.tpl.php',
+		[
+			'result_type'        => $options['result_type'] ,
+			'result_type_option' => $result_type,
+		]
+	);
+	?>
 
 	<?php if ( $report_language ) : ?>
 		<div class="pk-astrology-form-group pk-astrology-row">

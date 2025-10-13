@@ -63,7 +63,15 @@ $system = $system ?? 'kerala';
 		</div>
 	</div>
 
-	<?php $this->render( __DIR__ . '/result-type-option.tpl.php', [ 'result_type' => $options['result_type'] ] ); ?>
+	<?php
+	$this->render(
+		__DIR__ . '/result-type-option.tpl.php',
+		[
+			'result_type'        => $options['result_type'] ,
+			'result_type_option' => $result_type,
+		]
+	);
+	?>
 	<div class="pk-astrology-text-right">
 		<button type="submit" class="pk-astrology-btn"><?php echo $translation_data['get_result']; ?></button>
 		<input type="hidden" name="submit" value="1">
