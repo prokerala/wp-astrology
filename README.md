@@ -64,6 +64,7 @@ Where `REPORT_NAME` must be one of following
 - `InauspiciousPeriod`
 - `KaalSarpDosha`
 - `Kundli`
+- `DashaPeriod`
 - `KundliMatching`
 - `MangalDosha`
 - `NakshatraPorutham`
@@ -106,7 +107,13 @@ Where `REPORT_NAME` must be one of following
 
   The `display_charts` option allows showing _Rasi_ / _Navamsa_ chart in Kundli result. This will cost two additional API calls. The value of the attribute must be `lagna,navamsa`.
 
-        [astrology report="Kundli" display_charts="lagna,rasi"]
+        [astrology report="Kundli" display_charts="lagna,navamsa"]
+
+- **`display_planet_positions`**
+
+  You can set the `display_planet_positions` attribute to one of `lagna`,`navamsa` to get planet position. While adding this attribute, it will additionally make a request to the specified chart details using the divisional planet position API and display the retrieved information in a table.
+
+        [astrology report="Kundli" display_planet_positions="lagna,navamsa"]
 
 ##### DailyPrediction
 

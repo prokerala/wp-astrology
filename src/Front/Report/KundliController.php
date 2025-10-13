@@ -38,6 +38,7 @@ use Prokerala\Api\Astrology\Location;
 use Prokerala\Api\Astrology\Result\Horoscope\AdvancedKundli;
 use Prokerala\Api\Astrology\Service\Chart;
 use Prokerala\Api\Astrology\Service\Kundli;
+use Prokerala\Api\Astrology\Service\DivisionalPlanetPosition;
 use Prokerala\Common\Api\Client;
 use Prokerala\WP\Astrology\Front\Controller\ReportControllerTrait;
 use Prokerala\WP\Astrology\Front\ReportControllerInterface;
@@ -80,6 +81,7 @@ class KundliController implements ReportControllerInterface {
 		$datetime         = $this->get_post_input( 'datetime', 'now' );
 		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
+		$selected_lang    = $this->get_post_language( 'lang', self::REPORT_LANGUAGES, $options['form_language'] );
 		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
 		$translation_data = $this->get_localisation_data( $form_language );
 
@@ -90,7 +92,7 @@ class KundliController implements ReportControllerInterface {
 				'datetime'         => new DateTimeImmutable( $datetime, $this->get_timezone() ),
 				'result_type'      => $result_type,
 				'report_language'  => $report_language,
-				'selected_lang'    => $form_language,
+				'selected_lang'    => $selected_lang,
 				'translation_data' => $translation_data,
 			]
 		);
@@ -214,17 +216,95 @@ class KundliController implements ReportControllerInterface {
 	 * @param DateTimeInterface $datetime Datetime.
 	 * @param string            $chart_type Chart type.
 	 * @param string            $chart_style Chart style.
-	 * @return string
+	 * @param string            $lang language of report.
+	 * @return array
 	 * @throws Exception On API query failure.
 	 *
 	 * @since 1.0.1
 	 */
-	protected function get_chart( Client $client, Location $location, DateTimeInterface $datetime, string $chart_type, string $chart_style ): string {
+	protected function get_chart( Client $client, Location $location, DateTimeInterface $datetime, string $chart_type, string $chart_style, string $lang ): array {
+		$chart_result = [];
+		$chart_types  = explode( ',', $chart_type );
 
 		$method = new Chart( $client );
 		$method->setAyanamsa( $this->get_input_ayanamsa() );
 
-		return $method->process( $location, $datetime, $chart_type, $chart_style );
+		foreach ( $chart_types as $chart_type ) {
+			$chart_result[ $chart_type ] = $method->process( $location, $datetime, $chart_type, $chart_style, $lang );
+		}
+
+		return $chart_result;
+	}
+
+	/**
+	 * Process result
+	 *
+	 * @param Client            $client API Client.
+	 * @param Location          $location User location.
+	 * @param DateTimeInterface $datetime Datetime.
+	 * @param string            $chart_types Chart type.
+	 * @param string            $lang language of report.
+	 * @return array
+	 * @since 1.0.1
+	 */
+	protected function get_divisional_planet_position( Client $client, Location $location, DateTimeInterface $datetime, string $chart_types, string $lang ): array { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.TooHigh
+
+		$chart_types      = explode( ',', $chart_types );
+		$result           = [];
+		$planet_positions = [];
+
+		$method = new DivisionalPlanetPosition( $client );
+		$method->setAyanamsa( $this->get_input_ayanamsa() );
+
+		foreach ( $chart_types as $idx => $chart_type ) {
+			$divisional_positions = ( $method->process( $location, $datetime, $chart_type, $lang ) )->getDivisionalPositions();
+			foreach ( $divisional_positions as $divisional_position ) {
+				foreach ( $divisional_position->getPlanetPositions() as $planet ) {
+					$planet_positions[ $planet->getPlanet()->getId() ]['planet']         = $planet->getPlanet()->getName();
+					$planet_positions[ $planet->getPlanet()->getId() ]['rasi']           = $planet->getRasi()->getName();
+					$planet_positions[ $planet->getPlanet()->getId() ]['rasi_lord']      = $planet->getRasi()->getLord()->getName();
+					$planet_positions[ $planet->getPlanet()->getId() ]['nakshatra']      = $planet->getNakshatra()->getName();
+					$planet_positions[ $planet->getPlanet()->getId() ]['nakshatra_lord'] = $planet->getNakshatra()->getLord()->getName();
+					$planet_positions[ $planet->getPlanet()->getId() ]['position']       = $this->longitude_conversion( $planet->getLongitude() );
+					$planet_positions[ $planet->getPlanet()->getId() ]['degree']         = $this->to_degree_minutes( $planet->getLongitude() );
+				}
+			}
+			ksort( $planet_positions );
+			$result[ $chart_type ] = $planet_positions;
+			$planet_positions      = [];
+		}
+		return $result;
+	}
+
+	/**
+	 * Process result
+	 *
+	 * @param float $longitude longitude.
+	 * @return string
+	 *
+	 * @since 1.0.1
+	 */
+	public function longitude_conversion( float $longitude ): string { // phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
+		$angle  = floor( $longitude );
+		$minute = ( $longitude - $angle ) * 60;
+
+		return $angle . '&deg; ' . floor( $minute ) . "' ";
+	}
+
+	/**
+	 * Process result
+	 *
+	 * @param float $longitude longitude.
+	 * @return string
+	 *
+	 * @since 1.0.1
+	 */
+	public function to_degree_minutes( float $longitude ): string { // phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar
+		$angle  = floor( $longitude );
+		$degree = (int) $longitude % 30;
+		$minute = round( ( $longitude - $angle ) * 60, 2 );
+
+		return "{$degree}° {$minute}′";
 	}
 
 	/**
@@ -251,12 +331,12 @@ class KundliController implements ReportControllerInterface {
 		$kundli_result = $this->get_kundli_details( $client, $location, $datetime, $advanced, $lang );
 
 		if ( $options['display_charts'] ) {
-			$chart_style = $options['chart_style'] ?? 'north-indian';
+			$chart_style             = $options['chart_style'] ?? 'north-indian';
+			$kundli_result['charts'] = $this->get_chart( $client, $location, $datetime, $options['display_charts'], $chart_style, $lang );
+		}
 
-			$kundli_result['charts'] = [
-				'lagna'   => $this->get_chart( $client, $location, $datetime, 'lagna', $chart_style ),
-				'navamsa' => $this->get_chart( $client, $location, $datetime, 'navamsa', $chart_style ),
-			];
+		if ( $options['display_planet_positions'] ) {
+			$kundli_result['division_planet_position'] = $this->get_divisional_planet_position( $client, $location, $datetime, $options['display_planet_positions'], $lang );
 		}
 
 		$translation_data = $this->get_localisation_data( $lang );
@@ -365,8 +445,9 @@ class KundliController implements ReportControllerInterface {
 	 */
 	public function get_attribute_defaults(): array {
 		return $this->getCommonAttributeDefaults() + [
-			'display_charts' => '',
-			'chart_style'    => 'north-indian',
+			'display_charts'           => '',
+			'chart_style'              => 'north-indian',
+			'display_planet_positions' => '',
 		];
 	}
 }

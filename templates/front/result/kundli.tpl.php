@@ -36,23 +36,54 @@ if ( ! defined( 'ABSPATH' ) ) {
 ?>
 	<div class="pk-astrology-theme-<?php echo esc_attr( $options['theme'] ); ?>">
 		<?php if ( ! empty( $result ) ) : ?>
-
 			<?php if ( isset( $result['charts'] ) ) : ?>
 				<h2><?php echo $translation_data['charts']; // phpcs:ignore WordPress.Security.EscapeOutput ?></h2>
 				<div class="pk-astrology-kundli-charts-wrapper">
-					<?php
-					foreach ( [
-						'lagna'   => 'Lagna',
-						'navamsa' => 'Navamsa',
-					] as $key => $value ) :
-						?>
+					<?php foreach ( $result['charts'] as $key => $chart ) : ?>
 						<div class="pk-astrology-kundli-chart">
-							<h3><?php echo $translation_data[ $key . '_chart' ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></h3>
-							<?php echo $result['charts'][ $key ]; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+							<h4><?php echo $translation_data[ $key . '_chart' ]; // phpcs:ignore WordPress.Security.EscapeOutput ?></h4>
+							<?php echo $chart; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 						</div>
 					<?php endforeach; ?>
 				</div>
 			<?php endif; ?>
+
+			<?php if ( isset( $result['division_planet_position'] ) ) : ?>
+				<div class="pk-astrology-dasha-periods">
+					<?php foreach ( $result['division_planet_position'] as $chart_type => $division_planet_position ) : ?>
+						<h3>
+							<?php echo $translation_data[ $chart_type ]; // phpcs:ignore WordPress.Security.EscapeOutput ?>
+						</h3>
+						<div class="pk-astrology-row">
+							<table class="pk-astrology-table pk-astrology-col-12 pk-astrology-col-sm-9 pk-astrology-col-md-8 pk-astrology-table-responsive-sm">
+								<tr>
+									<th><?php echo $translation_data['planets']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['planet_positions']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['degree']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['rasi']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['rasi_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['nakshatra']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+									<th><?php echo $translation_data['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th>
+								</tr>
+
+								<?php foreach ( $division_planet_position as $planet ) : ?>
+									<tr>
+										<td><?php echo $planet['planet']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['position']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['degree']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['rasi']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['rasi_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['nakshatra']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+										<td><?php echo $planet['nakshatra_lord']; // phpcs:ignore WordPress.Security.EscapeOutput ?></td>
+									</tr>
+								<?php endforeach; ?>
+							</table>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+			<br>
+
 			<?php $nakshatra_details = $result['nakshatra_details']; ?>
 			<table class="pk-astrology-table pk-astrology-table-responsive-sm">
 				<tr class="pk-astrology-bg-secondary pk-astrology-text-center"><th colspan=2"><?php echo $translation_data['nakshatra_details']; // phpcs:ignore WordPress.Security.EscapeOutput ?></th></tr>
@@ -130,7 +161,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</div>
 				<?php
 			endif;
-			endif;
+endif;
 		?>
 	</div>
 <?php
