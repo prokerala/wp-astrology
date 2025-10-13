@@ -64,20 +64,30 @@ class ThirumanaPoruthamController implements ReportControllerInterface {
 	 * @param array $options Render options.
 	 * @return string
 	 */
-	public function render_form( $options = [] ): string {
+	public function render_form( $options = [] ): string { // phpcs:ignore Generic.Metrics.CyclomaticComplexity.MaxExceeded
 		$result_type      = $options['result_type'] ? $options['result_type'] : $this->get_post_input( 'result_type', 'basic' );
 		$form_language    = $this->get_form_language( $options['form_language'], self::REPORT_LANGUAGES );
 		$report_language  = $this->filter_report_language( $options['report_language'], self::REPORT_LANGUAGES );
 		$translation_data = $this->get_localisation_data( $form_language );
 
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$girl_nakshatra      = isset( $_POST['girl_nakshatra'] ) ? (int) $_POST['girl_nakshatra'] : '';
+		$boy_nakshatra       = isset( $_POST['boy_nakshatra'] ) ? (int) $_POST['boy_nakshatra'] : '';
+		$girl_nakshatra_pada = isset( $_POST['girl_nakshatra_pada'] ) ? (int) $_POST['girl_nakshatra_pada'] : '';
+		$boy_nakshatra_pada  = isset( $_POST['boy_nakshatra_pada'] ) ? (int) $_POST['boy_nakshatra_pada'] : '';
+
 		return $this->render(
 			'form/thirumana-porutham',
 			[
-				'options'          => $options + $this->get_options(),
-				'result_type'      => $result_type,
-				'selected_lang'    => $form_language,
-				'report_language'  => $report_language,
-				'translation_data' => $translation_data,
+				'options'             => $options + $this->get_options(),
+				'result_type'         => $result_type,
+				'selected_lang'       => $form_language,
+				'report_language'     => $report_language,
+				'translation_data'    => $translation_data,
+				'girl_nakshatra'      => $girl_nakshatra,
+				'boy_nakshatra'       => $boy_nakshatra,
+				'girl_nakshatra_pada' => $girl_nakshatra_pada,
+				'boy_nakshatra_pada'  => $boy_nakshatra_pada,
 
 			]
 		);
