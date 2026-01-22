@@ -302,5 +302,5 @@ return [
 	'vimsamsa_chart'                      => 'Vimsamsa Chart',
 	'sun_chart'                           => 'Sun Chart',
 	'moon_chart'                          => 'Moon Chart',
-	'birth_time'						  => 'Birth Time',
+	'birth_time'                          => 'Birth Time',
 ];
