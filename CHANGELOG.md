@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.4.9] - 2026-01-22
+### Fixed
+- Resolved an issue related with warning about array key missing
+
 ## [1.4.8] - 2025-10-14
 ### Added
 - Added new `display_planet_positions` shortcode for kundli
@@ -112,6 +116,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.4.9]: https://github.com/prokerala/wp-astrology/compare/v1.4.8...v1.4.9
 [1.4.8]: https://github.com/prokerala/wp-astrology/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/prokerala/wp-astrology/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/prokerala/wp-astrology/compare/v1.4.5...v1.4.6
