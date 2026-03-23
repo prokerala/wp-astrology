@@ -167,7 +167,7 @@ class ReportController {
 			$error_code .= '</ul>';
 			return $error_code;
 		} catch ( QuotaExceededException $e ) {
-			return '<blockquote><p>You have exceeded your quota allocation</p></blockquote>';
+			return '<blockquote><p>Request failed with error<em> Your account does not have sufficient credit balance to execute this request.</em></p></blockquote>';
 		} catch ( RateLimitExceededException $e ) {
 			return 'Rate limit exceeded. Throttle your requests.';
 		} catch ( AuthenticationException $e ) {
