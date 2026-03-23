@@ -1,6 +1,9 @@
 # Changelog
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
+## [1.5.0] - 2026-03-23
+### Fixed
+- Resolved an issue related with warning about array key missing
 
 ## [1.4.9] - 2026-01-22
 ### Fixed
@@ -116,6 +119,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 - Added new shortcode attribute `form_action` to specify a different page url for result.
 
+[1.5.0]: https://github.com/prokerala/wp-astrology/compare/v1.4.9...v1.5.0
 [1.4.9]: https://github.com/prokerala/wp-astrology/compare/v1.4.8...v1.4.9
 [1.4.8]: https://github.com/prokerala/wp-astrology/compare/v1.4.7...v1.4.8
 [1.4.7]: https://github.com/prokerala/wp-astrology/compare/v1.4.6...v1.4.7
