@@ -236,4 +236,9 @@ return [
 	'vimsamsa_chart'                      => 'விம்சாம்சம் விளக்கப்படம்',
 	'sun_chart'                           => 'சூரியன் விளக்கப்படம்',
 	'moon_chart'                          => 'சந்திரன் விளக்கப்படம்',
+	'house_cusps'                         => 'பாவாஸ்தானங்கள்',
+	'start_cusp'                          => 'ஆரம்பம்',
+	'end_cusp'                            => 'இறுதி',
+	'declination_aspects'                 => 'Declination Aspects',
+	'aspect_chart'                        => 'Aspect Chart',
 ];

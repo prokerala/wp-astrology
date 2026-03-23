@@ -237,4 +237,9 @@ return [
 	'vimsamsa_chart'                      => 'వింసంస చార్ట్',
 	'sun_chart'                           => 'Sun చార్ట్',
 	'moon_chart'                          => 'చంద్రుని చక్రం',
+	'house_cusps'                         => 'House-Cusps',
+	'start_cusp'                          => 'Start Cusp',
+	'end_cusp'                            => 'End Cusp',
+	'declination_aspects'                 => 'Declination Aspects',
+	'aspect_chart'                        => 'Aspect Chart',
 ];

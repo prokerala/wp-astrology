@@ -243,5 +243,9 @@ return [
 	'vimsamsa_chart'                      => 'विंशांश चार्ट',
 	'sun_chart'                           => 'सूर्य चार्ट',
 	'moon_chart'                          => 'चंद्र चार्ट',
-
+	'house_cusps'                         => 'हाउस कस्प',
+	'start_cusp'                          => 'शुरुआती कस्प',
+	'end_cusp'                            => 'अंतिम कस्प',
+	'declination_aspects'                 => 'Declination Aspects',
+	'aspect_chart'                        => 'Aspect Chart',
 ];

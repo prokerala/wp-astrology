@@ -303,4 +303,9 @@ return [
 	'sun_chart'                           => 'Sun Chart',
 	'moon_chart'                          => 'Moon Chart',
 	'birth_time'                          => 'Birth Time',
+	'house_cusps'                         => 'House-Cusps',
+	'start_cusp'                          => 'Start Cusp',
+	'end_cusp'                            => 'End Cusp',
+	'declination_aspects'                 => 'Declination Aspects',
+	'aspect_chart'                        => 'Aspect Chart',
 ];

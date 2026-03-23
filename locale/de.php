@@ -103,4 +103,5 @@ return [
 	'start_cusp'                     => 'Startspitze',
 	'end_cusp'                       => 'Endspitze',
 	'get_result'                     => 'Ergebnis abrufen',
+	'aspect_chart'                   => 'Aspect Chart',
 ];

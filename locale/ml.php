@@ -238,4 +238,9 @@ return [
 	'vimsamsa_chart'                      => 'വിംശാംശം ചാർട്ട്',
 	'sun_chart'                           => 'സൂര്യൻ ചാർട്ട്',
 	'moon_chart'                          => 'ചന്ദ്രൻ ചാർട്ട്',
+	'house_cusps'                         => 'ഭാവസ്ഥാനങ്ങൾ',
+	'start_cusp'                          => 'ആരംഭം (ഭാവം)',
+	'end_cusp'                            => 'അന്ത്യം (ഭാവം)',
+	'declination_aspects'                 => 'Declination Aspects',
+	'aspect_chart'                        => 'Aspect Chart',
 ];
